@@ -93,14 +93,15 @@ vscode-master/lesson?slug=bai-1-tong-dsfsdf
 - world là segment 2
 ```
 
-- Group: Nó sẽ không tạo ra routing, ví dụ `(dashboard)` sẽ không tạo ra /dashboard. Nếu truy cập vào thì sẽ hiển thị not-found. Mục đích sử dụng là để gom các routing liên quan vào chung
+- Group routes: Nó sẽ không tạo ra routing, ví dụ `(dashboard)` sẽ không tạo ra /dashboard. Nếu truy cập vào thì sẽ hiển thị not-found. Mục đích sử dụng là để gom các routing liên quan vào chung
 - Ví dụ có đường dẫn là /shop, shop/a, shop/b, shop/a/b thì _Catch all segments_ sẽ chấp nhận shop/a, shop/b, shop/a/b, còn nếu vào /shop thì sẽ not-found
-- Ví dụ có đường dẫn là /shop, shop/a, shop/b, shop/a/b thì _Optional Catch all segments_ sẽ chấp nhận tất cả bao gồm /shop, shop/a, shop/b, shop/a/b
+- Ví dụ có đường dẫn là /shop, shop/a, shop/b, shop/a/b thì _Optional Catch all segments_ sẽ chấp nhận tất cả bao gồm 
+/shop, shop/a, shop/b, shop/a/b
 - Catch-all Segments: sign-in/[...sign-in]
 - Optional Catch-all Segments: sign-in/[[...sign-in]]
 - Parallel Routes
 - Intercepting Routes
-- Lưu ý: Khi để 2 thư mục dynamic cùng cấp sẽ báo lỗi ví dụ [item] cùng cấp với [folder]
+- Lưu ý: Khi để 2 thư mục dynamic cùng cấp sẽ báo lỗi. Ví dụ: [item] cùng cấp với [folder]
 
 # Params
 

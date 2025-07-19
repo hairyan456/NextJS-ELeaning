@@ -2,14 +2,15 @@ import React from 'react';
 import { menuItems } from '@/constants';
 import ActiveLink from '../common/ActiveLink';
 import { IMenuItems } from '@/types';
+import Link from 'next/link';
 
 const Sidebar = () => {
     return (
         <div className='p-5 border-r border-r-gray-200'>
-            <a href='/' className="logo font-bold text-3xl inline-block mb-5">
+            <Link href='/' className="logo font-bold text-3xl inline-block mb-5">
                 <span className='text-primary'>E</span>
                 Academy
-            </a>
+            </Link>
             <ul className='flex flex-col gap-2'>
                 {menuItems?.map((item, index) => (
                     <MenuItem
