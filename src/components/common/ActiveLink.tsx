@@ -6,7 +6,7 @@ import React from 'react';
 
 const ActiveLink = ({ url, children }: IActiveLinkProps) => {
     const pathName = usePathname();
-    const isActive = url === pathName;
+    const isActive: boolean = url === pathName;
     return (
         <Link
             href={url}
