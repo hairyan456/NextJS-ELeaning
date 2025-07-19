@@ -2,15 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-/* body {
-    font-family: var(--font-manrope);
-}
+@layer components {
+    .svg-animate {
+        stroke-dashoffset: 500;
+        stroke-dasharray: 500;
+        animation: dash 4s linear forwards;
+    }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-family: var(--font-roboto);
-} */
+    @keyframes dash {
+        to {
+            stroke-dashoffset: 0;
+        }
+    }
+}
