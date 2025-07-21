@@ -9,4 +9,13 @@ interface IMenuItems {
     icon?: React.ReactNode
 }
 
-export { IActiveLinkProps, IMenuItems };
+// User
+interface ICreateUserParams {
+    clerkId: string;
+    username: string;
+    email_address: string;
+    name?: string;
+    avatar?: string;
+};
+
+export { IActiveLinkProps, IMenuItems, ICreateUserParams };

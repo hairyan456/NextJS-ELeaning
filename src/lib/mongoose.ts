@@ -14,7 +14,7 @@ export const connectToDatabase = async () => {
 
     try {
         await mongoose.connect(process.env.MONGODB_URL, {
-            dbName: 'Eacademy',
+            dbName: 'eacademy',
         });
         isConnected = true;
         console.log("Using new database connection");
