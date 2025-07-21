@@ -128,6 +128,7 @@ images: {
     ],
   },
 ```
+- Khi build lên production, tải package "sharp" để tối ưu image.
 
 # Mongoose
 

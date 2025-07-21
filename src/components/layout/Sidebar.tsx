@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 const Sidebar = () => {
     return (
-        <div className='p-5 border-r border-r-gray-200'>
+        <div className='p-5 border-r border-r-gray-200 bg-white'>
             <Link href='/' className="logo font-bold text-3xl inline-block mb-5">
                 <span className='text-primary'>E</span>
                 Academy
