@@ -4,10 +4,11 @@ import { IMenuItems } from '@/types';
 import Link from 'next/link';
 import { ActiveLink } from '../common';
 import { UserButton } from '@clerk/nextjs';
+import { ModeToggle } from '../common/ModeToggle';
 
 const Sidebar = () => {
     return (
-        <div className='p-5 border-r border-r-gray-200 bg-white flex flex-col'>
+        <div className='p-5 border-r border-r-gray-200 bg-white dark:bg-grayDarker dark:border-opacity-10 flex flex-col'>
             <Link href='/' className="logo font-bold text-3xl inline-block mb-5">
                 <span className='text-primary'>E</span>
                 Academy
@@ -22,7 +23,8 @@ const Sidebar = () => {
                     />
                 ))}
             </ul>
-            <div className="mt-auto flex items-center justify-end">
+            <div className="mt-auto flex items-center justify-end gap-5">
+                <ModeToggle />
                 <UserButton />
             </div>
         </div>
