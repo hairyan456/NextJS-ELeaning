@@ -3,6 +3,7 @@ import "./globals.css";
 import { manrope } from "@/fonts/font";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/common/ThemeProvider";
+import { Bounce, ToastContainer } from 'react-toastify';
 
 export const metadata: Metadata = {
   title: "EAcademy",
@@ -25,6 +26,19 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             {children}
+            <ToastContainer
+              position="top-right"
+              autoClose={2500}
+              hideProgressBar={true}
+              newestOnTop={false}
+              closeOnClick={false}
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover={false}
+              theme="light"
+              transition={Bounce}
+            />
           </ThemeProvider>
         </body>
       </html>

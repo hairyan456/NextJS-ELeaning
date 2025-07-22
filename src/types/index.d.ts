@@ -18,4 +18,11 @@ interface ICreateUserParams {
     avatar?: string;
 };
 
-export { IActiveLinkProps, IMenuItems, ICreateUserParams };
+// Course
+interface ICreateCourseParams {
+    title: string;
+    slug: string;
+    author: string;
+}
+
+export { IActiveLinkProps, IMenuItems, ICreateUserParams, ICreateCourseParams };
