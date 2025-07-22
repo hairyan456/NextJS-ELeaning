@@ -55,6 +55,7 @@ const courseSchema = new Schema<ICourse>({
     },
     sale_price: {
         type: Number,
+        default: 0,
     },
     status: {
         type: String,

@@ -20,6 +20,8 @@ import { toast } from "react-toastify"
 import { useRouter } from "next/navigation"
 import { Textarea } from "../ui/textarea"
 import { ECourseLevel, ECourseStatus } from "@/types/enums"
+import { updateCourse } from "@/lib/actions/course.action"
+import { ICourse } from "@/database/course.model"
 
 const formSchema = z.object({
     title: z.string().min(10, "Tên khóa học phải có ít nhất 10 ký tự").max(100, "Tên khóa học không được quá 100 ký tự"),
@@ -29,7 +31,7 @@ const formSchema = z.object({
     intro_url: z.string().optional(),
     description: z.string().optional(),
     image: z.string().optional(),
-    views: z.number().int().positive().optional(),
+    views: z.number().int().optional(),
     status: z.enum([ECourseStatus.APPROVE, ECourseStatus.PENDING, ECourseStatus.REJECTED]).optional(),
     level: z.enum([ECourseLevel.ADVANCED, ECourseLevel.BEGINNER, ECourseLevel.INTERMEDIATE]).optional(),
     info: z.object({
@@ -39,7 +41,7 @@ const formSchema = z.object({
     }),
 })
 
-const CourseUpdateForm = () => {
+const CourseUpdateForm = ({ data }: { data: ICourse }) => {
     const [isLoadingSubmit, setLoadingSubmit] = useState(false);
     const router = useRouter();
 
@@ -47,16 +49,16 @@ const CourseUpdateForm = () => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            title: "",
-            slug: "",
-            price: 0,
-            sale_price: 0,
-            intro_url: "",
-            description: "",
-            image: "",
-            views: 0,
-            status: ECourseStatus.PENDING,
-            level: ECourseLevel.BEGINNER,
+            title: data.title,
+            slug: data.slug,
+            price: data.price,
+            sale_price: data.sale_price,
+            intro_url: data.intro_url,
+            description: data.description,
+            image: data.image,
+            views: data.views,
+            status: data.status,
+            level: data.level,
         },
     })
 
@@ -64,7 +66,29 @@ const CourseUpdateForm = () => {
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setLoadingSubmit(true);
         try {
+            const res = await updateCourse({
+                slug: data.slug,
+                updateData: {
+                    title: values.title,
+                    slug: values.slug,
+                    price: values.price,
+                    sale_price: values.sale_price,
+                    intro_url: values.intro_url,
+                    description: values.description,
+                    views: values.views,
 
+                }
+            });
+            if (!res?.success) {
+                toast.error(res?.message || "Cập nhật khóa học thất bại");
+                return;
+            }
+            else {
+                if (values.slug)
+                    router.replace(`/manage/course/update?slug=${values.slug}`);
+
+                toast.success(res?.message || "Cập nhật khóa học thành công");
+            }
         } catch (error) {
             console.error("Error update course:", error);
         }
@@ -109,7 +133,12 @@ const CourseUpdateForm = () => {
                             <FormItem>
                                 <FormLabel>Giá khuyến mãi</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="199.000" {...field} />
+                                    <Input
+                                        type="number"
+                                        placeholder="199.000"
+                                        {...field}
+                                        onChange={(e) => field.onChange(Number(e.target.value))} // Convert to number
+                                    />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -122,7 +151,12 @@ const CourseUpdateForm = () => {
                             <FormItem>
                                 <FormLabel>Giá gốc</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="499.000" {...field} />
+                                    <Input
+                                        type="number"
+                                        placeholder="499.000"
+                                        {...field}
+                                        onChange={(e) => field.onChange(Number(e.target.value))} // Convert to number
+                                    />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -180,7 +214,7 @@ const CourseUpdateForm = () => {
                             <FormItem>
                                 <FormLabel>Lượt xem</FormLabel>
                                 <FormControl>
-                                    <Input type="number" placeholder="100" {...field} />
+                                    <Input type="number" placeholder="100" {...field} onChange={(e) => field.onChange(Number(e.target.value))} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>

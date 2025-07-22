@@ -1,3 +1,5 @@
+import { ICourse } from "@/database/course.model";
+
 interface IActiveLinkProps {
     url: string;
     children: React.ReactNode;
@@ -25,4 +27,9 @@ interface ICreateCourseParams {
     author: string;
 }
 
-export { IActiveLinkProps, IMenuItems, ICreateUserParams, ICreateCourseParams };
+interface IUpdateCourseParams {
+    slug: string;
+    updateData: Partial<ICourse>;
+}
+
+export { IActiveLinkProps, IMenuItems, ICreateUserParams, ICreateCourseParams, IUpdateCourseParams };

@@ -1,7 +1,18 @@
 'use server';
-import { ICreateCourseParams } from "@/types";
+import { ICreateCourseParams, IUpdateCourseParams } from "@/types";
 import { connectToDatabase } from "../mongoose";
-import Course from "@/database/course.model";
+import Course, { ICourse } from "@/database/course.model";
+import { revalidatePath } from "next/cache";
+
+export async function getAllCourses(): Promise<ICourse[] | undefined> {
+    try {
+        connectToDatabase();
+        const listCourses = await Course.find();
+        return listCourses;
+    } catch (error) {
+        console.error("Error connecting to database:", error);
+    }
+}
 
 export async function getCourseBySlug({ slug }: { slug: string }) {
     try {
@@ -34,4 +45,27 @@ export async function createNewCourse(params: ICreateCourseParams) {
         console.error("Error creating new course:", error);
     }
 };
+
+export async function updateCourse(params: IUpdateCourseParams) {
+    try {
+        connectToDatabase();
+        const findCourse = await Course.findOne({ slug: params.slug });
+        if (!findCourse) {
+            return {
+                success: false,
+                message: "Khóa học không tồn tại",
+            };
+        }
+        else {
+            await Course.findOneAndUpdate({ slug: params.slug }, params.updateData, { new: true });
+            revalidatePath('/');  // giống refetch trong React Query 
+            return {
+                success: true,
+                message: "Cập nhật khóa học thành công",
+            };
+        }
+    } catch (error) {
+        console.error("Error updating course:", error);
+    }
+}
 
