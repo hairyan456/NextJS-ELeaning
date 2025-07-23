@@ -7,11 +7,11 @@ import { ICourse } from '@/database/course.model';
 const CourseItem = ({ data }: { data?: ICourse }) => {
     const courseInfo = [
         {
-            title: data.views,
+            title: data?.views,
             icon: (className?: string) => <IconEye className={className} />
         },
         {
-            title: data.rating[0],
+            title: data?.rating[0],
             icon: (className?: string) => <IconStar className={className} />
         },
         {
@@ -21,7 +21,7 @@ const CourseItem = ({ data }: { data?: ICourse }) => {
     ];
     return (
         <div className='bg-white dark:bg-grayDarker dark:border-opacity-10 border border-gray-200 p-4 rounded-2xl'>
-            <Link className='block h-[180px] relative' href={`/course/${data.slug}`}>
+            <Link className='block h-[180px] relative' href={`/course/${data?.slug}`}>
                 <Image
                     src={'https://images.unsplash.com/photo-1682685796014-2f342188a635?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'}
                     alt=''
@@ -39,7 +39,7 @@ const CourseItem = ({ data }: { data?: ICourse }) => {
 
             <div className="pt-4">
                 <h3 className='font-bold text-lg mb-5'>
-                    {data.title}
+                    {data?.title}
                 </h3>
                 <div className="flex items-center gap-3 mb-5 text-xs text-gray-500 dark:text-grayDark">
                     {courseInfo?.map((item, index) => (
@@ -48,10 +48,10 @@ const CourseItem = ({ data }: { data?: ICourse }) => {
                             <span>{item?.title}</span>
                         </div>
                     ))}
-                    <span className='font-bold text-primary ml-auto text-base'>{data.price}</span>
+                    <span className='font-bold text-primary ml-auto text-base'>{data?.price}</span>
                 </div>
                 <Link
-                    href={`/course/${data.slug}`}
+                    href={`/course/${data?.slug}`}
                     className='flex items-center justify-center w-full mt-10 rounded-lg text-white font-semibold bg-primary
                 h-12'
                 >
