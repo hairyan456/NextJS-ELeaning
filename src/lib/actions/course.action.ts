@@ -18,7 +18,7 @@ export async function getCourseBySlug({ slug }: { slug: string }): Promise<ICour
     try {
         connectToDatabase();
         const findCourse = await Course.findOne({ slug });;
-        return findCourse ? JSON.parse(JSON.stringify(findCourse)) : null;
+        return findCourse ? JSON.parse(JSON.stringify(findCourse)) : undefined;
     } catch (error) {
         console.error("Error fetching course by slug:", error);
     }
