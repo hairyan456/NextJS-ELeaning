@@ -1,6 +1,9 @@
+import PageNotFound from '@/app/not-found';
 import { IconCheck, IconPlay, IconStudy, IconUsers } from '@/components/icons';
 import { Button } from '@/components/ui/button';
+import { courseLevelTitle } from '@/constants';
 import { getCourseBySlug } from '@/lib/actions/course.action';
+import { ECourseStatus } from '@/types/enums';
 import Image from 'next/image';
 import React from 'react';
 
@@ -8,6 +11,8 @@ const page = async ({ params }: { params: { slug: string } }) => {
     const data = await getCourseBySlug({ slug: params.slug });
     if (!data?._id)
         return null;
+    if (data.status !== ECourseStatus.APPROVED)
+        return <PageNotFound />
     const videoId = data.intro_url?.split('v=')[1];
 
     return (
@@ -30,7 +35,7 @@ const page = async ({ params }: { params: { slug: string } }) => {
                         </>
                         :
                         <Image
-                            src={`https://images.unsplash.com/photo-1682685796014-2f342188a635?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D`}
+                            src={data.image}
                             alt='Course Image'
                             fill
                             className='w-full h-full object-cover rounded-lg'
@@ -49,10 +54,10 @@ const page = async ({ params }: { params: { slug: string } }) => {
                             100
                         </BoxInfo>
                         <BoxInfo title='Lượt xem'>
-                            10.000
+                            {data.views}
                         </BoxInfo>
                         <BoxInfo title='Trình độ'>
-                            Trung bình
+                            {courseLevelTitle[data.level]}
                         </BoxInfo>
                         <BoxInfo title='Thời lượng'>
                             100h45p

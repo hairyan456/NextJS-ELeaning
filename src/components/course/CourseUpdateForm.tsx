@@ -15,7 +15,6 @@ import {
 import { Input } from "@/components/ui/input"
 import { vi } from "zod/locales";
 import { useState } from "react"
-import slugify from "slugify";
 import { toast } from "react-toastify"
 import { useRouter } from "next/navigation"
 import { Textarea } from "../ui/textarea"
@@ -23,7 +22,17 @@ import { ECourseLevel, ECourseStatus } from "@/types/enums"
 import { updateCourse } from "@/lib/actions/course.action"
 import { ICourse } from "@/database/course.model";
 import { useImmer } from 'use-immer';
-import { IconAdd } from "../icons"
+import { IconAdd } from "../icons";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+import { courseLevel, courseStatus } from "@/constants"
+import { UploadButton } from "@/utils/uploadthing"
+import Image from "next/image"
 
 const formSchema = z.object({
     title: z.string().min(10, "Tên khóa học phải có ít nhất 10 ký tự").max(100, "Tên khóa học không được quá 100 ký tự"),
@@ -34,7 +43,7 @@ const formSchema = z.object({
     description: z.string().optional(),
     image: z.string().optional(),
     views: z.number().int().optional(),
-    status: z.enum([ECourseStatus.APPROVE, ECourseStatus.PENDING, ECourseStatus.REJECTED]).optional(),
+    status: z.enum([ECourseStatus.APPROVED, ECourseStatus.PENDING, ECourseStatus.REJECTED]).optional(),
     level: z.enum([ECourseLevel.ADVANCED, ECourseLevel.BEGINNER, ECourseLevel.INTERMEDIATE]).optional(),
     info: z.object({
         requirements: z.array(z.string()).optional(),
@@ -67,7 +76,7 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
             status: data.status,
             level: data.level,
         },
-    })
+    });
 
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -83,11 +92,14 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                     intro_url: values.intro_url,
                     description: values.description,
                     views: values.views,
+                    status: values.status,
+                    level: values.level,
                     info: {
                         requirements: courseInfo.requirements,
                         benefits: courseInfo.benefits,
                         qa: courseInfo.qa,
-                    }
+                    },
+                    image: values.image,
                 }
             });
             if (!res?.success) {
@@ -107,6 +119,8 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
             setLoadingSubmit(false);
         }
     }
+
+    const imageWatch = form.watch("image");
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} autoComplete="off">
@@ -197,9 +211,33 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                             <FormItem>
                                 <FormLabel>Ảnh đại diện</FormLabel>
                                 <FormControl>
-                                    <div className="h-[200px] bg-white rounded-md border border-gray-200">
-
-                                    </div>
+                                    <>
+                                        <div
+                                            className="h-[200px] bg-white rounded-md border border-gray-200 flex items-center justify-center
+                                            relative"
+                                        >
+                                            {!imageWatch ?
+                                                <UploadButton
+                                                    endpoint="imageUploader"
+                                                    onClientUploadComplete={(res) => {
+                                                        // Do something with the response
+                                                        form.setValue('image', res[0]?.url); // Assuming the response contains an array of files
+                                                    }}
+                                                    onUploadError={(error: Error) => {
+                                                        // Do something with the error.
+                                                        console.log(`ERROR! ${error.message}`);
+                                                    }}
+                                                />
+                                                :
+                                                <Image
+                                                    alt="Course Image"
+                                                    src={imageWatch}
+                                                    fill
+                                                    className="w-full h-full object-cover rounded-md"
+                                                />
+                                            }
+                                        </div>
+                                    </>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -238,6 +276,18 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                             <FormItem>
                                 <FormLabel>Trạng thái</FormLabel>
                                 <FormControl>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <SelectTrigger className="w-full">
+                                            <SelectValue placeholder="Trạng thái" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {courseStatus.map((status) => (
+                                                <SelectItem key={status.value} value={status.value}>
+                                                    {status.title}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -250,6 +300,18 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                             <FormItem>
                                 <FormLabel>Trình độ</FormLabel>
                                 <FormControl>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <SelectTrigger className="w-full">
+                                            <SelectValue placeholder="Trình độ" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {courseLevel.map((level) => (
+                                                <SelectItem key={level.value} value={level.value}>
+                                                    {level.title}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>

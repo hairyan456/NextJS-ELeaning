@@ -11,7 +11,7 @@ enum EUserRole {
 };
 
 enum ECourseStatus {
-    APPROVE = "APPROVED",
+    APPROVED = "APPROVED",
     PENDING = "PENDING",
     REJECTED = "REJECTED"
 };
