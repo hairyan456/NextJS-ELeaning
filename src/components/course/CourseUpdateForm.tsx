@@ -21,7 +21,9 @@ import { useRouter } from "next/navigation"
 import { Textarea } from "../ui/textarea"
 import { ECourseLevel, ECourseStatus } from "@/types/enums"
 import { updateCourse } from "@/lib/actions/course.action"
-import { ICourse } from "@/database/course.model"
+import { ICourse } from "@/database/course.model";
+import { useImmer } from 'use-immer';
+import { IconAdd } from "../icons"
 
 const formSchema = z.object({
     title: z.string().min(10, "Tên khóa học phải có ít nhất 10 ký tự").max(100, "Tên khóa học không được quá 100 ký tự"),
@@ -44,6 +46,11 @@ const formSchema = z.object({
 const CourseUpdateForm = ({ data }: { data: ICourse }) => {
     const [isLoadingSubmit, setLoadingSubmit] = useState(false);
     const router = useRouter();
+    const [courseInfo, setCourseInfo] = useImmer({
+        requirements: data.info?.requirements || [],
+        benefits: data.info?.benefits || [],
+        qa: data.info?.qa || [],
+    });
 
     // 1. Define your form.
     const form = useForm<z.infer<typeof formSchema>>({
@@ -76,7 +83,11 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                     intro_url: values.intro_url,
                     description: values.description,
                     views: values.views,
-
+                    info: {
+                        requirements: courseInfo.requirements,
+                        benefits: courseInfo.benefits,
+                        qa: courseInfo.qa,
+                    }
                 }
             });
             if (!res?.success) {
@@ -249,8 +260,35 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                         name="info.requirements"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Yêu cầu</FormLabel>
+                                <FormLabel className="flex items-center justify-between gap-5">
+                                    <span>Yêu cầu</span>
+                                    <button
+                                        type="button"
+                                        className="text-primary"
+                                        onClick={() => {
+                                            setCourseInfo((draft) => {
+                                                draft.requirements.push("");
+                                            })
+                                        }}
+                                    >
+                                        <IconAdd className="size-5" />
+                                    </button>
+                                </FormLabel>
                                 <FormControl>
+                                    <>
+                                        {courseInfo.requirements.map((item, index) => (
+                                            <Input
+                                                value={item}
+                                                key={index}
+                                                placeholder={`Yêu cầu ${index + 1}`}
+                                                onChange={(e) => {
+                                                    setCourseInfo((draft) => {
+                                                        draft.requirements[index] = e.target.value;
+                                                    })
+                                                }}
+                                            />
+                                        ))}
+                                    </>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -261,8 +299,35 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                         name="info.benefits"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Lợi ích</FormLabel>
+                                <FormLabel className="flex items-center justify-between gap-5">
+                                    <span>Lợi ích</span>
+                                    <button
+                                        type="button"
+                                        className="text-primary"
+                                        onClick={() => {
+                                            setCourseInfo((draft) => {
+                                                draft.benefits.push("");
+                                            })
+                                        }}
+                                    >
+                                        <IconAdd className="size-5" />
+                                    </button>
+                                </FormLabel>
                                 <FormControl>
+                                    <>
+                                        {courseInfo.benefits.map((item, index) => (
+                                            <Input
+                                                value={item}
+                                                key={index}
+                                                placeholder={`Lợi ích ${index + 1}`}
+                                                onChange={(e) => {
+                                                    setCourseInfo((draft) => {
+                                                        draft.benefits[index] = e.target.value;
+                                                    })
+                                                }}
+                                            />
+                                        ))}
+                                    </>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -272,9 +337,51 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                         control={form.control}
                         name="info.qa"
                         render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Question/Answer</FormLabel>
+                            <FormItem className="col-start-1 col-end-3">
+                                <FormLabel className="flex items-center justify-between gap-5">
+                                    <span>Q&A</span>
+                                    <button
+                                        type="button"
+                                        className="text-primary"
+                                        onClick={() => {
+                                            setCourseInfo((draft) => {
+                                                draft.qa.push({
+                                                    question: "",
+                                                    answer: ""
+                                                });
+                                            })
+                                        }}
+                                    >
+                                        <IconAdd className="size-5" />
+                                    </button>
+                                </FormLabel>
                                 <FormControl>
+                                    <>
+                                        {courseInfo.qa.map((item, index) => (
+                                            <div className="grid grid-cols-2 gap-5" key={index}>
+                                                <Input
+                                                    value={item.question}
+                                                    key={index}
+                                                    placeholder={`Câu hỏi ${index + 1}`}
+                                                    onChange={(e) => {
+                                                        setCourseInfo((draft) => {
+                                                            draft.qa[index].question = e.target.value;
+                                                        })
+                                                    }}
+                                                />
+                                                <Input
+                                                    value={item.answer}
+                                                    key={index}
+                                                    placeholder={`Câu trả lời ${index + 1}`}
+                                                    onChange={(e) => {
+                                                        setCourseInfo((draft) => {
+                                                            draft.qa[index].answer = e.target.value;
+                                                        })
+                                                    }}
+                                                />
+                                            </div>
+                                        ))}
+                                    </>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
