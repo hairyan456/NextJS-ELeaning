@@ -4,7 +4,7 @@ import React from 'react';
 import { IconClock, IconEye, IconStar } from '../icons';
 import { ICourse } from '@/database/course.model';
 
-const CourseItem = ({ data }: { data: ICourse }) => {
+const CourseItem = ({ data }: { data?: ICourse }) => {
     const courseInfo = [
         {
             title: data.views,
