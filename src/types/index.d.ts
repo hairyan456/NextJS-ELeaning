@@ -30,6 +30,7 @@ interface ICreateCourseParams {
 interface IUpdateCourseParams {
     slug: string;
     updateData: Partial<ICourse>;
+    path?: string;
 }
 
 export { IActiveLinkProps, IMenuItems, ICreateUserParams, ICreateCourseParams, IUpdateCourseParams };

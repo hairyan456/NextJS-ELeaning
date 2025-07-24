@@ -58,7 +58,7 @@ export async function updateCourse(params: IUpdateCourseParams) {
         }
         else {
             await Course.findOneAndUpdate({ slug: params.slug }, params.updateData, { new: true });
-            revalidatePath('/');  // giống refetch trong React Query 
+            revalidatePath(params.path || '/');  // giống refetch trong React Query 
             return {
                 success: true,
                 message: "Cập nhật khóa học thành công",

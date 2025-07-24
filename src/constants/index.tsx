@@ -35,18 +35,21 @@ export const menuItems: IMenuItems[] = [
     },
 ];
 
-export const courseStatus: { title: string; value: ECourseStatus }[] = [
+export const courseStatus: { title: string; value: ECourseStatus; className?: string }[] = [
     {
         title: 'Đã duyệt',
-        value: ECourseStatus.APPROVED
+        value: ECourseStatus.APPROVED,
+        className: "text-green-500 bg-green-500",
     },
     {
         title: 'Chờ duyệt',
-        value: ECourseStatus.PENDING
+        value: ECourseStatus.PENDING,
+        className: "text-blue-500 bg-blue-500"
     },
     {
         title: 'Từ chối',
-        value: ECourseStatus.REJECTED
+        value: ECourseStatus.REJECTED,
+        className: "text-red-500 bg-red-500"
     },
 ]
 
@@ -69,4 +72,12 @@ export const courseLevelTitle: Record<ECourseLevel, string> = {
     [ECourseLevel.BEGINNER]: 'Dễ',
     [ECourseLevel.INTERMEDIATE]: 'Trung bình',
     [ECourseLevel.ADVANCED]: 'Khó',
+}
+
+export const commonClassName = {
+    status: '!bg-opacity-10 border border-current rounded-md font-medium px-3 py-1 text-xs',
+    action: `size-8 rounded-md border flex items-center justify-center p-2
+             bg-gray-100 dark:bg-transparent borderDarkMode text-gray-500 hover:bg-white 
+             hover:transition-all dark:hover:border-opacity-20`,
+    paginationButton: `size-8 rounded-md borderDarkMode bgDarkMode border flex items-center justify-center hover:border-primary hover:text-primary`
 }

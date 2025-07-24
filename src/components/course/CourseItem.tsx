@@ -23,7 +23,7 @@ const CourseItem = ({ data }: { data?: ICourse }) => {
         <div className='bg-white dark:bg-grayDarker dark:border-opacity-10 border border-gray-200 p-4 rounded-2xl'>
             <Link className='block h-[180px] relative' href={`/course/${data?.slug}`}>
                 <Image
-                    src={'https://images.unsplash.com/photo-1682685796014-2f342188a635?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'}
+                    src={data?.image || 'https://images.unsplash.com/photo-1682685796014-2f342188a635?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'}
                     alt=''
                     width={300}
                     height={200}
@@ -31,10 +31,10 @@ const CourseItem = ({ data }: { data?: ICourse }) => {
                     sizes='@media (min-width: 640px) 300px, 100vw'
                     priority
                 />
-                {/* <span className='inline-block px-3 py-1 rounded-full absolute top-3 right-3 z-10 text-white font-medium
+                <span className='inline-block px-3 py-1 rounded-full absolute top-3 right-3 z-10 text-white font-medium
                  bg-green-500 text-xs animate-pulse'>
                     New
-                </span> */}
+                </span>
             </Link>
 
             <div className="pt-4">
@@ -48,7 +48,7 @@ const CourseItem = ({ data }: { data?: ICourse }) => {
                             <span>{item?.title}</span>
                         </div>
                     ))}
-                    <span className='font-bold text-primary ml-auto text-base'>{data?.price}</span>
+                    <span className='font-bold text-primary ml-auto text-base'>{data?.price?.toLocaleString()}đ</span>
                 </div>
                 <Link
                     href={`/course/${data?.slug}`}

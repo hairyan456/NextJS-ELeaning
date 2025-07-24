@@ -107,7 +107,7 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                 return;
             }
             else {
-                if (values.slug)
+                if (values.slug !== data.slug)
                     router.replace(`/manage/course/update?slug=${values.slug}`);
 
                 toast.success(res?.message || "Cập nhật khóa học thành công");
