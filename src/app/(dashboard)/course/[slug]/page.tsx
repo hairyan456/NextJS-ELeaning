@@ -5,7 +5,12 @@ import { courseLevelTitle } from '@/constants';
 import { getCourseBySlug } from '@/lib/actions/course.action';
 import { ECourseStatus } from '@/types/enums';
 import Image from 'next/image';
-import React from 'react';
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const page = async ({ params }: { params: { slug: string } }) => {
     const data = await getCourseBySlug({ slug: params.slug });
@@ -54,7 +59,7 @@ const page = async ({ params }: { params: { slug: string } }) => {
                             100
                         </BoxInfo>
                         <BoxInfo title='Lượt xem'>
-                            {data.views}
+                            {data.views.toLocaleString()}
                         </BoxInfo>
                         <BoxInfo title='Trình độ'>
                             {courseLevelTitle[data.level]}
@@ -89,10 +94,12 @@ const page = async ({ params }: { params: { slug: string } }) => {
                 <BoxSection title='Q.A'>
                     <div className='leading-normal tracking-wider mb-10'>
                         {data.info?.qa?.map((item, index) => (
-                            <div key={index}>
-                                <div>{item.question}</div>
-                                <div>{item.answer}</div>
-                            </div>
+                            <Accordion key={index} type="single" collapsible>
+                                <AccordionItem value={item.question}>
+                                    <AccordionTrigger>{item.question}</AccordionTrigger>
+                                    <AccordionContent>{item.answer}</AccordionContent>
+                                </AccordionItem>
+                            </Accordion>
                         ))}
                     </div>
                 </BoxSection>

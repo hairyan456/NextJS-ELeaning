@@ -78,13 +78,20 @@ const CourseManage = ({ courses }: { courses: ICourse[] }) => {
 
     return (
         <>
-            <div className="flex items-center justify-between mb-10">
+            <Link href={'/manage/course/new'}
+                className="size-10 rounded-full bg-primary flexCenter text-white fixed right-5 bottom-5 hover:animate-bounce"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+            </Link>
+            <div className="flex flex-col lg:flex-row lg:items-center gap-5 justify-between mb-10">
                 <Heading className="uppercase">Quản lý khóa học</Heading>
-                <div className="w-[300px]">
+                <div className="w-full lg:w-[300px]">
                     <Input placeholder="Tìm kiếm khóa học..." />
                 </div>
             </div>
-            <Table>
+            <Table className="table-responsive">
                 <TableHeader>
                     <TableRow>
                         <TableHead>Thông tin</TableHead>
@@ -106,15 +113,17 @@ const CourseManage = ({ courses }: { courses: ICourse[] }) => {
                                         className="flex-shrink-0 size-16 rounded-lg object-cover"
                                     />
                                     <div className="flex flex-col gap-1">
-                                        <h3 className="font-bold text-base">{course.title}</h3>
-                                        <h4 className="text-sm text-slate-500">
+                                        <h3 className="font-bold text-sm lg:text-base whitespace-nowrap">{course.title}</h3>
+                                        <h4 className="text-xs lg:text-sm text-slate-500">
                                             {new Date(course.created_at).toLocaleDateString("vi-VN")}
                                         </h4>
                                     </div>
                                 </div>
                             </TableCell>
                             <TableCell>
-                                <span className="font-bold text-base ">{course.price.toLocaleString()}đ</span>
+                                <span className="font-bold text-sm lg:text-base ">
+                                    {course.price.toLocaleString()}đ
+                                </span>
                             </TableCell>
                             <TableCell>
                                 <button

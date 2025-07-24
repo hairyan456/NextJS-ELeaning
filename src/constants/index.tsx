@@ -75,7 +75,7 @@ export const courseLevelTitle: Record<ECourseLevel, string> = {
 }
 
 export const commonClassName = {
-    status: '!bg-opacity-10 border border-current rounded-md font-medium px-3 py-1 text-xs',
+    status: '!bg-opacity-10 border border-current rounded-md font-medium px-3 py-1 text-xs  whitespace-nowrap',
     action: `size-8 rounded-md border flex items-center justify-center p-2
              bg-gray-100 dark:bg-transparent borderDarkMode text-gray-500 hover:bg-white 
              hover:transition-all dark:hover:border-opacity-20`,

@@ -40,14 +40,14 @@ const Sidebar = () => {
     );
 };
 
-function MenuItem({ url = "/", title = "", icon }: IMenuItems) {
+export function MenuItem({ url = "/", title = "", icon, onlyIcon = false }: IMenuItems) {
     return (
         <li>
             <ActiveLink
                 url={url}
             >
                 {icon}
-                {title}
+                {!onlyIcon && title}
             </ActiveLink>
         </li>
     )

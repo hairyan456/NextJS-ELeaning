@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import "./globals.scss";
 import { manrope } from "@/fonts/font";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/common/ThemeProvider";
