@@ -1,8 +1,9 @@
 'use server';
-import { ICreateCourseParams, IUpdateCourseParams } from "@/types";
+import { ICourseUpdateParams, ICreateCourseParams, IUpdateCourseParams } from "@/types";
 import { connectToDatabase } from "../mongoose";
 import Course, { ICourse } from "@/database/course.model";
 import { revalidatePath } from "next/cache";
+import Lecture from "@/database/lecture.model";
 
 export async function getAllCourses(): Promise<ICourse[] | undefined> {
     try {
@@ -14,10 +15,15 @@ export async function getAllCourses(): Promise<ICourse[] | undefined> {
     }
 }
 
-export async function getCourseBySlug({ slug }: { slug: string }): Promise<ICourse | undefined> {
+export async function getCourseBySlug({ slug }: { slug: string }): Promise<ICourseUpdateParams | undefined> {
     try {
         connectToDatabase();
-        const findCourse = await Course.findOne({ slug });;
+        const findCourse = await Course.findOne({ slug }).populate({
+            path: 'lectures',
+            model: Lecture,
+            select: "_id title",
+            match: { _destroy: false }
+        });
         return findCourse ? JSON.parse(JSON.stringify(findCourse)) : undefined;
     } catch (error) {
         console.error("Error fetching course by slug:", error);

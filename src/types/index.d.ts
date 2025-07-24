@@ -1,4 +1,5 @@
 import { ICourse } from "@/database/course.model";
+import { ILecture } from "@/database/lecture.model";
 
 interface IActiveLinkProps {
     url: string;
@@ -34,4 +35,30 @@ interface IUpdateCourseParams {
     path?: string;
 }
 
-export { IActiveLinkProps, IMenuItems, ICreateUserParams, ICreateCourseParams, IUpdateCourseParams };
+interface ICourseUpdateParams extends Omit<ICourse, "lectures"> {
+    lectures: ILecture[];
+
+}
+
+// Lecture
+interface ICreateLectureParams {
+    course: string;
+    title?: string;
+    order?: number;
+    path?: string;
+}
+
+interface IUpdateLectureParams {
+    lectureId: string;
+    updateData: {
+        title?: string;
+        order?: number;
+        _destroy?: boolean;
+        path?: string;
+    }
+}
+
+export {
+    IActiveLinkProps, IMenuItems, ICreateUserParams, ICreateCourseParams, IUpdateCourseParams, ICreateLectureParams,
+    IUpdateLectureParams, ICourseUpdateParams
+};

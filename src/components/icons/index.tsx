@@ -12,3 +12,4 @@ export { default as IconAdd } from './IconAdd';
 export { default as IconCheck } from './IconCheck';
 export { default as IconEdit } from './IconEdit';
 export { default as IconDelete } from './IconDelete';
+export { default as IconCancel } from './IconCancel';

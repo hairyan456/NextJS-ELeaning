@@ -11,6 +11,7 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion";
+import { ILecture } from '@/database/lecture.model';
 
 const page = async ({ params }: { params: { slug: string } }) => {
     const data = await getCourseBySlug({ slug: params.slug });
@@ -19,6 +20,8 @@ const page = async ({ params }: { params: { slug: string } }) => {
     if (data.status !== ECourseStatus.APPROVED)
         return <PageNotFound />
     const videoId = data.intro_url?.split('v=')[1];
+
+    const lectures = data.lectures || [];
 
     return (
         <div className='grid lg:grid-cols-[2fr,1fr] gap-10 min-h-screen'>
@@ -67,6 +70,24 @@ const page = async ({ params }: { params: { slug: string } }) => {
                         <BoxInfo title='Thời lượng'>
                             100h45p
                         </BoxInfo>
+                    </div>
+                </BoxSection>
+                <BoxSection title='Nội dung khóa học'>
+                    <div className='flex flex-col gap-5'>
+                        {lectures.map((lecture: ILecture) => (
+                            <Accordion key={lecture._id} type="single" collapsible>
+                                <AccordionItem value={lecture._id}>
+                                    <AccordionTrigger>
+                                        <div className="flex items-center gap-3 justify-between w-full pr-5">
+                                            <div>{lecture.title}</div>
+                                        </div>
+                                    </AccordionTrigger>
+                                    <AccordionContent>
+
+                                    </AccordionContent>
+                                </AccordionItem>
+                            </Accordion>
+                        ))}
                     </div>
                 </BoxSection>
                 <BoxSection title='Yêu cầu'>

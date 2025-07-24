@@ -8,7 +8,6 @@ export interface ILecture extends Document {
     order: number;
     created_at: Date;
     _destroy: boolean;
-
 }
 
 const lectureSchema = new Schema({
