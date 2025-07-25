@@ -213,7 +213,7 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                                 <FormControl>
                                     <>
                                         <div
-                                            className="h-[200px] bg-white rounded-md border border-gray-200 flex items-center justify-center
+                                            className="h-[200px] bg-white dark:bg-grayDarker rounded-md border border-gray-200 dark:border-gray-500 flex items-center justify-center
                                             relative"
                                         >
                                             {!imageWatch ?

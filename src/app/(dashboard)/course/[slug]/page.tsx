@@ -12,6 +12,7 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion";
 import { IUpdateCourseLecture } from '@/types';
+import LessonItem from '@/components/lesson/LessonItem';
 
 const page = async ({ params }: { params: { slug: string } }) => {
     const data = await getCourseBySlug({ slug: params.slug });
@@ -83,16 +84,12 @@ const page = async ({ params }: { params: { slug: string } }) => {
                                         </div>
                                     </AccordionTrigger>
                                     <AccordionContent className='!bg-transparent border-none p-0'>
-                                        <div className="flex flex-col gap-3">
+                                        <div className="flex flex-col gap-3 mt-5">
                                             {lecture.lessons.map(lesson => (
-                                                <div
+                                                <LessonItem
                                                     key={lesson._id}
-                                                    className='flex items-center gap-3 bgDarkMode borderDarkMode rounded-lg p-3 text-sm font-me'
-                                                >
-                                                    <IconPlay className='size-4' />
-                                                    <h4>{lesson.title || ''}</h4>
-                                                    <span className='ml-auto text-xs font-semibold'>{lesson.duration} phút</span>
-                                                </div>
+                                                    lesson={lesson}
+                                                />
                                             ))}
                                         </div>
                                     </AccordionContent>

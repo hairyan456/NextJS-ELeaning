@@ -16,6 +16,16 @@ export async function getLessonBySlug({ slug, course }: { slug: string; course: 
     }
 }
 
+export async function findAllLessons({ course }: { course: string; }): Promise<ILesson[] | undefined> {
+    try {
+        connectToDatabase();
+        const lessons = await Lesson.find({ course });
+        return lessons ? JSON.parse(JSON.stringify(lessons)) : undefined;
+    } catch (error) {
+        console.error("Error fetching all lessons:", error);
+    }
+}
+
 export async function createNewLesson(params: ICreateLessonParams) {
     try {
         connectToDatabase();
