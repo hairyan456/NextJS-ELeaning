@@ -29,7 +29,7 @@ const AccordionTrigger = React.forwardRef<
       ref={ref}
       className={cn(
         `flex flex-1 items-center justify-between p-4 rounded-lg border borderDarkMode bgDarkMode font-semibold transition-all [&[data-state=open]>svg]:rotate-180
-         text-base mb-2`,
+         text-base mb-2 text-left`,
         className
       )}
       {...props}
