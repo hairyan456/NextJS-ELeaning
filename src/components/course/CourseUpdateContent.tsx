@@ -14,11 +14,20 @@ import { toast } from "react-toastify";
 import { MouseEvent, useState } from "react";
 import Swal from "sweetalert2";
 import { ILecture } from "@/database/lecture.model";
-import { ICourseUpdateParams } from "@/types";
+import { ICourseUpdateParams, IUpdateCourseLecture } from "@/types";
 import { cn } from "@/lib/utils";
+import { createNewLesson, updateLesson } from "@/lib/actions/lesson.action";
+import { ILesson } from "@/database/lesson.model";
+import slugify from "slugify";
+import LessonItemUpdate from "../lesson/LessonItemUpdate";
 
 const CourseUpdateContent = ({ course }: { course: ICourseUpdateParams }) => {
     const lectures = course?.lectures || [];
+
+    const [lectureEdit, setLectureEdit] = useState<string>('');
+    const [lectureIdEdit, setLectureIdEdit] = useState<string>('');
+    const [lessonEdit, setLessonEdit] = useState<string>('');
+    const [lessonIdEdit, setLessonIdEdit] = useState<string>('');
 
     const handleAddNewLecture = async () => {
         try {
@@ -88,72 +97,178 @@ const CourseUpdateContent = ({ course }: { course: ICourseUpdateParams }) => {
 
     };
 
-    const [lectureEdit, setLectureEdit] = useState<string>('');
-    const [lectureIdEdit, setLectureIdEdit] = useState<string>('');
+    const handleAddNewLesson = async (lectureId: string, courseId: string) => {
+        try {
+            const res = await createNewLesson({
+                path: `/manage/course/update-content?slug=${course.slug}`,
+                lecture: lectureId,
+                course: courseId,
+                title: "Tiêu đề bài học mới",
+                slug: `tieu-de-bai-hoc-moi-${new Date().getTime().toString().slice(-3)}`,
+            });
+            if (res?.success) {
+                toast.success("Thêm bài học mới thành công!");
+                return;
+            }
+            else toast.error("Thêm bài học mới thất bại");
+        } catch (error) {
+            console.error("Error adding new lesson:", error);
+        }
+    };
+
+    const handleUpdateLesson = async (e: MouseEvent<HTMLSpanElement>, lessonId: string) => {
+        e?.stopPropagation();
+        try {
+            const res = await updateLesson({
+                lessonId,
+                path: `/manage/course/update-content?slug=${course.slug}`,
+                updateData: {
+                    title: lessonEdit,
+                    slug: slugify(lessonEdit, { lower: true, locale: "vi", remove: /[*+~.()'"!:@]/g }),
+                }
+            });
+            if (res?.success) {
+                toast.success("Cập nhật bài học thành công!");
+                setLessonEdit("");
+                setLessonIdEdit("");
+            }
+        } catch (error) {
+            console.error("Error updating lesson:", error);
+        }
+    };
 
     return (
         <>
             <div className="flex flex-col gap-5">
-                {lectures.map((lecture: ILecture, index: number) => (
-                    <Accordion key={lecture._id} type="single" collapsible={!lectureIdEdit}>
-                        <AccordionItem value={lecture._id}>
-                            <AccordionTrigger>
-                                <div className="flex items-center gap-3 justify-between w-full pr-5">
-                                    {lecture._id === lectureIdEdit ?
-                                        <>
-                                            <div className="w-full">
-                                                <Input
-                                                    placeholder="Tên chương..."
-                                                    defaultValue={lecture?.title}
-                                                    onChange={(e) => {
-                                                        setLectureEdit(e.target.value);
-                                                    }}
-                                                />
-                                            </div>
-                                            <div className="flex gap-2">
-                                                <span className={cn(commonClassName.action, "text-green-500")}
-                                                    onClick={(e) => handleUpdateLecture(e, lecture?._id)}
-                                                >
-                                                    <IconCheck />
-                                                </span>
-                                                <span className={cn(commonClassName.action, "text-red-500")}
-                                                    onClick={(e) => {
+                {lectures.map((lecture: IUpdateCourseLecture, index: number) => (
+                    <div key={lecture._id}>
+                        <Accordion type="single" collapsible={!lectureIdEdit}>
+                            <AccordionItem value={lecture._id}>
+                                <AccordionTrigger>
+                                    <div className="flex items-center gap-3 justify-between w-full pr-5">
+                                        {lecture._id === lectureIdEdit ?
+                                            <>
+                                                <div className="w-full">
+                                                    <Input
+                                                        placeholder="Tên chương..."
+                                                        defaultValue={lecture?.title}
+                                                        onChange={(e) => {
+                                                            setLectureEdit(e.target.value);
+                                                        }}
+                                                    />
+                                                </div>
+                                                <div className="flex gap-2">
+                                                    <span className={cn(commonClassName.action, "text-green-500")}
+                                                        onClick={(e) => handleUpdateLecture(e, lecture?._id)}
+                                                    >
+                                                        <IconCheck />
+                                                    </span>
+                                                    <span className={cn(commonClassName.action, "text-red-500")}
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setLectureIdEdit("");
+                                                        }}
+                                                    >
+                                                        <IconCancel />
+                                                    </span>
+                                                </div>
+                                            </>
+                                            :
+                                            <>
+                                                <div>{lecture?.title}</div>
+                                                <div className="flex gap-2">
+                                                    <span className={cn(commonClassName.action, "text-blue-500")} onClick={(e) => {
                                                         e.stopPropagation();
-                                                        setLectureIdEdit("");
-                                                    }}
-                                                >
-                                                    <IconCancel />
-                                                </span>
-                                            </div>
-                                        </>
-                                        :
-                                        <>
-                                            <div>{lecture?.title}</div>
-                                            <div className="flex gap-2">
-                                                <span className={cn(commonClassName.action, "text-blue-500")} onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    setLectureIdEdit(lecture?._id);
-                                                }}>
-                                                    <IconEdit />
-                                                </span>
-                                                <span className={cn(commonClassName.action, "text-red-500")}
-                                                    onClick={(e) => handleDeleteLecture(e, lecture?._id)}
-                                                >
-                                                    <IconDelete />
-                                                </span>
-                                            </div>
-                                        </>
-                                    }
+                                                        setLectureIdEdit(lecture?._id);
+                                                    }}>
+                                                        <IconEdit />
+                                                    </span>
+                                                    <span className={cn(commonClassName.action, "text-red-500")}
+                                                        onClick={(e) => handleDeleteLecture(e, lecture?._id)}
+                                                    >
+                                                        <IconDelete />
+                                                    </span>
+                                                </div>
+                                            </>
+                                        }
+                                    </div>
+                                </AccordionTrigger>
+                                <AccordionContent className="border-none !bg-transparent">
+                                    <div className="flex flex-col gap-5">
+                                        {lecture.lessons.map((lesson: ILesson) => (
+                                            <Accordion key={lesson?._id} type="single" collapsible={!lessonIdEdit}>
+                                                <AccordionItem value={lesson?._id}>
+                                                    <AccordionTrigger>
+                                                        <div className="flex items-center gap-3 justify-between w-full pr-5">
+                                                            {lesson._id === lessonIdEdit ?
+                                                                <>
+                                                                    <div className="w-full">
+                                                                        <Input
+                                                                            placeholder="Tên bài học..."
+                                                                            defaultValue={lesson?.title}
+                                                                            onChange={(e) => {
+                                                                                setLessonEdit(e.target.value);
+                                                                            }}
+                                                                        />
+                                                                    </div>
+                                                                    <div className="flex gap-2">
+                                                                        <span className={cn(commonClassName.action, "text-green-500")}
+                                                                            onClick={(e) => handleUpdateLesson(e, lesson._id)}
+                                                                        >
+                                                                            <IconCheck />
+                                                                        </span>
+                                                                        <span className={cn(commonClassName.action, "text-red-500")}
+                                                                            onClick={(e) => {
+                                                                                e.stopPropagation();
+                                                                                setLessonIdEdit("");
+                                                                            }}
+                                                                        >
+                                                                            <IconCancel />
+                                                                        </span>
+                                                                    </div>
+                                                                </>
+                                                                :
+                                                                <>
+                                                                    <div>{lesson?.title}</div>
+                                                                    <div className="flex gap-2">
+                                                                        <span className={cn(commonClassName.action, "text-blue-500")} onClick={(e) => {
+                                                                            e.stopPropagation();
+                                                                            setLessonIdEdit(lesson?._id);
+                                                                        }}>
+                                                                            <IconEdit />
+                                                                        </span>
+                                                                        <span className={cn(commonClassName.action, "text-red-500")}
+                                                                        // onClick={(e) => handleDeleteLesson(e, lesson?._id)}
+                                                                        >
+                                                                            <IconDelete />
+                                                                        </span>
+                                                                    </div>
+                                                                </>
+                                                            }
+                                                        </div>
+                                                    </AccordionTrigger>
+                                                    <AccordionContent>
+                                                        <LessonItemUpdate
+                                                            lesson={lesson}
+                                                        >
 
+                                                        </LessonItemUpdate>
+                                                    </AccordionContent>
+                                                </AccordionItem>
+                                            </Accordion>
+                                        ))}
+                                    </div>
+                                </AccordionContent>
+                            </AccordionItem>
+                        </Accordion>
 
-                                </div>
-                            </AccordionTrigger>
-                            <AccordionContent>
-
-                            </AccordionContent>
-                        </AccordionItem>
-                    </Accordion>
-
+                        <Button
+                            onClick={() => handleAddNewLesson(lecture._id, course._id)}
+                            className="mt-5 text-white ml-auto w-fit block"
+                        >
+                            Thêm bài học
+                        </Button>
+                    </div>
                 ))}
             </div>
 

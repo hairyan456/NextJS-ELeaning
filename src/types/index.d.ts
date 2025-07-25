@@ -1,5 +1,6 @@
 import { ICourse } from "@/database/course.model";
 import { ILecture } from "@/database/lecture.model";
+import { ILesson } from "@/database/lesson.model";
 
 interface IActiveLinkProps {
     url: string;
@@ -35,8 +36,14 @@ interface IUpdateCourseParams {
     path?: string;
 }
 
+interface IUpdateCourseLecture {
+    _id: string;
+    title: string;
+    lessons: ILesson[];
+};
+
 interface ICourseUpdateParams extends Omit<ICourse, "lectures"> {
-    lectures: ILecture[];
+    lectures: IUpdateCourseLecture[];
 
 }
 
@@ -58,7 +65,29 @@ interface IUpdateLectureParams {
     }
 }
 
+// Lesson
+interface ICreateLessonParams {
+    lecture: string;
+    course: string;
+    title?: string;
+    order?: number;
+    path?: string;
+    slug?: string;
+}
+
+interface IUpdateLessonParams {
+    lessonId: string;
+    updateData: {
+        title?: string;
+        slug?: string;
+        duration?: number;
+        video_url?: string;
+        content?: string;
+    }
+    path?: string;
+}
+
 export {
     IActiveLinkProps, IMenuItems, ICreateUserParams, ICreateCourseParams, IUpdateCourseParams, ICreateLectureParams,
-    IUpdateLectureParams, ICourseUpdateParams
+    IUpdateLectureParams, ICourseUpdateParams, ICreateLessonParams, IUpdateCourseLecture, IUpdateLessonParams
 };
