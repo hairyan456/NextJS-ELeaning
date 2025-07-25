@@ -15,8 +15,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from 'react-toastify';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { updateLesson } from '@/lib/actions/lesson.action';
+import { Editor } from '@tinymce/tinymce-react';
+import { editorOptions } from '@/constants';
+import { useTheme } from 'next-themes';
 
 const formSchema = z.object({
     slug: z.string().optional(),
@@ -27,6 +30,7 @@ const formSchema = z.object({
 });
 
 const LessonItemUpdate = ({ lesson }: { lesson: ILesson }) => {
+    const editorRef = useRef<any>(null);
     const [isLoadingSubmit, setLoadingSubmit] = useState<boolean>(false);
 
     // 1. Define your form.
@@ -58,6 +62,15 @@ const LessonItemUpdate = ({ lesson }: { lesson: ILesson }) => {
             setLoadingSubmit(false);
         }
     }
+
+    useEffect(() => {
+        setTimeout(() => {
+            if (editorRef.current)
+                editorRef.current.setContent(lesson.content || '');
+        }, 1000)
+    }, [lesson.content]);
+
+    const { theme } = useTheme();
     return (
         <>
             <Form {...form}>
@@ -74,8 +87,6 @@ const LessonItemUpdate = ({ lesson }: { lesson: ILesson }) => {
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
-
-
                             )}
                         />
 
@@ -113,10 +124,16 @@ const LessonItemUpdate = ({ lesson }: { lesson: ILesson }) => {
                             control={form.control}
                             name="content"
                             render={({ field }) => (
-                                <FormItem>
+                                <FormItem className='col-start-1 col-end-3'>
                                     <FormLabel>Nội dung</FormLabel>
                                     <FormControl>
-
+                                        <Editor
+                                            apiKey={process.env.NEXT_PUBLIC_TINY_MCE_API_KEY}
+                                            onInit={(_evt, editor) => {
+                                                (editorRef.current = editor)?.setContent(lesson.content || '');
+                                            }}
+                                            {...editorOptions(field, theme)}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -126,7 +143,7 @@ const LessonItemUpdate = ({ lesson }: { lesson: ILesson }) => {
                         />
                     </div>
 
-                    <div className="flex justify-end gap-5 items-center">
+                    <div className="flex justify-end gap-5 items-center mt-5">
                         <Button
                             type='submit'
                             className='text-white'
