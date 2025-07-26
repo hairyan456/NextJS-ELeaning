@@ -12,6 +12,7 @@ import {
 import LessonItem from "@/components/lesson/LessonItem";
 import Heading from "@/components/typography/Heading";
 import LessonContent from "@/components/lesson/LessonContent";
+import { getHistory } from "@/lib/actions/history.action";
 
 const page = async ({ params, searchParams }: {
     params: { course: string };
@@ -33,6 +34,8 @@ const page = async ({ params, searchParams }: {
     const nextLesson = listLessons?.[currentLessonIndex + 1];
     const prevLesson = listLessons?.[currentLessonIndex - 1];
     const lectures = findCourse?.lectures || [];
+    const histories = await getHistory({ course: courseId || "" });
+    const completePercentage = (histories?.length || 0) / (listLessons?.length || 1) * 100;
 
     return (
         <div className="grid xl:grid-cols-[minmax(0,2fr),minmax(0,1fr)] gap-10 min-h-screen items-start">
@@ -58,7 +61,20 @@ const page = async ({ params, searchParams }: {
             </div>
 
             <div className="sticky top-5 right-0 max-h-[calc(100svh-100px)] overflow-y-auto">
-                <LessonContent lectures={lectures} course={course} slug={slug} />
+                <div className="h-3 w-full rounded-full border borderDarkMode bgDarkMode mb-2">
+                    {/* progress bar */}
+                    <div className="w-0 h-full rounded-full bg-secondary transition-all duration-300 ease-in-out"
+                        style={{
+                            width: `${completePercentage}%`,
+                        }}
+                    />
+                </div>
+                <LessonContent
+                    lectures={lectures}
+                    course={course}
+                    slug={slug}
+                    histories={histories ? JSON.parse(JSON.stringify(histories)) : []}
+                />
             </div>
         </div>
     );

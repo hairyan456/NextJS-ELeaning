@@ -44,7 +44,6 @@ interface IUpdateCourseLecture {
 
 interface ICourseUpdateParams extends Omit<ICourse, "lectures"> {
     lectures: IUpdateCourseLecture[];
-
 }
 
 // Lecture
@@ -87,7 +86,16 @@ interface IUpdateLessonParams {
     path?: string;
 }
 
+// History
+export interface ICreateHistoryParams {
+    course: string;
+    lesson: string;
+    checked: boolean | string;
+    path?: string;
+};
+
 export {
     IActiveLinkProps, IMenuItems, ICreateUserParams, ICreateCourseParams, IUpdateCourseParams, ICreateLectureParams,
-    IUpdateLectureParams, ICourseUpdateParams, ICreateLessonParams, IUpdateCourseLecture, IUpdateLessonParams
+    IUpdateLectureParams, ICourseUpdateParams, ICreateLessonParams, IUpdateCourseLecture, IUpdateLessonParams,
+    ICreateHistoryParams
 };
