@@ -2,17 +2,12 @@ import PageNotFound from "@/app/not-found";
 import { getCourseBySlug } from "@/lib/actions/course.action";
 import { findAllLessons, getLessonBySlug } from "@/lib/actions/lesson.action";
 import LessonNavigation from "./LessonNavigation";
-import { IUpdateCourseLecture } from "@/types";
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from "@/components/ui/accordion";
-import LessonItem from "@/components/lesson/LessonItem";
 import Heading from "@/components/typography/Heading";
 import LessonContent from "@/components/lesson/LessonContent";
 import { getHistory } from "@/lib/actions/history.action";
+import { auth } from "@clerk/nextjs/server";
+import { getUserInfo } from "@/lib/actions/user.actions";
+import { EUserRole } from "@/types/enums";
 
 const page = async ({ params, searchParams }: {
     params: { course: string };
@@ -24,6 +19,17 @@ const page = async ({ params, searchParams }: {
     if (!findCourse?._id)
         return <PageNotFound />;
     const courseId = findCourse?._id.toString();
+
+    // Kiểm tra user đã xác thực hay chưa
+    const { userId } = await auth();
+    if (!userId) return <PageNotFound />;
+    const findUser = await getUserInfo({ userId: userId || "" });
+    if (!findUser?._id) return <PageNotFound />;
+    // Kiểm tra danh sách Courses của user có khóa học này hay không
+    if (!findUser.courses?.includes(courseId as any) && findUser.role !== EUserRole.ADMIN) {
+        return <PageNotFound />;
+    }
+
     const lessonDetail = await getLessonBySlug({ slug, course: courseId || "" });
     if (!lessonDetail?._id)
         return <PageNotFound />;

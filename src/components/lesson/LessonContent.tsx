@@ -10,7 +10,7 @@ import { IHistory } from "@/database/history.model";
 
 const LessonContent = ({ lectures, course, slug, histories = [] }:
     {
-        lectures: IUpdateCourseLecture[]; course: string; slug: string; histories: IHistory[];
+        lectures: IUpdateCourseLecture[]; course: string; slug: string; histories?: IHistory[];
     }) => {
     return (
         <div className='flex flex-col gap-5'>
