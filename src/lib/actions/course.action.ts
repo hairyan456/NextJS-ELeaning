@@ -19,17 +19,19 @@ export async function getAllCourses(): Promise<ICourse[] | undefined> {
 export async function getCourseBySlug({ slug }: { slug: string }): Promise<ICourseUpdateParams | undefined> {
     try {
         connectToDatabase();
-        const findCourse = await Course.findOne({ slug }).populate({
-            path: 'lectures',
-            model: Lecture,
-            select: "_id title",
-            match: { _destroy: false },
-            populate: {
-                path: "lessons",
-                model: Lesson,
+        const findCourse = await Course.findOne({ slug })
+            .select("_id slug lectures")
+            .populate({
+                path: 'lectures',
+                model: Lecture,
+                select: "_id title",
                 match: { _destroy: false },
-            },
-        });
+                populate: {
+                    path: "lessons",
+                    model: Lesson,
+                    match: { _destroy: false },
+                },
+            });
         return findCourse ? JSON.parse(JSON.stringify(findCourse)) : undefined;
     } catch (error) {
         console.error("Error fetching course by slug:", error);

@@ -202,3 +202,6 @@ const findCourse = await Course.findOne({ slug }).populate({
 - 7. Nếu thiếu file môi trường thì copy .env.local hết và dán vào mục `Settings -> Enviroment variables`
 - 8. Chọn deployment khi nãy và chọn `Redeploy` lưu ý nhớ tích vào `Using existing build cache`
 - 9. Nếu gặp khó khăn thì hỏi lên nhóm mình sẽ support
+
+# Parallel route
+- Kết hợp dùng Suspense để loading cho từng Component riêng biệt.

@@ -9,7 +9,7 @@ import { revalidatePath } from "next/cache";
 export async function getLessonBySlug({ slug, course }: { slug: string; course: string; }): Promise<ILesson | undefined> {
     try {
         connectToDatabase();
-        const findLesson = await Lesson.findOne({ slug, course });
+        const findLesson = await Lesson.findOne({ slug, course }).select("title video_url content");
         return findLesson ? JSON.parse(JSON.stringify(findLesson)) : undefined;
     } catch (error) {
         console.error("Error fetching lesson by slug:", error);
@@ -19,12 +19,23 @@ export async function getLessonBySlug({ slug, course }: { slug: string; course: 
 export async function findAllLessons({ course }: { course: string; }): Promise<ILesson[] | undefined> {
     try {
         connectToDatabase();
-        const lessons = await Lesson.find({ course });
+        const lessons = await Lesson.find({ course }).select("title slug video_url content");
         return lessons ? JSON.parse(JSON.stringify(lessons)) : undefined;
     } catch (error) {
         console.error("Error fetching all lessons:", error);
     }
 }
+
+export async function countLessonsByCourseId({ courseId }: { courseId: string; }): Promise<number | undefined> {
+    try {
+        connectToDatabase();
+        const count = await Lesson.countDocuments({ courseId });
+        return count || 0;
+    } catch (error) {
+        console.error("Error count lessons by courseId:", error);
+    }
+}
+
 
 export async function createNewLesson(params: ICreateLessonParams) {
     try {
