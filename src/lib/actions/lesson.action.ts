@@ -29,7 +29,7 @@ export async function findAllLessons({ course }: { course: string; }): Promise<I
 export async function countLessonsByCourseId({ courseId }: { courseId: string; }): Promise<number | undefined> {
     try {
         connectToDatabase();
-        const count = await Lesson.countDocuments({ courseId });
+        const count = await Lesson.countDocuments({ course: courseId });
         return count || 0;
     } catch (error) {
         console.error("Error count lessons by courseId:", error);

@@ -4,6 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 import { Suspense } from "react";
 import LoadingPlayer from "./@player/LoadingPlayer";
 import LoadingOutline from "./@outline/LoadingOutline";
+import LessonWrapper from "./LessonWrapper";
 
 const Layout = async ({ player, outline }: { player: React.ReactNode; outline: React.ReactNode; }) => {
     // Authenticate user
@@ -13,10 +14,10 @@ const Layout = async ({ player, outline }: { player: React.ReactNode; outline: R
     if (!findUser?._id) return <PageNotFound />;
 
     return (
-        <div className="block xl:grid xl:grid-cols-[minmax(0,2fr),minmax(0,1fr)] gap-10 min-h-screen items-start">
+        <LessonWrapper>
             <Suspense fallback={<LoadingPlayer />}>{player}</Suspense>
             <Suspense fallback={<LoadingOutline />}>{outline}</Suspense>
-        </div>
+        </LessonWrapper>
     );
 };
 

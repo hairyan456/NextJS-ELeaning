@@ -19,7 +19,6 @@ const page = async ({ params, searchParams }: {
     const lessonsCount = await countLessonsByCourseId({ courseId });
     const completePercentage = (histories?.length || 0) / (lessonsCount || 1) * 100;
 
-
     return (
         <div className="sticky top-5 right-0 max-h-[calc(100svh-100px)] overflow-y-auto">
             <div className="h-3 w-full rounded-full border borderDarkMode bgDarkMode mb-2">
