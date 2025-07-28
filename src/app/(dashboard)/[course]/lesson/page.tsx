@@ -8,6 +8,7 @@ import { getHistory } from "@/lib/actions/history.action";
 import { auth } from "@clerk/nextjs/server";
 import { getUserInfo } from "@/lib/actions/user.actions";
 import { EUserRole } from "@/types/enums";
+import LessonSaveUrl from "./LessonSaveUrl";
 
 const page = async ({ params, searchParams }: {
     params: { course: string };
@@ -26,9 +27,10 @@ const page = async ({ params, searchParams }: {
     const findUser = await getUserInfo({ userId: userId || "" });
     if (!findUser?._id) return <PageNotFound />;
     // Kiểm tra danh sách Courses của user có khóa học này hay không
-    if (!findUser.courses?.includes(courseId as any) && findUser.role !== EUserRole.ADMIN) {
+    if (!findUser.courses?.includes(courseId as any)) {
         return <PageNotFound />;
     }
+    // && findUser.role !== EUserRole.ADMIN
 
     const lessonDetail = await getLessonBySlug({ slug, course: courseId || "" });
     if (!lessonDetail?._id)
@@ -44,7 +46,11 @@ const page = async ({ params, searchParams }: {
     const completePercentage = (histories?.length || 0) / (listLessons?.length || 1) * 100;
 
     return (
-        <div className="grid xl:grid-cols-[minmax(0,2fr),minmax(0,1fr)] gap-10 min-h-screen items-start">
+        <div className="block xl:grid xl:grid-cols-[minmax(0,2fr),minmax(0,1fr)] gap-10 min-h-screen items-start">
+            <LessonSaveUrl
+                url={`/${course}/lesson?slug=${slug}`}
+                course={course}
+            />
             <div>
                 <div className="relative mb-5 aspect-video">
                     <iframe
@@ -69,7 +75,7 @@ const page = async ({ params, searchParams }: {
             <div className="sticky top-5 right-0 max-h-[calc(100svh-100px)] overflow-y-auto">
                 <div className="h-3 w-full rounded-full border borderDarkMode bgDarkMode mb-2">
                     {/* progress bar */}
-                    <div className="w-0 h-full rounded-full bg-secondary transition-all duration-300 ease-in-out"
+                    <div className="w-0 h-full rounded-full bg-gradient-to-r from-primary to-secondary transition-all duration-300 ease-in-out"
                         style={{
                             width: `${completePercentage}%`,
                         }}

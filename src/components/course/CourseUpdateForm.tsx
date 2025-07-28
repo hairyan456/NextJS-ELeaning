@@ -197,7 +197,7 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                                     <Textarea
                                         placeholder="Nhập mô tả khóa học"
                                         {...field}
-                                        className="h-[200px]"
+                                        className="h-[250px]"
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -213,7 +213,7 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                                 <FormControl>
                                     <>
                                         <div
-                                            className="h-[200px] bg-white dark:bg-grayDarker rounded-md border border-gray-200 dark:border-gray-500 flex items-center justify-center
+                                            className="h-[250px] bg-white dark:bg-grayDarker rounded-md border border-gray-200 dark:border-gray-500 flex items-center justify-center
                                             relative"
                                         >
                                             {!imageWatch ?

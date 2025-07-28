@@ -33,7 +33,7 @@ const LessonItem = ({ lesson, url, isActive = false, isChecked = false }: ILesso
 
     return (
         <div className={cn('flex items-center gap-3 bgDarkMode borderDarkMode rounded-lg p-4 text-sm font-medium',
-            isActive ? "text-primary font-semibold" : "")}
+            isActive ? "font-bold" : "")}
         >
             {url &&
                 <Checkbox
