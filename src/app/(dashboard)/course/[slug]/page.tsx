@@ -1,6 +1,5 @@
 import PageNotFound from '@/app/not-found';
 import { IconCheck, IconPlay, IconStudy, IconUsers } from '@/components/icons';
-import { Button } from '@/components/ui/button';
 import { courseLevelTitle } from '@/constants';
 import { getCourseBySlug } from '@/lib/actions/course.action';
 import { ECourseStatus } from '@/types/enums';
@@ -12,6 +11,9 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion";
 import LessonContent from '@/components/lesson/LessonContent';
+import { auth } from '@clerk/nextjs/server';
+import { getUserInfo } from '@/lib/actions/user.actions';
+import ButtonEnroll from './ButtonEnroll';
 
 const page = async ({ params }: { params: { slug: string } }) => {
     const data = await getCourseBySlug({ slug: params.slug });
@@ -20,8 +22,10 @@ const page = async ({ params }: { params: { slug: string } }) => {
     if (data.status !== ECourseStatus.APPROVED)
         return <PageNotFound />
     const videoId = data.intro_url?.split('v=')[1];
-
     const lectures = data.lectures || [];
+
+    const { userId } = await auth();
+    const findUser = await getUserInfo({ userId: userId || "" });
 
     return (
         <div className='grid lg:grid-cols-[2fr,1fr] gap-10 min-h-screen'>
@@ -120,8 +124,8 @@ const page = async ({ params }: { params: { slug: string } }) => {
             <div>
                 <div className='bg-white rounded-lg p-5'>
                     <div className="flex items-center gap-2 mb-3">
-                        <strong className="text-primary text-xl font-bold">{data.price}</strong>
-                        <span className="text-slate-400 line-through text-sm">{data.sale_price}</span>
+                        <strong className="text-primary text-xl font-bold">{data.price.toLocaleString()}đ</strong>
+                        <span className="text-slate-400 line-through text-sm">{data.sale_price.toLocaleString()}đ</span>
                         <span className={`ml-auto inline-block px-3 py-1 rounded-lg bg-primary bg-opacity-10 text-primary 
                         font-semibold text-sm`}>
                             {Math.floor((data.price / data.sale_price) * 100)} %
@@ -150,7 +154,11 @@ const page = async ({ params }: { params: { slug: string } }) => {
                             <span>Tài liệu đính kèm</span>
                         </li>
                     </ul>
-                    <Button variant={'primary'} className='w-full'>Mua khóa học</Button>
+                    <ButtonEnroll
+                        user={findUser}
+                        courseId={data ? JSON.parse(JSON.stringify(data._id)) : null}
+                        amount={data.price}
+                    />
                 </div>
             </div>
 

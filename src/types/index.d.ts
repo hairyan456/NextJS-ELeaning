@@ -101,8 +101,20 @@ export interface ICreateHistoryParams {
     path?: string;
 };
 
+// Order
+export interface ICreateOrderParams {
+    code: string;
+    course: string;
+    user: string;
+    total?: number;
+    amount?: number;
+    discount?: number;
+    coupon?: string;
+};
+
 export {
     IActiveLinkProps, IMenuItems, ICreateUserParams, ICreateCourseParams, IUpdateCourseParams, ICreateLectureParams,
     IUpdateLectureParams, ICourseUpdateParams, ICreateLessonParams, IUpdateCourseLecture, IUpdateLessonParams,
-    ICreateHistoryParams, IGetAllCourseParams
+    ICreateHistoryParams, IGetAllCourseParams,
+    ICreateOrderParams
 };

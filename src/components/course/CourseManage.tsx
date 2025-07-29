@@ -27,25 +27,13 @@ import { updateCourse } from "@/lib/actions/course.action";
 import { ECourseStatus } from "@/types/enums";
 import { toast } from "react-toastify";
 import { Input } from "../ui/input";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import _ from 'lodash';
+import useQueryString from "@/hooks/useQueryString";
 
 const CourseManage = ({ courses }: { courses: ICourse[] }) => {
-    const router = useRouter();
-    const pathname = usePathname();
-    const searchParams = useSearchParams();
+    const { createQueryString, router, pathname } = useQueryString();
     const [page, setPage] = useState<number>(1);
-
-    const createQueryString = useCallback(
-        (name: string, value: string) => {
-            const params = new URLSearchParams(searchParams.toString())
-            params.set(name, value)
-
-            return params.toString()
-        },
-        [searchParams]
-    )
 
     const handleDeleteCourse = async (slug: string) => {
         Swal.fire({
