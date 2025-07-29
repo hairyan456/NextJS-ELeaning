@@ -129,7 +129,7 @@ const LessonItemUpdate = ({ lesson }: { lesson: ILesson }) => {
                                     <FormControl>
                                         <Editor
                                             apiKey={process.env.NEXT_PUBLIC_TINY_MCE_API_KEY}
-                                            onInit={(_evt, editor) => {
+                                            onInit={(_evt: Event, editor) => {
                                                 (editorRef.current = editor)?.setContent(lesson.content || '');
                                             }}
                                             {...editorOptions(field, theme)}

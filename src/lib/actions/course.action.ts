@@ -1,15 +1,41 @@
 'use server';
-import { ICourseUpdateParams, ICreateCourseParams, IUpdateCourseParams } from "@/types";
+import { ICourseUpdateParams, ICreateCourseParams, IGetAllCourseParams, IUpdateCourseParams } from "@/types";
 import { connectToDatabase } from "../mongoose";
 import Course, { ICourse } from "@/database/course.model";
 import { revalidatePath } from "next/cache";
 import Lecture from "@/database/lecture.model";
 import Lesson from "@/database/lesson.model";
+import { FilterQuery } from "mongoose";
+import { ECourseStatus } from "@/types/enums";
 
-export async function getAllCourses(): Promise<ICourse[] | undefined> {
+export async function getAllCoursesPublic(params: IGetAllCourseParams): Promise<ICourse[] | undefined> {
     try {
         connectToDatabase();
-        const listCourses = await Course.find();
+        const { page = 1, limit = 10, search = "" } = params;
+        const skip = (page - 1) * limit;
+        const query: FilterQuery<typeof Course> = {};
+        if (search)
+            query.$or = [{ title: { $regex: search, $options: 'i' } }];
+        query.status = ECourseStatus.APPROVED; // Chỉ lấy các khóa học đã được phê duyệt
+        const listCourses = await Course.find(query).skip(skip).limit(limit).sort({ created_at: -1 });
+        return listCourses;
+    } catch (error) {
+        console.error("Error connecting to database:", error);
+    }
+}
+
+
+export async function getAllCourses(params: IGetAllCourseParams): Promise<ICourse[] | undefined> {
+    try {
+        connectToDatabase();
+        const { page = 1, limit = 10, search = "", status } = params;
+        const skip = (page - 1) * limit;
+        const query: FilterQuery<typeof Course> = {};
+        if (search)
+            query.$or = [{ title: { $regex: search, $options: 'i' } }];
+        if (status)
+            query.status = status;
+        const listCourses = await Course.find(query).skip(skip).limit(limit).sort({ created_at: -1 });
         return listCourses;
     } catch (error) {
         console.error("Error connecting to database:", error);
@@ -20,7 +46,6 @@ export async function getCourseBySlug({ slug }: { slug: string }): Promise<ICour
     try {
         connectToDatabase();
         const findCourse = await Course.findOne({ slug })
-            .select("_id slug lectures")
             .populate({
                 path: 'lectures',
                 model: Lecture,

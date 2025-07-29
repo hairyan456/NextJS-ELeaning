@@ -2,12 +2,18 @@
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableHead,
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import Heading from "../typography/Heading";
 import Image from "next/image";
 import { commonClassName, courseStatus } from "@/constants";
@@ -21,9 +27,26 @@ import { updateCourse } from "@/lib/actions/course.action";
 import { ECourseStatus } from "@/types/enums";
 import { toast } from "react-toastify";
 import { Input } from "../ui/input";
-
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
+import _ from 'lodash';
 
 const CourseManage = ({ courses }: { courses: ICourse[] }) => {
+    const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+    const [page, setPage] = useState<number>(1);
+
+    const createQueryString = useCallback(
+        (name: string, value: string) => {
+            const params = new URLSearchParams(searchParams.toString())
+            params.set(name, value)
+
+            return params.toString()
+        },
+        [searchParams]
+    )
+
     const handleDeleteCourse = async (slug: string) => {
         Swal.fire({
             title: "Are you sure?",
@@ -51,30 +74,47 @@ const CourseManage = ({ courses }: { courses: ICourse[] }) => {
     const handleChangeStatus = async (slug: string, status: ECourseStatus) => {
         try {
             Swal.fire({
-                title: "Are you sure?",
-                text: "You won't be able to revert this!",
+                title: "Bạn có chắc muốn đổi trạng thái ?",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, update it!"
+                confirmButtonText: "Cập nhật",
+                cancelButtonText: "Hủy",
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     await updateCourse({
                         slug,
                         updateData: {
-                            status: ECourseStatus.PENDING ? ECourseStatus.APPROVED : ECourseStatus.PENDING,
+                            status: status === ECourseStatus.PENDING ? ECourseStatus.APPROVED : ECourseStatus.PENDING,
                             _destroy: false,
                         },
                         path: '/manage/course',
                     });
                     toast.success("Cập nhật trạng thái thành công");
+                    router.push(`${pathname}?${createQueryString('status', "")}`);
                 }
             });
         } catch (error) {
             console.error("Error changing course status:", error);
         }
     };
+
+    const handleSelectStatus = (status: ECourseStatus) => {
+        router.push(`${pathname}?${createQueryString('status', status)}`);
+    };
+
+    const handleSearchCourse = _.debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
+        router.push(`${pathname}?${createQueryString('search', e.target.value)}`);
+    }, 500);
+
+    const handleChangePage = (type: "prev" | "next") => {
+        if (type === "prev" && page === 1) return;
+        if (type === "prev") setPage(p => p - 1);
+        if (type === "next") setPage(p => p + 1);
+    };
+
+    useEffect(() => {
+        router.push(`${pathname}?${createQueryString('page', page.toString())}`);
+    }, [page]);
 
     return (
         <>
@@ -87,8 +127,27 @@ const CourseManage = ({ courses }: { courses: ICourse[] }) => {
             </Link>
             <div className="flex flex-col lg:flex-row lg:items-center gap-5 justify-between mb-10">
                 <Heading className="uppercase">Quản lý khóa học</Heading>
-                <div className="w-full lg:w-[300px]">
-                    <Input placeholder="Tìm kiếm khóa học..." />
+                <div className="flex gap-3">
+                    <div className="w-full lg:w-[300px]">
+                        <Input onChange={(e) => handleSearchCourse(e)} placeholder="Tìm kiếm khóa học..." />
+                    </div>
+                    <Select
+                        onValueChange={(value) => handleSelectStatus(value as ECourseStatus)}
+                    >
+                        <SelectTrigger className="w-[180px]">
+                            <SelectValue placeholder="Chọn trạng thái" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {courseStatus.map((status) => (
+                                <SelectItem
+                                    key={status.value}
+                                    value={status.value}
+                                >
+                                    {status.title}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
                 </div>
             </div>
             <Table className="table-responsive">
@@ -160,12 +219,12 @@ const CourseManage = ({ courses }: { courses: ICourse[] }) => {
             </Table>
             {/* Paginate */}
             <div className="flex justify-end gap-3 mt-5">
-                <button className={commonClassName.paginationButton}>
+                <button onClick={() => handleChangePage("prev")} className={commonClassName.paginationButton}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
                     </svg>
                 </button>
-                <button className={commonClassName.paginationButton}>
+                <button onClick={() => handleChangePage("next")} className={commonClassName.paginationButton}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                     </svg>

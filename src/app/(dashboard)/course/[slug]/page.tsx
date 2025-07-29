@@ -11,8 +11,6 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion";
-import { IUpdateCourseLecture } from '@/types';
-import LessonItem from '@/components/lesson/LessonItem';
 import LessonContent from '@/components/lesson/LessonContent';
 
 const page = async ({ params }: { params: { slug: string } }) => {

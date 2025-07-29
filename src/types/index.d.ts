@@ -24,6 +24,13 @@ interface ICreateUserParams {
 };
 
 // Course
+interface IGetAllCourseParams {
+    page?: number;
+    limit?: number;
+    search?: string;
+    status?: string;
+};
+
 interface ICreateCourseParams {
     title: string;
     slug: string;
@@ -97,5 +104,5 @@ export interface ICreateHistoryParams {
 export {
     IActiveLinkProps, IMenuItems, ICreateUserParams, ICreateCourseParams, IUpdateCourseParams, ICreateLectureParams,
     IUpdateLectureParams, ICourseUpdateParams, ICreateLessonParams, IUpdateCourseLecture, IUpdateLessonParams,
-    ICreateHistoryParams
+    ICreateHistoryParams, IGetAllCourseParams
 };
