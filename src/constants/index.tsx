@@ -1,6 +1,6 @@
-import { IconExplore, IconPlay, IconComment, IconOrder, IconStudy, IconUsers } from "@/components/icons";
+import { IconExplore, IconPlay, IconComment, IconOrder, IconStudy, IconUsers, IconCoupon } from "@/components/icons";
 import { IMenuItems } from "@/types";
-import { ECourseLevel, ECourseStatus, EOrderStatus } from "@/types/enums";
+import { ECouponType, ECourseLevel, ECourseStatus, EOrderStatus } from "@/types/enums";
 
 export const menuItems: IMenuItems[] = [
     {
@@ -32,6 +32,11 @@ export const menuItems: IMenuItems[] = [
         url: '/manage/comment',
         title: 'Quản lí bình luận',
         icon: <IconComment className="size-5" />
+    },
+    {
+        url: '/manage/coupon',
+        title: 'Quản lí Coupon',
+        icon: <IconCoupon className="size-5" />
     },
 ];
 
@@ -147,3 +152,14 @@ export const orderStatus: {
             className: "text-red-500 bg-red-500",
         },
     ];
+
+export const couponTypes: { title: string; value: ECouponType }[] = [
+    {
+        title: "Phần trăm",
+        value: ECouponType.PERCENT
+    },
+    {
+        title: "Giá trị",
+        value: ECouponType.AMOUNT
+    }
+];

@@ -30,6 +30,7 @@ import { Input } from "../ui/input";
 import { useEffect, useState } from "react";
 import _ from 'lodash';
 import useQueryString from "@/hooks/useQueryString";
+import { BouncedLink } from "../common";
 
 const CourseManage = ({ courses }: { courses: ICourse[] }) => {
     const { createQueryString, router, pathname } = useQueryString();
@@ -106,13 +107,7 @@ const CourseManage = ({ courses }: { courses: ICourse[] }) => {
 
     return (
         <>
-            <Link href={'/manage/course/new'}
-                className="size-10 rounded-full bg-primary flexCenter text-white fixed right-5 bottom-5 hover:animate-bounce"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                </svg>
-            </Link>
+            <BouncedLink url="/manage/course/new"></BouncedLink>
             <div className="flex flex-col lg:flex-row lg:items-center gap-5 justify-between mb-10">
                 <Heading className="uppercase">Quản lý khóa học</Heading>
                 <div className="flex gap-3">
