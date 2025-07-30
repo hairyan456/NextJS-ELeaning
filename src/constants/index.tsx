@@ -1,6 +1,6 @@
 import { IconExplore, IconPlay, IconComment, IconOrder, IconStudy, IconUsers } from "@/components/icons";
 import { IMenuItems } from "@/types";
-import { ECourseLevel, ECourseStatus,EOrderStatus  } from "@/types/enums";
+import { ECourseLevel, ECourseStatus, EOrderStatus } from "@/types/enums";
 
 export const menuItems: IMenuItems[] = [
     {
@@ -139,10 +139,10 @@ export const orderStatus: {
         {
             title: "Chờ duyệt",
             value: EOrderStatus.PENDING,
-            className: "text-orange-500 bg-orange-500",
+            className: "text-blue-500 bg-blue-500",
         },
         {
-            title: "Từ chối",
+            title: "Đã hủy",
             value: EOrderStatus.CANCELED,
             className: "text-red-500 bg-red-500",
         },

@@ -6,6 +6,8 @@ import { ICreateOrderParams } from "@/types";
 import { FilterQuery } from "mongoose";
 import Course from "@/database/course.model";
 import User from "@/database/user.model";
+import { EOrderStatus } from "@/types/enums";
+import { revalidatePath } from "next/cache";
 
 export async function fetchOrders(params: any) {
     try {
@@ -34,6 +36,22 @@ export async function fetchOrders(params: any) {
     } catch (error) { }
 }
 
+export async function getOrderDetail({ code }: { code: string }) {
+    try {
+        connectToDatabase();
+        const order = await Order
+            .findOne({ code })
+            .populate({
+                path: "course",
+                model: Course,
+                select: "title"
+            });
+        return order ? JSON.parse(JSON.stringify(order)) : null;
+    } catch (error) {
+        console.error("Error fetching order detail:", error);
+    }
+};
+
 export async function createNewOrder(params: ICreateOrderParams) {
     try {
         connectToDatabase();
@@ -43,3 +61,42 @@ export async function createNewOrder(params: ICreateOrderParams) {
         console.error("Error connecting to the database:", error);
     }
 }
+
+export async function updateOrder({ orderId, status }: { orderId: string; status: EOrderStatus }) {
+    try {
+        connectToDatabase();
+        const findOrder = await Order.findById(orderId)
+            .populate({
+                path: 'course',
+                model: Course,
+                select: "_id",
+            })
+            .populate({
+                path: 'user',
+                model: User,
+                select: "_id",
+            });
+
+        if (!findOrder?._id) return;
+        if (findOrder.status === EOrderStatus.CANCELED) return;
+
+        const findUser = await User.findById(findOrder.user._id);
+        await Order.findByIdAndUpdate(orderId, { status }, { new: true });
+        // Trường hợp đơn hàng được hoàn thành và chưa có khóa học nào được cấp cho người dùng
+        if (status === EOrderStatus.COMPLETED && findOrder.status === EOrderStatus.PENDING) {
+            // Add course for User
+            findUser.courses.push(findOrder.course._id);
+            await findUser.save();
+        };
+        // Trường hợp đơn hàng bị hủy và đã hoàn thành trước đó
+        if (status === EOrderStatus.CANCELED && findOrder.status === EOrderStatus.COMPLETED) {
+            // Remove course for User
+            findUser.courses = findUser.courses.filter((el: any) => el.toString() !== findOrder.course._id.toString());
+            await findUser.save();
+        };
+        revalidatePath('/manage/order');
+        return { success: true };
+    } catch (error) {
+        console.error("Error updating order:", error);
+    }
+};

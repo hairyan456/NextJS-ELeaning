@@ -4,10 +4,11 @@ import { Button } from "@/components/ui/button";
 import { IUser } from "@/database/user.model";
 import { createNewOrder } from "@/lib/actions/order.action";
 import { createOrderCode } from "@/utils";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 const ButtonEnroll = ({ user, courseId, amount }: { user: IUser | null | undefined; courseId: string; amount: number; }) => {
-
+    const router = useRouter();
     const handleEnrollCourse = async () => {
         if (!user?._id) {
             toast.error('Vui lòng đăng nhập để mua khóa học');
@@ -22,14 +23,16 @@ const ButtonEnroll = ({ user, courseId, amount }: { user: IUser | null | undefin
             total: amount,
             amount: amount
         });
-        console.log(newOrder);
+        if (newOrder?._id) {
+            router.push(`/order/${newOrder?.code}`)
+            return;
+        }
     };
 
     return (
         <Button variant={'primary'} className='w-full' onClick={handleEnrollCourse}>
             Mua khóa học
         </Button>
-
     );
 };
 
