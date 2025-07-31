@@ -2,6 +2,7 @@
 
 import Coupon, { ICoupon } from "@/database/coupon.model";
 import { connectToDatabase } from "../mongoose";
+import { revalidatePath } from "next/cache";
 
 export async function getAllCoupons(params: any): Promise<ICoupon[] | undefined> {
     try {
@@ -17,6 +18,7 @@ export async function createNewCoupon(params: any) {
     try {
         connectToDatabase();
         const newCoupon = await Coupon.create(params);
+        revalidatePath('/manage/coupon');
         return newCoupon ? JSON.parse(JSON.stringify(newCoupon)) : null;
     } catch (error) {
         console.error('Error creating new coupon:', error);

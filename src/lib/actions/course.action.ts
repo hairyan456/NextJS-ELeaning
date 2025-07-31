@@ -36,7 +36,7 @@ export async function getAllCourses(params: IGetAllCourseParams): Promise<ICours
         if (status)
             query.status = status;
         const listCourses = await Course.find(query).skip(skip).limit(limit).sort({ created_at: -1 });
-        return listCourses;
+        return listCourses ? JSON.parse(JSON.stringify(listCourses)) : [];
     } catch (error) {
         console.error("Error connecting to database:", error);
     }

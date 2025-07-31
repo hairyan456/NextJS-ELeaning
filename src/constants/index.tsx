@@ -29,14 +29,14 @@ export const menuItems: IMenuItems[] = [
         icon: <IconOrder className="size-5" />
     },
     {
-        url: '/manage/comment',
-        title: 'Quản lí bình luận',
-        icon: <IconComment className="size-5" />
-    },
-    {
         url: '/manage/coupon',
         title: 'Quản lí Coupon',
         icon: <IconCoupon className="size-5" />
+    },
+    {
+        url: '/manage/comment',
+        title: 'Quản lí bình luận',
+        icon: <IconComment className="size-5" />
     },
 ];
 

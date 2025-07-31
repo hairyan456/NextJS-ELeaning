@@ -22,14 +22,18 @@ import {
 } from "@/components/ui/popover";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Switch } from "@/components/ui/switch";
-import { IconCalendar } from "@/components/icons";
+import { IconCalendar, IconCancel, IconDelete } from "@/components/icons";
 import { useState } from "react";
 import { couponTypes } from "@/constants";
 import { ECouponType } from "@/types/enums";
 import { format } from "date-fns";
 import { createNewCoupon } from "@/lib/actions/coupon.action";
 import { toast } from "react-toastify";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { debounce } from "lodash";
+import { getAllCourses } from "@/lib/actions/course.action";
+import { ICourse } from "@/database/course.model";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const formSchema = z.object({
     title: z.string({ message: "Tiêu đề không được để trống" }),
@@ -43,26 +47,59 @@ const formSchema = z.object({
     limit: z.number().optional(),
 });
 const NewCouponForm = () => {
+    const router = useRouter();
+
     const [startDate, setStartDate] = useState<Date>();
     const [endDate, setEndDate] = useState<Date>();
+    const [findCourse, setFindCourse] = useState<ICourse[] | undefined>([]);
+    const [selectedCourses, setSelectedCourses] = useState<ICourse[]>([]);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             type: ECouponType.PERCENT,
+            active: true,
+            value: 0,
+            limit: 0,
+            title: "",
+            code: "",
+            start_date: "",
+            end_date: "",
+            courses: [],
         },
     });
 
     const couponTypeWatch = form.watch("type");
 
+    const handleSearchCourse = debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        const listCourses = await getAllCourses({ search: value });
+        setFindCourse(listCourses);
+        if (!value)
+            setFindCourse([]);
+    }, 250);
+
+    const handleSelectCourse = (checked: boolean | string, course: any) => {
+        if (checked) {
+            setSelectedCourses((prev) => [...prev, course]);
+        } else {
+            setSelectedCourses((prev) => prev.filter(c => c._id !== course._id));
+        }
+    };
+
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            // console.log("Form values:", { ...values, start_date: startDate, end_date: endDate, type: couponTypeWatch }); return;
-            const newCoupon = await createNewCoupon(values);
+            const newCoupon = await createNewCoupon({
+                ...values,
+                start_date: startDate,
+                end_date: endDate,
+                type: couponTypeWatch,
+                courses: selectedCourses.map(c => c._id)
+            });
             if (newCoupon?._id) {
                 toast.success("Tạo mã giảm giá thành công!");
                 form.reset();
-                redirect('/manage/coupon');
+                router.push('/manage/coupon');
             }
         } catch (error) {
             console.error("Error creating coupon:", error);
@@ -93,7 +130,7 @@ const NewCouponForm = () => {
                             <FormItem>
                                 <FormLabel>Code</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Mã giảm giá" {...field}
+                                    <Input placeholder="Mã giảm giá" {...field} className="font-bold"
                                         onChange={(e) => field.onChange(e.target.value.toUpperCase())}
                                     />
                                 </FormControl>
@@ -170,7 +207,7 @@ const NewCouponForm = () => {
                                         {couponTypes.map((type) => (
                                             <div key={type.value} className="flex items-center space-x-2">
                                                 <RadioGroupItem value={type.value} id={type.value} />
-                                                <Label htmlFor={type.value}>{type.title}</Label>
+                                                <Label className=" cursor-pointer" htmlFor={type.value}>{type.title}</Label>
                                             </div>
                                         ))}
                                     </RadioGroup>
@@ -235,9 +272,46 @@ const NewCouponForm = () => {
                             <FormItem>
                                 <FormLabel>Khóa học</FormLabel>
                                 <FormControl>
-                                    <Input
-                                        placeholder="Tìm kiếm khóa học..."
-                                    />
+                                    <>
+                                        <Input
+                                            placeholder="Tìm kiếm khóa học..."
+                                            onChange={handleSearchCourse}
+                                        />
+                                        {findCourse && findCourse?.length > 0 &&
+                                            <div className="flex flex-col gap-2 !mt-5">
+                                                {findCourse.map((course) => (
+                                                    <Label
+                                                        key={course.title}
+                                                        className="flex items-center gap-2 font-medium text-sm cursor-pointer"
+                                                        htmlFor={course.title}
+                                                    >
+                                                        <Checkbox
+                                                            id={course.title}
+                                                            className="bgDarkMode border borderDarkMode"
+                                                            onCheckedChange={(checked) => handleSelectCourse(checked, course)}
+                                                            checked={selectedCourses.some(c => c._id === course._id)}
+                                                        />
+                                                        <span>{course.title}</span>
+                                                    </Label>
+                                                ))}
+                                            </div>
+                                        }
+                                        {selectedCourses.length > 0 &&
+                                            <div className="flex flex-wrap items-start gap-2 !mt-5">
+                                                {selectedCourses?.map((course) => (
+                                                    <div
+                                                        key={course.title}
+                                                        className="inline-flex items-center gap-2 font-semibold text-sm px-3 py-1 rounded-lg border borderDarkMode bgDarkMode"
+                                                    >
+                                                        <span>{course.title}</span>
+                                                        <button type="button" onClick={() => handleSelectCourse(false, course)}>
+                                                            <IconCancel className="size-4 text-red-500 font-bold hover:text-gray-600 hover:transition-all" />
+                                                        </button>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        }
+                                    </>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -248,7 +322,7 @@ const NewCouponForm = () => {
                     Tạo mã
                 </Button>
             </form>
-        </Form>
+        </Form >
     );
 };
 
