@@ -22,15 +22,21 @@ import {
 } from "@/components/ui/popover";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Switch } from "@/components/ui/switch";
-import { IconCalendar } from "@/components/icons";
-import { useState } from "react";
+import { IconCalendar, IconCancel } from "@/components/icons";
+import { useEffect, useState } from "react";
 import { couponTypes } from "@/constants";
 import { ECouponType } from "@/types/enums";
 import { format } from "date-fns";
-import { createNewCoupon } from "@/lib/actions/coupon.action";
+import { createNewCoupon, updateCoupon } from "@/lib/actions/coupon.action";
 import { toast } from "react-toastify";
 import { redirect } from "next/navigation";
 import InputFormatCurrency from "@/components/ui/input-format";
+import { da } from "date-fns/locale";
+import { TCouponParams } from "@/types";
+import { ICourse } from "@/database/course.model";
+import { debounce } from "lodash";
+import { getAllCourses } from "@/lib/actions/course.action";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const formSchema = z.object({
     title: z.string({ message: "Tiêu đề không được để trống" }),
@@ -38,33 +44,70 @@ const formSchema = z.object({
     start_date: z.string().optional(),
     end_date: z.string().optional(),
     active: z.boolean().optional(),
-    value: z.number().optional(),
+    value: z.string().optional(),
     type: z.string().optional(),
-    courses: z.array(z.string()).optional(),
+    course: z.array(z.string()).optional(),
     limit: z.number().optional(),
 });
-const UpdateCouponForm = () => {
-    const [startDate, setStartDate] = useState<Date>();
-    const [endDate, setEndDate] = useState<Date>();
+const UpdateCouponForm = ({ data }: { data: TCouponParams }) => {
+    const [startDate, setStartDate] = useState<Date>(data?.start_date || undefined);
+    const [endDate, setEndDate] = useState<Date>(data?.end_date || undefined);
+    const [findCourse, setFindCourse] = useState<ICourse[] | undefined>([]);
+    const [selectedCourses, setSelectedCourses] = useState<any[]>([]);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            type: ECouponType.PERCENT,
+            title: data.title,
+            code: data.code,
+            active: data.active,
+            value: data.value.toString(),
+            limit: data.limit,
+            type: data.type,
 
         },
     });
 
     const couponTypeWatch = form.watch("type");
 
+    const handleSearchCourse = debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        const listCourses = await getAllCourses({ search: value });
+        setFindCourse(listCourses);
+        if (!value)
+            setFindCourse([]);
+    }, 250);
+
+    const handleSelectCourse = (checked: boolean | string, course: any) => {
+        if (checked) {
+            setSelectedCourses((prev) => [...prev, course]);
+        } else {
+            setSelectedCourses((prev) => prev.filter(c => c._id !== course._id));
+        }
+    };
+
+    useEffect(() => {
+        if (data?.course) {
+            setSelectedCourses(data?.course);
+        }
+    }, [data.course]);
+
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            // console.log("Form values:", { ...values, start_date: startDate, end_date: endDate, type: couponTypeWatch }); return;
-            const newCoupon = await createNewCoupon(values);
-            if (newCoupon?._id) {
-                toast.success("Tạo mã giảm giá thành công!");
-                form.reset();
-                redirect('/manage/coupon');
+            const updatedCoupon = await updateCoupon({
+                _id: data._id,
+                updateData: {
+                    ...values,
+                    value: Number(values.value?.replace(/,/g, "")),
+                    start_date: startDate,
+                    end_date: endDate,
+                    type: couponTypeWatch,
+                    course: selectedCourses.map(c => c._id)
+                }
+            });
+            if (updatedCoupon?._id) {
+                toast.success("Cập nhật coupon thành công");
+                return;
             }
         } catch (error) {
             console.error("Error creating coupon:", error);
@@ -95,7 +138,7 @@ const UpdateCouponForm = () => {
                             <FormItem>
                                 <FormLabel>Code</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Mã giảm giá" {...field}
+                                    <Input placeholder="Mã giảm giá" {...field} className="font-bold uppercase"
                                         onChange={(e) => field.onChange(e.target.value.toUpperCase())}
                                     />
                                 </FormControl>
@@ -121,7 +164,7 @@ const UpdateCouponForm = () => {
                                             <Calendar
                                                 mode="single"
                                                 selected={startDate}
-                                                onSelect={setStartDate}
+                                                onSelect={setStartDate as any}
                                             />
                                         </PopoverContent>
                                     </Popover>
@@ -148,7 +191,7 @@ const UpdateCouponForm = () => {
                                             <Calendar
                                                 mode="single"
                                                 selected={endDate}
-                                                onSelect={setEndDate}
+                                                onSelect={setEndDate as any}
                                             />
                                         </PopoverContent>
                                     </Popover>
@@ -165,7 +208,7 @@ const UpdateCouponForm = () => {
                                 <FormLabel>Loại coupon</FormLabel>
                                 <FormControl className="h-12">
                                     <RadioGroup
-                                        defaultValue={ECouponType.PERCENT}
+                                        defaultValue={data.type || ECouponType.PERCENT}
                                         className="flex gap-5"
                                         onValueChange={field.onChange}
                                     >
@@ -198,7 +241,7 @@ const UpdateCouponForm = () => {
                                         :
                                         <InputFormatCurrency
                                             {...field}
-                                            onChange={(e) => field.onChange(parseInt(e.target.value))}
+                                            onChange={(e) => field.onChange(e.target.value)}
                                         />
                                     }
                                 </FormControl>
@@ -244,14 +287,51 @@ const UpdateCouponForm = () => {
                     />
                     <FormField
                         control={form.control}
-                        name="courses"
+                        name="course"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Khóa học</FormLabel>
                                 <FormControl>
-                                    <Input
-                                        placeholder="Tìm kiếm khóa học..."
-                                    />
+                                    <>
+                                        <Input
+                                            placeholder="Tìm kiếm khóa học..."
+                                            onChange={handleSearchCourse}
+                                        />
+                                        {findCourse && findCourse?.length > 0 &&
+                                            <div className="flex flex-col gap-2 !mt-5">
+                                                {findCourse.map((course) => (
+                                                    <Label
+                                                        key={course.title}
+                                                        className="flex items-center gap-2 font-medium text-sm cursor-pointer"
+                                                        htmlFor={course.title}
+                                                    >
+                                                        <Checkbox
+                                                            id={course.title}
+                                                            className="bgDarkMode border borderDarkMode"
+                                                            onCheckedChange={(checked) => handleSelectCourse(checked, course)}
+                                                            checked={selectedCourses.some(c => c._id === course._id)}
+                                                        />
+                                                        <span>{course.title}</span>
+                                                    </Label>
+                                                ))}
+                                            </div>
+                                        }
+                                        {selectedCourses.length > 0 &&
+                                            <div className="flex flex-wrap items-start gap-2 !mt-5">
+                                                {selectedCourses?.map((course) => (
+                                                    <div
+                                                        key={course.title}
+                                                        className="inline-flex items-center gap-2 font-semibold text-sm px-3 py-1 rounded-lg border borderDarkMode bgDarkMode"
+                                                    >
+                                                        <span>{course.title}</span>
+                                                        <button type="button" onClick={() => handleSelectCourse(false, course)}>
+                                                            <IconCancel className="size-4 text-red-500 font-bold hover:text-gray-600 hover:transition-all" />
+                                                        </button>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        }
+                                    </>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>

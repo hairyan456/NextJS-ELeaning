@@ -1,3 +1,4 @@
+import { ICoupon } from "@/database/coupon.model";
 import { ICourse } from "@/database/course.model";
 import { ILecture } from "@/database/lecture.model";
 import { ILesson } from "@/database/lesson.model";
@@ -94,7 +95,7 @@ interface IUpdateLessonParams {
 }
 
 // History
-export interface ICreateHistoryParams {
+interface ICreateHistoryParams {
     course: string;
     lesson: string;
     checked: boolean | string;
@@ -102,7 +103,7 @@ export interface ICreateHistoryParams {
 };
 
 // Order
-export interface ICreateOrderParams {
+interface ICreateOrderParams {
     code: string;
     course: string;
     user: string;
@@ -112,9 +113,19 @@ export interface ICreateOrderParams {
     coupon?: string;
 };
 
+// Coupon
+type TCreateCouponParams = Omit<ICoupon, "_id created_at">;
+
+type TCouponParams = Omit<ICoupon, "course"> & {
+    course: {
+        _id: string;
+        title: string;
+    }[]
+}
+
 export {
     IActiveLinkProps, IMenuItems, ICreateUserParams, ICreateCourseParams, IUpdateCourseParams, ICreateLectureParams,
     IUpdateLectureParams, ICourseUpdateParams, ICreateLessonParams, IUpdateCourseLecture, IUpdateLessonParams,
     ICreateHistoryParams, IGetAllCourseParams,
-    ICreateOrderParams
+    ICreateOrderParams, TCreateCouponParams, TCouponParams
 };

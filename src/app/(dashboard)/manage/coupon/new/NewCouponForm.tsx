@@ -41,9 +41,9 @@ const formSchema = z.object({
     start_date: z.string().optional(),
     end_date: z.string().optional(),
     active: z.boolean().optional(),
-    value: z.number().optional(),
+    value: z.string().optional(),
     type: z.string().optional(),
-    courses: z.array(z.string()).optional(),
+    course: z.array(z.string()).optional(),
     limit: z.number().optional(),
 });
 const NewCouponForm = () => {
@@ -59,13 +59,13 @@ const NewCouponForm = () => {
         defaultValues: {
             type: ECouponType.PERCENT,
             active: true,
-            value: 0,
+            value: "0",
             limit: 0,
             title: "",
             code: "",
             start_date: "",
             end_date: "",
-            courses: [],
+            course: [],
         },
     });
 
@@ -89,15 +89,17 @@ const NewCouponForm = () => {
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            if (couponTypeWatch === ECouponType.PERCENT && values?.value && (values?.value > 100 || values?.value < 0)) {
+            const couponValue = Number(values.value?.replace(/,/g, ""));
+            if (couponTypeWatch === ECouponType.PERCENT && couponValue && (couponValue > 100 || couponValue < 0)) {
                 form.setError("value", { message: "Giá trị không hợp lệ" });
             }
             const newCoupon = await createNewCoupon({
                 ...values,
+                value: couponValue,
                 start_date: startDate,
                 end_date: endDate,
                 type: couponTypeWatch,
-                courses: selectedCourses.map(c => c._id)
+                course: selectedCourses.map(c => c._id)
             });
             if (newCoupon?._id) {
                 toast.success("Tạo mã giảm giá thành công!");
@@ -236,7 +238,7 @@ const NewCouponForm = () => {
                                         :
                                         <InputFormatCurrency
                                             {...field}
-                                            onChange={(e) => field.onChange(parseInt(e.target.value))}
+                                            onChange={(e) => field.onChange(e.target.value)}
                                         />
                                     }
                                 </FormControl>
@@ -282,7 +284,7 @@ const NewCouponForm = () => {
                     />
                     <FormField
                         control={form.control}
-                        name="courses"
+                        name="course"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Khóa học</FormLabel>
