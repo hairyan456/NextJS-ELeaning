@@ -17,7 +17,8 @@ import { toast } from 'react-toastify';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { updateLesson } from '@/lib/actions/lesson.action';
-import { Editor } from '@tinymce/tinymce-react';
+import { Editor as ReactEditor } from '@tinymce/tinymce-react';
+import { Editor as TinyMCEEditor } from 'tinymce';
 import { editorOptions } from '@/constants';
 import { useTheme } from 'next-themes';
 
@@ -127,9 +128,9 @@ const LessonItemUpdate = ({ lesson }: { lesson: ILesson }) => {
                                 <FormItem className='col-start-1 col-end-3'>
                                     <FormLabel>Nội dung</FormLabel>
                                     <FormControl>
-                                        <Editor
+                                        <ReactEditor
                                             apiKey={process.env.NEXT_PUBLIC_TINY_MCE_API_KEY}
-                                            onInit={(_evt: Event, editor) => {
+                                            onInit={(_evt: unknown, editor: TinyMCEEditor) => {
                                                 (editorRef.current = editor)?.setContent(lesson.content || '');
                                             }}
                                             {...editorOptions(field, theme)}

@@ -24,3 +24,14 @@ export async function createNewCoupon(params: any) {
         console.error('Error creating new coupon:', error);
     }
 }
+
+export async function deleteCoupon(code: string, path?: string) {
+    if (!code) return;
+    try {
+        connectToDatabase();
+        await Coupon.findOneAndDelete({ code });
+        revalidatePath(path || '/');
+    } catch (error) {
+        console.error('Error delete Coupon:', error);
+    }
+};

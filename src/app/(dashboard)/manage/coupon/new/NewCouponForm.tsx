@@ -2,7 +2,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -22,7 +21,7 @@ import {
 } from "@/components/ui/popover";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Switch } from "@/components/ui/switch";
-import { IconCalendar, IconCancel, IconDelete } from "@/components/icons";
+import { IconCalendar, IconCancel } from "@/components/icons";
 import { useState } from "react";
 import { couponTypes } from "@/constants";
 import { ECouponType } from "@/types/enums";
@@ -34,9 +33,10 @@ import { debounce } from "lodash";
 import { getAllCourses } from "@/lib/actions/course.action";
 import { ICourse } from "@/database/course.model";
 import { Checkbox } from "@/components/ui/checkbox";
+import InputFormatCurrency from "@/components/ui/input-format";
 
 const formSchema = z.object({
-    title: z.string({ message: "Tiêu đề không được để trống" }),
+    title: z.string({ message: "Tiêu đề không được để trống" }).min(10, "Tiêu đề phải có ít nhất 10 ký tự"),
     code: z.string({ message: "Mã giảm giá không được để trống" }).min(3, "Mã giảm giá phải có ít nhất 3 ký tự").max(10, "Mã giảm giá không được quá 10 ký tự"),
     start_date: z.string().optional(),
     end_date: z.string().optional(),
@@ -89,6 +89,9 @@ const NewCouponForm = () => {
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
+            if (couponTypeWatch === ECouponType.PERCENT && values?.value && (values?.value > 100 || values?.value < 0)) {
+                form.setError("value", { message: "Giá trị không hợp lệ" });
+            }
             const newCoupon = await createNewCoupon({
                 ...values,
                 start_date: startDate,
@@ -198,7 +201,7 @@ const NewCouponForm = () => {
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Loại coupon</FormLabel>
-                                <FormControl>
+                                <FormControl className="h-12">
                                     <RadioGroup
                                         defaultValue={ECouponType.PERCENT}
                                         className="flex gap-5"
@@ -223,7 +226,19 @@ const NewCouponForm = () => {
                             <FormItem>
                                 <FormLabel>Giá trị</FormLabel>
                                 <FormControl>
-                                    <Input type="number" placeholder="25%" {...field} onChange={(e) => field.onChange(e.target.valueAsNumber)} />
+                                    {couponTypeWatch === ECouponType.PERCENT ?
+                                        <Input
+                                            type="number"
+                                            placeholder="100"
+                                            {...field}
+                                            onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                                        />
+                                        :
+                                        <InputFormatCurrency
+                                            {...field}
+                                            onChange={(e) => field.onChange(parseInt(e.target.value))}
+                                        />
+                                    }
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -235,8 +250,8 @@ const NewCouponForm = () => {
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Trạng thái</FormLabel>
-                                <FormControl>
-                                    <div>
+                                <FormControl className="h-12">
+                                    <div className="flex flex-col justify-center">
                                         <Switch
                                             checked={field.value}
                                             onCheckedChange={field.onChange}

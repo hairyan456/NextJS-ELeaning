@@ -1,8 +1,7 @@
 import { BouncedLink, StatusBadge, TableAction } from "@/components/common";
 import PaginationButton from "@/components/common/PaginationButton";
-import { IconDelete, IconEdit } from "@/components/icons";
+import { IconEdit } from "@/components/icons";
 import Heading from "@/components/typography/Heading";
-
 import { Input } from "@/components/ui/input";
 import {
     Table,
@@ -16,9 +15,11 @@ import { commonClassName } from "@/constants";
 import { getAllCoupons } from "@/lib/actions/coupon.action";
 import { ECouponType } from "@/types/enums";
 import Link from "next/link";
+import ActionDeleteCoupon from "./ActionDeleteCoupon";
 
 const page = async () => {
     const coupons = await getAllCoupons({});
+
     return (
         <div>
             <BouncedLink url="/manage/coupon/new"></BouncedLink>
@@ -72,9 +73,10 @@ const page = async () => {
                                     >
                                         <IconEdit />
                                     </Link>
-                                    <button className={commonClassName.action}>
-                                        <IconDelete />
-                                    </button>
+                                    <ActionDeleteCoupon
+                                        code={coupon.code}
+                                        className={commonClassName.action}
+                                    />
                                 </TableAction>
                             </TableCell>
                         </TableRow>
