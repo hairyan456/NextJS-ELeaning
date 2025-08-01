@@ -3,7 +3,7 @@
 import Coupon, { ICoupon } from "@/database/coupon.model";
 import { connectToDatabase } from "../mongoose";
 import { revalidatePath } from "next/cache";
-import { TCouponParams, TCreateCouponParams } from "@/types";
+import { TCouponParams, TCreateCouponParams, TUpdateCouponParams } from "@/types";
 
 export async function getAllCoupons(params: any): Promise<ICoupon[] | undefined> {
     try {
@@ -30,9 +30,17 @@ export async function getCouponByCode(params: { code: string }): Promise<TCoupon
     }
 };
 
-export async function createNewCoupon(params: any) {
+export async function createNewCoupon(params: TCreateCouponParams) {
     try {
         connectToDatabase();
+        const existingCoupon = await Coupon.findOne({ code: params.code });
+        if (existingCoupon?._id) {
+            return { success: false, message: "Mã giảm giá đã tồn tại" };
+        }
+        const couponRegex = /^[A-Z0-9]{3,10}$/;
+        if (!couponRegex.test(params.code)) {
+            return { success: false, message: "Mã giảm giá chỉ từ 3-10 kí tự và không có kí tự đặc biệt" };
+        }
         const newCoupon = await Coupon.create(params);
         revalidatePath('/manage/coupon');
         return newCoupon ? JSON.parse(JSON.stringify(newCoupon)) : null;
@@ -41,7 +49,7 @@ export async function createNewCoupon(params: any) {
     }
 }
 
-export async function updateCoupon(params: any) {
+export async function updateCoupon(params: TUpdateCouponParams) {
     try {
         connectToDatabase();
         const updatedCoupon = await Coupon.findByIdAndUpdate(params?._id, params?.updateData);

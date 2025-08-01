@@ -23,7 +23,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Switch } from "@/components/ui/switch";
 import { IconCalendar, IconCancel } from "@/components/icons";
 import { useState } from "react";
-import { couponTypes } from "@/constants";
+import { couponFormSchema, couponTypes } from "@/constants";
 import { ECouponType } from "@/types/enums";
 import { format } from "date-fns";
 import { createNewCoupon } from "@/lib/actions/coupon.action";
@@ -35,17 +35,6 @@ import { ICourse } from "@/database/course.model";
 import { Checkbox } from "@/components/ui/checkbox";
 import InputFormatCurrency from "@/components/ui/input-format";
 
-const formSchema = z.object({
-    title: z.string({ message: "Tiêu đề không được để trống" }).min(10, "Tiêu đề phải có ít nhất 10 ký tự"),
-    code: z.string({ message: "Mã giảm giá không được để trống" }).min(3, "Mã giảm giá phải có ít nhất 3 ký tự").max(10, "Mã giảm giá không được quá 10 ký tự"),
-    start_date: z.string().optional(),
-    end_date: z.string().optional(),
-    active: z.boolean().optional(),
-    value: z.string().optional(),
-    type: z.string().optional(),
-    course: z.array(z.string()).optional(),
-    limit: z.number().optional(),
-});
 const NewCouponForm = () => {
     const router = useRouter();
 
@@ -54,8 +43,8 @@ const NewCouponForm = () => {
     const [findCourse, setFindCourse] = useState<ICourse[] | undefined>([]);
     const [selectedCourses, setSelectedCourses] = useState<ICourse[]>([]);
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const form = useForm<z.infer<typeof couponFormSchema>>({
+        resolver: zodResolver(couponFormSchema),
         defaultValues: {
             type: ECouponType.PERCENT,
             active: true,
@@ -87,7 +76,7 @@ const NewCouponForm = () => {
         }
     };
 
-    async function onSubmit(values: z.infer<typeof formSchema>) {
+    async function onSubmit(values: z.infer<typeof couponFormSchema>) {
         try {
             const couponValue = Number(values.value?.replace(/,/g, ""));
             if (couponTypeWatch === ECouponType.PERCENT && couponValue && (couponValue > 100 || couponValue < 0)) {
@@ -101,6 +90,10 @@ const NewCouponForm = () => {
                 type: couponTypeWatch,
                 course: selectedCourses.map(c => c._id)
             });
+            if (!newCoupon?.success) {
+                toast.warning(newCoupon?.message);
+                return;
+            }
             if (newCoupon?._id) {
                 toast.success("Tạo mã giảm giá thành công!");
                 form.reset();
@@ -230,10 +223,9 @@ const NewCouponForm = () => {
                                 <FormControl>
                                     {couponTypeWatch === ECouponType.PERCENT ?
                                         <Input
-                                            type="number"
                                             placeholder="100"
                                             {...field}
-                                            onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                                            onChange={(e) => field.onChange(e.target.value)}
                                         />
                                         :
                                         <InputFormatCurrency

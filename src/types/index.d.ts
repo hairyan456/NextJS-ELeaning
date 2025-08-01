@@ -2,6 +2,7 @@ import { ICoupon } from "@/database/coupon.model";
 import { ICourse } from "@/database/course.model";
 import { ILecture } from "@/database/lecture.model";
 import { ILesson } from "@/database/lesson.model";
+import { ECouponType } from "./enums";
 
 interface IActiveLinkProps {
     url: string;
@@ -114,7 +115,23 @@ interface ICreateOrderParams {
 };
 
 // Coupon
-type TCreateCouponParams = Omit<ICoupon, "_id created_at">;
+type TCreateCouponParams = {
+    title: string;
+    code: string;
+    type: ECouponType;
+    value?: number;
+    start_date?: Date;
+    end_date?: Date;
+    active?: boolean;
+    limit?: number;
+    course?: string[];
+};
+
+type TUpdateCouponParams = {
+    _id: string;
+    updateData: Partial<TCreateCouponParams>;
+};
+
 
 type TCouponParams = Omit<ICoupon, "course"> & {
     course: {
@@ -127,5 +144,5 @@ export {
     IActiveLinkProps, IMenuItems, ICreateUserParams, ICreateCourseParams, IUpdateCourseParams, ICreateLectureParams,
     IUpdateLectureParams, ICourseUpdateParams, ICreateLessonParams, IUpdateCourseLecture, IUpdateLessonParams,
     ICreateHistoryParams, IGetAllCourseParams,
-    ICreateOrderParams, TCreateCouponParams, TCouponParams
+    ICreateOrderParams, TCreateCouponParams, TCouponParams, TUpdateCouponParams
 };

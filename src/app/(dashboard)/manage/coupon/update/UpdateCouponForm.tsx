@@ -24,12 +24,11 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Switch } from "@/components/ui/switch";
 import { IconCalendar, IconCancel } from "@/components/icons";
 import { useEffect, useState } from "react";
-import { couponTypes } from "@/constants";
+import { couponFormSchema, couponTypes } from "@/constants";
 import { ECouponType } from "@/types/enums";
 import { format } from "date-fns";
-import { createNewCoupon, updateCoupon } from "@/lib/actions/coupon.action";
+import { updateCoupon } from "@/lib/actions/coupon.action";
 import { toast } from "react-toastify";
-import { redirect } from "next/navigation";
 import InputFormatCurrency from "@/components/ui/input-format";
 import { da } from "date-fns/locale";
 import { TCouponParams } from "@/types";
@@ -38,25 +37,14 @@ import { debounce } from "lodash";
 import { getAllCourses } from "@/lib/actions/course.action";
 import { Checkbox } from "@/components/ui/checkbox";
 
-const formSchema = z.object({
-    title: z.string({ message: "Tiêu đề không được để trống" }),
-    code: z.string({ message: "Mã giảm giá không được để trống" }).min(3, "Mã giảm giá phải có ít nhất 3 ký tự").max(10, "Mã giảm giá không được quá 10 ký tự"),
-    start_date: z.string().optional(),
-    end_date: z.string().optional(),
-    active: z.boolean().optional(),
-    value: z.string().optional(),
-    type: z.string().optional(),
-    course: z.array(z.string()).optional(),
-    limit: z.number().optional(),
-});
 const UpdateCouponForm = ({ data }: { data: TCouponParams }) => {
-    const [startDate, setStartDate] = useState<Date>(data?.start_date || undefined);
-    const [endDate, setEndDate] = useState<Date>(data?.end_date || undefined);
+    const [startDate, setStartDate] = useState<Date>(data?.start_date || new Date());
+    const [endDate, setEndDate] = useState<Date>(data?.end_date || new Date());
     const [findCourse, setFindCourse] = useState<ICourse[] | undefined>([]);
     const [selectedCourses, setSelectedCourses] = useState<any[]>([]);
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const form = useForm<z.infer<typeof couponFormSchema>>({
+        resolver: zodResolver(couponFormSchema),
         defaultValues: {
             title: data.title,
             code: data.code,
@@ -92,13 +80,17 @@ const UpdateCouponForm = ({ data }: { data: TCouponParams }) => {
         }
     }, [data.course]);
 
-    async function onSubmit(values: z.infer<typeof formSchema>) {
+    async function onSubmit(values: z.infer<typeof couponFormSchema>) {
         try {
+            const couponValue = Number(values.value?.replace(/,/g, ""));
+            if (couponTypeWatch === ECouponType.PERCENT && couponValue && (couponValue > 100 || couponValue < 0)) {
+                form.setError("value", { message: "Giá trị không hợp lệ" });
+            }
             const updatedCoupon = await updateCoupon({
                 _id: data._id,
                 updateData: {
                     ...values,
-                    value: Number(values.value?.replace(/,/g, "")),
+                    value: couponValue,
                     start_date: startDate,
                     end_date: endDate,
                     type: couponTypeWatch,
@@ -140,6 +132,7 @@ const UpdateCouponForm = ({ data }: { data: TCouponParams }) => {
                                 <FormControl>
                                     <Input placeholder="Mã giảm giá" {...field} className="font-bold uppercase"
                                         onChange={(e) => field.onChange(e.target.value.toUpperCase())}
+                                        disabled
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -233,10 +226,9 @@ const UpdateCouponForm = ({ data }: { data: TCouponParams }) => {
                                 <FormControl>
                                     {couponTypeWatch === ECouponType.PERCENT ?
                                         <Input
-                                            type="number"
                                             placeholder="100"
                                             {...field}
-                                            onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                                            onChange={(e) => field.onChange(e.target.value)}
                                         />
                                         :
                                         <InputFormatCurrency
