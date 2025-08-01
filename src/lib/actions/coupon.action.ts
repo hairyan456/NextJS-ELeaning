@@ -24,7 +24,32 @@ export async function getCouponByCode(params: { code: string }): Promise<TCoupon
                 path: "course",
                 select: "_id title",
             })
-        return coupon ? JSON.parse(JSON.stringify(coupon)) : [];
+        return coupon ? JSON.parse(JSON.stringify(coupon)) : undefined;
+    } catch (error) {
+        console.error('Error fetching all coupons:', error);
+    }
+};
+
+export async function getValidateCoupon(params: { code: string }): Promise<TCouponParams | undefined> {
+    try {
+        connectToDatabase();
+        const findCoupon = await Coupon
+            .findOne({ code: params.code })
+            .populate({
+                path: "course",
+                select: "_id title",
+            })
+        const coupon = findCoupon ? JSON.parse(JSON.stringify(findCoupon)) : null;
+        let isActive = true;
+        // check coupon có còn Active không
+        if (!coupon?.active) isActive = false;
+        // check số lần sử dụng (used & limit)
+        if (coupon?.used >= coupon?.limit) isActive = false;
+        // check còn hạn sử dụng không
+        if (coupon?.start_date && new Date(coupon?.start_date) > new Date()) isActive = false;
+        if (coupon?.end_date && new Date(coupon?.end_date) < new Date()) isActive = false;
+
+        return isActive ? coupon : undefined;
     } catch (error) {
         console.error('Error fetching all coupons:', error);
     }

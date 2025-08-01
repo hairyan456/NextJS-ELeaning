@@ -1,18 +1,21 @@
 'use client';
 import { IconPlay, IconStudy, IconUsers } from '@/components/icons';
-import React from 'react';
 import ButtonEnroll from './ButtonEnroll';
+import CouponForm from './CouponForm';
+import { useState } from 'react';
 
 const CourseWidget = ({ data, findUser }: { data: any; findUser: any }) => {
+    const [price, setPrice] = useState<number>(data?.price ?? 0);
+
     return (
         <>
             <div className='bgDarkMode border borderDarkMode rounded-lg p-5'>
                 <div className="flex items-center gap-2 mb-3">
-                    <strong className="text-primary text-xl font-bold">{data.price.toLocaleString()}đ</strong>
+                    <strong className="text-primary text-xl font-bold">{price?.toLocaleString()}đ</strong>
                     <span className="text-slate-400 line-through text-sm">{data.sale_price.toLocaleString()}đ</span>
                     <span className={`ml-auto inline-block px-3 py-1 rounded-lg bg-primary bg-opacity-10 text-primary 
                         font-semibold text-sm`}>
-                        {Math.floor((data.price / data.sale_price) * 100)} %
+                        {Math.floor((price / data.sale_price) * 100)} %
                     </span>
                 </div>
                 <h3 className='font-bold mb-3 text-sm'>Khóa học gồm có:</h3>
@@ -41,7 +44,11 @@ const CourseWidget = ({ data, findUser }: { data: any; findUser: any }) => {
                 <ButtonEnroll
                     user={findUser}
                     courseId={data ? JSON.parse(JSON.stringify(data._id)) : null}
-                    amount={data.price}
+                    amount={price}
+                />
+                <CouponForm
+                    price={price}
+                    setPrice={setPrice}
                 />
             </div>
         </>
