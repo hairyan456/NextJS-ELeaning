@@ -140,9 +140,19 @@ type TCouponParams = Omit<ICoupon, "course"> & {
     }[]
 }
 
+interface IStudyCoursesProps extends Omit<ICourse, "lectures"> {
+    lectures: {
+        lessons: {
+            slug: string;
+        }[]
+    }[];
+
+};
+
+
 export {
     IActiveLinkProps, IMenuItems, ICreateUserParams, ICreateCourseParams, IUpdateCourseParams, ICreateLectureParams,
     IUpdateLectureParams, ICourseUpdateParams, ICreateLessonParams, IUpdateCourseLecture, IUpdateLessonParams,
     ICreateHistoryParams, IGetAllCourseParams,
-    ICreateOrderParams, TCreateCouponParams, TCouponParams, TUpdateCouponParams
+    ICreateOrderParams, TCreateCouponParams, TCouponParams, TUpdateCouponParams, IStudyCoursesProps
 };

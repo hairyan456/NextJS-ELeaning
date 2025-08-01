@@ -1,7 +1,7 @@
 import PageNotFound from '@/app/not-found';
 import { IconCheck } from '@/components/icons';
 import { courseLevelTitle } from '@/constants';
-import { getCourseBySlug } from '@/lib/actions/course.action';
+import { getCourseBySlug, getCourseLessonsInfo, updateCourseView } from '@/lib/actions/course.action';
 import { ECourseStatus } from '@/types/enums';
 import Image from 'next/image';
 import {
@@ -15,8 +15,11 @@ import { auth } from '@clerk/nextjs/server';
 import { getUserInfo } from '@/lib/actions/user.actions';
 import CourseWidget from './CourseWidget';
 import AlreadyEnroll from './AlreadyEnroll';
+import { formatMinutesToHour } from '@/utils';
 
 const page = async ({ params }: { params: { slug: string } }) => {
+    await updateCourseView({ slug: params.slug }); // tăng 1 lượt xem khóa học mỗi khi truy cập
+
     const data = await getCourseBySlug({ slug: params.slug });
     if (!data?._id)
         return null;
@@ -28,7 +31,9 @@ const page = async ({ params }: { params: { slug: string } }) => {
     const { userId } = await auth();
     const findUser = await getUserInfo({ userId: userId || "" });
     const userCourses = findUser?.courses?.map(c => c?.toString());
-
+    const { duration, lessons }: any = await getCourseLessonsInfo({
+        slug: data.slug,
+    });
     return (
         <div className='grid lg:grid-cols-[2fr,1fr] gap-10 min-h-screen'>
             {/* Left */}
@@ -65,7 +70,7 @@ const page = async ({ params }: { params: { slug: string } }) => {
                 <BoxSection title='Thông tin khóa học'>
                     <div className='grid grid-cols-4 gap-5'>
                         <BoxInfo title='Bài học'>
-                            100
+                            {lessons}
                         </BoxInfo>
                         <BoxInfo title='Lượt xem'>
                             {data.views.toLocaleString()}
@@ -74,7 +79,7 @@ const page = async ({ params }: { params: { slug: string } }) => {
                             {courseLevelTitle[data.level]}
                         </BoxInfo>
                         <BoxInfo title='Thời lượng'>
-                            100h45p
+                            {formatMinutesToHour(duration)}
                         </BoxInfo>
                     </div>
                 </BoxSection>
@@ -127,6 +132,7 @@ const page = async ({ params }: { params: { slug: string } }) => {
                 {userCourses?.includes(data._id.toString()) ? <AlreadyEnroll />
                     :
                     <CourseWidget
+                        duration={formatMinutesToHour(duration)}
                         findUser={findUser}
                         data={data}
                     />
