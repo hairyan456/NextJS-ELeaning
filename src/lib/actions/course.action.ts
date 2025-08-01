@@ -1,5 +1,5 @@
 'use server';
-import { ICourseUpdateParams, ICreateCourseParams, IGetAllCourseParams, IUpdateCourseParams } from "@/types";
+import { ICourseUpdateParams, ICreateCourseParams, IGetAllCourseParams, IUpdateCourseParams, IStudyCoursesProps } from "@/types";
 import { connectToDatabase } from "../mongoose";
 import Course, { ICourse } from "@/database/course.model";
 import { revalidatePath } from "next/cache";
@@ -8,7 +8,7 @@ import Lesson from "@/database/lesson.model";
 import { FilterQuery } from "mongoose";
 import { ECourseStatus } from "@/types/enums";
 
-export async function getAllCoursesPublic(params: IGetAllCourseParams): Promise<ICourse[] | undefined> {
+export async function getAllCoursesPublic(params: IGetAllCourseParams): Promise<IStudyCoursesProps[] | undefined> {
     try {
         connectToDatabase();
         const { page = 1, limit = 10, search = "" } = params;

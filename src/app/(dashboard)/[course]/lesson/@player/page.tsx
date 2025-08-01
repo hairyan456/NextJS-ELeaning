@@ -4,11 +4,16 @@ import PageNotFound from "@/app/not-found";
 import { findAllLessons } from "@/lib/actions/lesson.action";
 import Heading from "@/components/typography/Heading";
 import VideoPlay from "./VideoPlay";
+import { auth } from "@clerk/nextjs/server";
+import { getUserInfo } from "@/lib/actions/user.actions";
 
 const page = async ({ params, searchParams }: {
     params: { course: string };
     searchParams: { slug: string; };
 }) => {
+    const { userId } = await auth();
+    const findUser = await getUserInfo({ userId: userId! });
+
     const course = params.course;
     const slug = searchParams.slug;
     const findCourse = await getCourseBySlug({ slug: course });
@@ -25,7 +30,7 @@ const page = async ({ params, searchParams }: {
     const prevLesson = listLessons?.[currentLessonIndex - 1];
 
     return (
-        <div className="mb-5">
+        <div className="mb-5    ">
             <LessonSaveUrl
                 url={`/${course}/lesson?slug=${slug}`}
                 course={course}
@@ -36,6 +41,10 @@ const page = async ({ params, searchParams }: {
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     /> */}
             <VideoPlay
+                data={{
+                    userId: findUser?._id || "",
+                    courseId
+                }}
                 nextLesson={!nextLesson ? "" : `/${course}/lesson?slug=${nextLesson?.slug}`}
                 prevLesson={!prevLesson ? "" : `/${course}/lesson?slug=${prevLesson?.slug}`}
             />

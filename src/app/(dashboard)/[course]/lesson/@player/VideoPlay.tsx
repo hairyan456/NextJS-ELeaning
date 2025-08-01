@@ -6,8 +6,9 @@ import { useEffect, useState } from "react";
 import LessonNavigation from "../LessonNavigation";
 import useGlobalStore from "@/store";
 import { Button } from "@/components/ui/button";
+import RatingButton from "./RatingButton";
 
-const VideoPlay = ({ nextLesson, prevLesson }: { nextLesson: string; prevLesson: string; }) => {
+const VideoPlay = ({ nextLesson, prevLesson, data }: { nextLesson: string; prevLesson: string; data: { userId: string; courseId: string; } }) => {
     const duration = 3000;
     const [isEnded, setIsEnded] = useState(false);
     const router = useRouter();
@@ -47,9 +48,12 @@ const VideoPlay = ({ nextLesson, prevLesson }: { nextLesson: string; prevLesson:
                     nextLesson={nextLesson}
                     prevLesson={prevLesson}
                 />
-                <Button className="text-white" onClick={() => setExpandedPlayer(!expandedPlayer)}>
-                    {expandedPlayer ? "Mặc định" : "Mở rộng"}
-                </Button>
+                <div className="flex gap-5">
+                    <RatingButton userId={data.userId} courseId={data.courseId} />
+                    <Button className="text-white" onClick={() => setExpandedPlayer(!expandedPlayer)}>
+                        {expandedPlayer ? "Mặc định" : "Mở rộng"}
+                    </Button>
+                </div>
             </div>
         </>
     );

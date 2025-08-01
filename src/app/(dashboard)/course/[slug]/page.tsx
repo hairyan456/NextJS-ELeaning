@@ -61,6 +61,9 @@ const page = async ({ params }: { params: { slug: string } }) => {
                         />
                     }
                 </div>
+                <div className="flex flex-wrap gap-2 mb-5">
+{}
+                </div>
                 <h1 className='font-semibold text-3xl mb-5'>{data?.title}</h1>
                 <BoxSection title='Mô tả'>
                     <div className='leading-normal tracking-wider'>

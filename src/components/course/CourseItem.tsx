@@ -6,9 +6,8 @@ import { commonClassName } from '@/constants';
 import { IStudyCoursesProps } from '@/types';
 import { formatMinutesToHour, formatNumberToK } from '@/utils';
 import { getCourseLessonsInfo } from '@/lib/actions/course.action';
-import { ICourse } from '@/database/course.model';
 
-const CourseItem = async ({ data, cta, url = '' }: { data?: IStudyCoursesProps | ICourse; cta?: string; url?: string; }) => {
+const CourseItem = async ({ data, cta, url = '' }: { data?: IStudyCoursesProps; cta?: string; url?: string; }) => {
     const { duration }: any = (await getCourseLessonsInfo({ slug: data?.slug || '' })) || 0;
 
     const courseInfo = [
