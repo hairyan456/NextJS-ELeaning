@@ -8,6 +8,7 @@ import Course from "@/database/course.model";
 import User from "@/database/user.model";
 import { EOrderStatus } from "@/types/enums";
 import { revalidatePath } from "next/cache";
+import Coupon from "@/database/coupon.model";
 
 export async function fetchOrders(params: any) {
     try {
@@ -30,9 +31,15 @@ export async function fetchOrders(params: any) {
                 model: User,
                 select: "name",
             })
+            .populate({
+                path: "coupon",
+                model: Coupon,
+                select: "code",
+            })
+            .sort({ created_at: -1 })
             .skip(skip)
             .limit(limit);
-        return orders;
+        return orders ? JSON.parse(JSON.stringify(orders)) : null;
     } catch (error) { }
 }
 
@@ -55,7 +62,14 @@ export async function getOrderDetail({ code }: { code: string }) {
 export async function createNewOrder(params: ICreateOrderParams) {
     try {
         connectToDatabase();
-        const newOrder = await Order.create(params);
+        const newOrder = await Order.create({ ...params, coupon: params.coupon ? params.coupon : null });
+        if (params?.coupon) {
+            await Coupon.findByIdAndUpdate(params.coupon, {
+                // increment used times
+                $inc: { used: 1 },
+            });
+        }
+        revalidatePath('/manage/order');
         return newOrder ? JSON.parse(JSON.stringify(newOrder)) : null;
     } catch (error) {
         console.error("Error connecting to the database:", error);

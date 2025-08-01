@@ -8,7 +8,7 @@ import { TCouponParams, TCreateCouponParams, TUpdateCouponParams } from "@/types
 export async function getAllCoupons(params: any): Promise<ICoupon[] | undefined> {
     try {
         connectToDatabase();
-        const coupons = await Coupon.find(params)
+        const coupons = await Coupon.find(params).sort({ created_at: -1 });
         return coupons ? JSON.parse(JSON.stringify(coupons)) : [];
     } catch (error) {
         console.error('Error fetching all coupons:', error);
@@ -30,7 +30,7 @@ export async function getCouponByCode(params: { code: string }): Promise<TCoupon
     }
 };
 
-export async function getValidateCoupon(params: { code: string }): Promise<TCouponParams | undefined> {
+export async function getValidateCoupon(params: { code: string; courseId: string; }): Promise<TCouponParams | undefined> {
     try {
         connectToDatabase();
         const findCoupon = await Coupon
@@ -40,6 +40,8 @@ export async function getValidateCoupon(params: { code: string }): Promise<TCoup
                 select: "_id title",
             })
         const coupon = findCoupon ? JSON.parse(JSON.stringify(findCoupon)) : null;
+        const couponCourses: any[] = coupon?.course?.map((c: any) => c?._id) || [];
+
         let isActive = true;
         // check coupon có còn Active không
         if (!coupon?.active) isActive = false;
@@ -48,6 +50,8 @@ export async function getValidateCoupon(params: { code: string }): Promise<TCoup
         // check còn hạn sử dụng không
         if (coupon?.start_date && new Date(coupon?.start_date) > new Date()) isActive = false;
         if (coupon?.end_date && new Date(coupon?.end_date) < new Date()) isActive = false;
+        //  kiểm tra Coupon có áp  dụng cho khóa học hay không
+        if (!couponCourses?.includes(params.courseId)) isActive = false;
 
         return isActive ? coupon : undefined;
     } catch (error) {

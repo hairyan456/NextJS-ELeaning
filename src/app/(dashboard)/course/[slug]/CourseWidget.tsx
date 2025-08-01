@@ -5,6 +5,7 @@ import CouponForm from './CouponForm';
 import { useState } from 'react';
 
 const CourseWidget = ({ data, findUser }: { data: any; findUser: any }) => {
+    const [coupon, setCoupon] = useState<any>("");
     const [price, setPrice] = useState<number>(data?.price ?? 0);
 
     return (
@@ -45,10 +46,13 @@ const CourseWidget = ({ data, findUser }: { data: any; findUser: any }) => {
                     user={findUser}
                     courseId={data ? JSON.parse(JSON.stringify(data._id)) : null}
                     amount={price}
+                    coupon={coupon}
                 />
                 <CouponForm
-                    price={price}
+                    setCouponId={setCoupon}
+                    originalPrice={data?.price ?? 0}
                     setPrice={setPrice}
+                    courseId={data ? JSON.parse(JSON.stringify(data?._id)) : null}
                 />
             </div>
         </>

@@ -2,30 +2,50 @@
 import { Input } from "@/components/ui/input";
 import { getValidateCoupon } from "@/lib/actions/coupon.action";
 import { ECouponType } from "@/types/enums";
-import { Dispatch, SetStateAction, useState } from "react";
+import { debounce } from "lodash";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 
-const CouponForm = ({ price, setPrice }: { price: number; setPrice: Dispatch<SetStateAction<number>> }) => {
+const CouponForm = ({ setCouponId, originalPrice, setPrice, courseId }:
+    {
+        setCouponId: Dispatch<SetStateAction<any>>; originalPrice: number;
+        setPrice: Dispatch<SetStateAction<number>>; courseId: string;
+    }
+) => {
+    const [isAppliedCoupon, setIsAppliedCoupon] = useState<boolean>(false);
     const [couponCode, setCouponCode] = useState<string>("");
 
+    useEffect(() => {
+        setIsAppliedCoupon(false);
+    }, [couponCode]);
+
+    const handleChangeCoupon = debounce((e: any) => {
+        setCouponCode(e?.target?.value);
+    }, 300);
+
     const handleApplyCoupon = async () => {
-        if (!couponCode) return;
+        if (!couponCode || isAppliedCoupon) return;
         try {
-            const res = await getValidateCoupon({ code: couponCode.toUpperCase() });
+            const res = await getValidateCoupon({ code: couponCode.toUpperCase(), courseId });
             if (res?._id) {
                 const couponType = res.type;
-                let finalPrice = price;
+                let finalPrice = originalPrice;
                 if (couponType === ECouponType.PERCENT) {
-                    finalPrice = price - (price * res?.value) / 100;
+                    finalPrice = originalPrice - (originalPrice * res?.value) / 100;
                 }
                 else if (couponType === ECouponType.AMOUNT) {
-                    finalPrice = price - res.value;
+                    finalPrice = originalPrice - res.value;
                 }
                 setPrice(finalPrice);
-                setCouponCode("");
+                setIsAppliedCoupon(true);
+                setCouponId(res._id);
                 toast.success('Áp dụng coupon thành công');
             }
-            else toast.error("Áp coupon thất bại");
+            else {
+                setCouponCode("");
+                setCouponId("");
+                toast.error("Áp coupon thất bại");
+            };
         } catch (error) {
             console.log(`Error when apply coupon:`, error);
         }
@@ -34,15 +54,15 @@ const CouponForm = ({ price, setPrice }: { price: number; setPrice: Dispatch<Set
     return (
         <div className="mt-5 relative">
             <Input
-                value={couponCode}
+                defaultValue={couponCode}
                 className="pr-20 uppercase font-semibold text-sm placeholder:text-sm "
                 placeholder="Nhập mã giảm giá..."
-                onChange={(e) => setCouponCode(e.target.value)}
+                onChange={handleChangeCoupon}
             />
             <button
                 type="button"
-                className="absolute right-5 top-1/2 -translate-y-1/2 font-medium text-sm"
-                disabled={!couponCode}
+                className="absolute right-5 top-1/2 -translate-y-1/2 font-medium text-sm disabled:text-gray-400"
+                disabled={!couponCode || isAppliedCoupon}
                 onClick={handleApplyCoupon}
             >
                 Áp dụng
