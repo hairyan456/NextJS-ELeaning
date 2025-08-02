@@ -34,6 +34,8 @@ const page = async ({ params }: { params: { slug: string } }) => {
     const { duration, lessons }: any = await getCourseLessonsInfo({
         slug: data.slug,
     });
+
+    const ratings = data.rating.map((r: any) => r?.content || '');
     return (
         <div className='grid lg:grid-cols-[2fr,1fr] gap-10 min-h-screen'>
             {/* Left */}
@@ -62,7 +64,12 @@ const page = async ({ params }: { params: { slug: string } }) => {
                     }
                 </div>
                 <div className="flex flex-wrap gap-2 mb-5">
-{}
+                    { }
+                </div>
+                <div className="flex flex-wrap gap-2 mb-5">
+                    {ratings.map((r, index) => (
+                        <div className='p-2 text-sm font-medium rounded-md border borderDarkMode bgDarkMode' key={index}>{r}</div>
+                    ))}
                 </div>
                 <h1 className='font-semibold text-3xl mb-5'>{data?.title}</h1>
                 <BoxSection title='Mô tả'>

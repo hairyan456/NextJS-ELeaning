@@ -16,7 +16,7 @@ const CourseItem = async ({ data, cta, url = '' }: { data?: IStudyCoursesProps; 
             icon: (className?: string) => <IconEye className={className} />
         },
         {
-            title: data?.rating[0],
+            title: 5,
             icon: (className?: string) => <IconStar className={className} />
         },
         {

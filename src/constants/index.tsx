@@ -35,8 +35,8 @@ export const menuItems: IMenuItems[] = [
         icon: <IconCoupon className="size-5" />
     },
     {
-        url: '/manage/comment',
-        title: 'Quản lí bình luận',
+        url: '/manage/rating',
+        title: 'Quản lí đánh giá',
         icon: <IconComment className="size-5" />
     },
 ];

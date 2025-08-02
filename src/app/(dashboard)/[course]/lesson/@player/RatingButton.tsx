@@ -1,4 +1,5 @@
 'use client';
+
 import { IconStar } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,23 +12,50 @@ import {
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { ratingList } from "@/constants";
+import { createNewRating, getRatingByUserId } from "@/lib/actions/rating.action";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 const RatingButton = ({ courseId, userId }: { courseId: string; userId: string; }) => {
     const [ratingValue, setRatingValue] = useState<number>(-1);
     const [ratingContent, setRatingContent] = useState<string>("");
 
     const handleRatingCourse = async () => {
+        try {
+            const isAlreadyRated = await getRatingByUserId(userId, courseId);
+            if (isAlreadyRated) {
+                toast.warning("Bạn đã đánh giá khóa học này");
+                return;
+            }
+            const res = await createNewRating({
+                rate: ratingValue,
+                content: ratingContent,
+                user: userId,
+                course: courseId
+            });
+            if (res) {
+                toast.success("Viết đánh giá thành công")
+                setRatingContent("");
+                setRatingValue(-1);
+            }
+            else {
+                toast.error("Viết đánh giá thất bại")
 
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (
         <Dialog>
-            <DialogTrigger className="flex items-center gap-2 rounded-lg h-12 bg-primary text-sm font-semibold px-5 text-white">
+            <DialogTrigger
+                className="flex items-center gap-2 rounded-md h-10 bg-primary text-sm font-semibold px-5 text-white"
+            >
                 <IconStar className="size-4" />
-                <span>Đánh giá khóa học</span>
+                <span> Đánh giá khóa học</span>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
@@ -58,7 +86,7 @@ const RatingButton = ({ courseId, userId }: { courseId: string; userId: string; 
                             className="h-[200px] resize-none "
                             onChange={(e) => setRatingContent(e.target.value)}
                         />
-                        <Button variant={'primary'} className="w-full mt-5" >
+                        <Button variant={'primary'} className="w-full mt-5" onClick={handleRatingCourse}>
                             Gửi đánh giá
                         </Button>
                     </DialogDescription>

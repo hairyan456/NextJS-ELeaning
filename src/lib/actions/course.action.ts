@@ -6,7 +6,8 @@ import { revalidatePath } from "next/cache";
 import Lecture from "@/database/lecture.model";
 import Lesson from "@/database/lesson.model";
 import { FilterQuery } from "mongoose";
-import { ECourseStatus } from "@/types/enums";
+import { ECourseStatus, ERatingStatus } from "@/types/enums";
+import Rating from "@/database/rating.model";
 
 export async function getAllCoursesPublic(params: IGetAllCourseParams): Promise<IStudyCoursesProps[] | undefined> {
     try {
@@ -55,6 +56,12 @@ export async function getCourseBySlug({ slug }: { slug: string }): Promise<ICour
                     path: "lessons",
                     model: Lesson,
                     match: { _destroy: false },
+                },
+            })
+            .populate({
+                path: 'rating',
+                match: {
+                    status: ERatingStatus.ACTIVE
                 },
             });
         return findCourse ? JSON.parse(JSON.stringify(findCourse)) : undefined;

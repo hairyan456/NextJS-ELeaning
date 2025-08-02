@@ -150,10 +150,17 @@ interface IStudyCoursesProps extends Omit<ICourse, "lectures"> {
 
 type TRatingIcon = "awesome" | "good" | "meh" | "bad" | "terrible";
 
+interface ICreateRatingParams {
+    rate: number;
+    content: string;
+    user: string;
+    course: string;
+}
+
 export {
     IActiveLinkProps, IMenuItems, ICreateUserParams, ICreateCourseParams, IUpdateCourseParams, ICreateLectureParams,
     IUpdateLectureParams, ICourseUpdateParams, ICreateLessonParams, IUpdateCourseLecture, IUpdateLessonParams,
     ICreateHistoryParams, IGetAllCourseParams,
     ICreateOrderParams, TCreateCouponParams, TCouponParams, TUpdateCouponParams, IStudyCoursesProps,
-    TRatingIcon
+    TRatingIcon, ICreateRatingParams
 };
