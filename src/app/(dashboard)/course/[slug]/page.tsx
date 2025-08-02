@@ -68,7 +68,11 @@ const page = async ({ params }: { params: { slug: string } }) => {
                 </div>
                 <div className="flex flex-wrap gap-2 mb-5">
                     {ratings.map((r, index) => (
-                        <div className='p-2 text-sm font-medium rounded-md border borderDarkMode bgDarkMode' key={index}>{r}</div>
+                        <div
+                            className='p-2 px-4 text-sm font-medium rounded-full text-white bg-gradient-to-tr from-primary to-secondary'
+                            key={index}>
+                            {r}
+                        </div>
                     ))}
                 </div>
                 <h1 className='font-semibold text-3xl mb-5'>{data?.title}</h1>

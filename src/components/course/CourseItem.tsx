@@ -1,14 +1,25 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { IconClock, IconEye, IconStar } from '../icons';
 import { commonClassName } from '@/constants';
 import { IStudyCoursesProps } from '@/types';
 import { formatMinutesToHour, formatNumberToK } from '@/utils';
 import { getCourseLessonsInfo } from '@/lib/actions/course.action';
 
-const CourseItem = async ({ data, cta, url = '' }: { data?: IStudyCoursesProps; cta?: string; url?: string; }) => {
-    const { duration }: any = (await getCourseLessonsInfo({ slug: data?.slug || '' })) || 0;
+const CourseItem = ({ data, cta, url = '' }: { data?: IStudyCoursesProps; cta?: string; url?: string; }) => {
+    const [duration, setDuration] = useState<number>(0);
+
+    useEffect(() => {
+        async function getDuration() {
+            const res = await getCourseLessonsInfo({ slug: data?.slug || '' });
+            setDuration(res?.duration || 0);
+        };
+
+        getDuration();
+    }, [data?.slug]);
 
     const courseInfo = [
         {

@@ -2,8 +2,27 @@
 
 import Rating from "@/database/rating.model";
 import { connectToDatabase } from "../mongoose";
-import { ICreateRatingParams } from "@/types";
+import { ICreateRatingParams, TRatingItem } from "@/types";
 import Course from "@/database/course.model";
+import { revalidatePath } from "next/cache";
+import { ERatingStatus } from "@/types/enums";
+
+export async function getAllRatings(): Promise<TRatingItem[] | undefined> {
+    try {
+        connectToDatabase();
+        const ratings = await Rating.find({}).populate({
+            path: "course",
+            select: "title slug",
+        })
+            .populate({
+                path: "user",
+                select: "name",
+            });
+        return ratings ? JSON.parse(JSON.stringify(ratings)) : [];
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 export async function getRatingByUserId(userId: string, courseId: string): Promise<boolean | undefined> {
     if (!userId) return;
@@ -33,3 +52,25 @@ export async function createNewRating(params: ICreateRatingParams): Promise<bool
         console.log(error);
     }
 };
+
+export async function updateRating(id: string): Promise<boolean | undefined> {
+    try {
+        connectToDatabase();
+        await Rating.findByIdAndUpdate(id, { status: ERatingStatus.ACTIVE });
+        revalidatePath('/manage/rating');
+        return true;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export async function deleteRating(id: string): Promise<boolean | undefined> {
+    try {
+        connectToDatabase();
+        await Rating.findByIdAndDelete(id);
+        revalidatePath('/manage/rating');
+        return true;
+    } catch (error) {
+        console.log(error);
+    }
+}

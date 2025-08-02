@@ -157,10 +157,25 @@ interface ICreateRatingParams {
     course: string;
 }
 
+type TRatingItem = {
+    _id: string;
+    content: string;
+    rate: number;
+    created_at: string;
+    course: {
+        slug: string;
+        title: string;
+    },
+    user: {
+        name: string;
+    },
+    status: ERatingStatus,
+}
+
 export {
     IActiveLinkProps, IMenuItems, ICreateUserParams, ICreateCourseParams, IUpdateCourseParams, ICreateLectureParams,
     IUpdateLectureParams, ICourseUpdateParams, ICreateLessonParams, IUpdateCourseLecture, IUpdateLessonParams,
     ICreateHistoryParams, IGetAllCourseParams,
     ICreateOrderParams, TCreateCouponParams, TCouponParams, TUpdateCouponParams, IStudyCoursesProps,
-    TRatingIcon, ICreateRatingParams
+    TRatingIcon, ICreateRatingParams, TRatingItem
 };

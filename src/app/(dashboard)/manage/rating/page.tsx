@@ -1,12 +1,12 @@
-import Heading from '@/components/typography/Heading';
-import React from 'react';
+import { getAllRatings } from '@/lib/actions/rating.action';
+import RatingManage from './RatingManage';
 
-const page = () => {
+const page = async () => {
+    const ratings = await getAllRatings();
     return (
-        <div>
-            <Heading className="">Quản lý đánh giá</Heading>
-
-        </div>
+        <RatingManage
+            ratings={ratings || []}
+        />
     );
 };
 
