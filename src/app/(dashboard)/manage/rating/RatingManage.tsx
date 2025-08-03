@@ -19,7 +19,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { commonClassName, ratingList, ratingStatus } from "@/constants";
+import { allValue, commonClassName, ratingList, ratingStatus } from "@/constants";
 import useQueryString from "@/hooks/useQueryString";
 import { deleteRating, updateRating } from "@/lib/actions/rating.action";
 import { TRatingItem } from "@/types";
@@ -31,12 +31,8 @@ import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 
 const RatingManage = ({ ratings }: { ratings: TRatingItem[] }) => {
-    const { createQueryString, router, pathname } = useQueryString();
+    const { handleSearchData, handleSelectStatus } = useQueryString();
     const [page, setPage] = useState<number>(1);
-
-    const handleSelectStatus = (status: ERatingStatus) => {
-        router.push(`${pathname}?${createQueryString("status", status)}`);
-    };
 
     const handleUpdateRating = async (id: string) => {
         try {
@@ -73,18 +69,23 @@ const RatingManage = ({ ratings }: { ratings: TRatingItem[] }) => {
                 <Heading className="">Quản lý đánh giá</Heading>
                 <div className="flex gap-3">
                     <div className="w-full lg:w-[300px]">
-                        <Input placeholder="Tìm kiếm đánh giá..." />
+                        <Input
+                            placeholder="Tìm kiếm đánh giá..."
+                            onChange={handleSearchData}
+                        />
                     </div>
                     <Select
-                        onValueChange={(value) =>
-                            handleSelectStatus(value as ERatingStatus)
-                        }
+                        onValueChange={(value) => handleSelectStatus(value as ERatingStatus)}
+                        defaultValue={allValue}
                     >
                         <SelectTrigger className="w-[180px]">
                             <SelectValue placeholder="Chọn trạng thái" />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
+                                <SelectItem value={allValue}>
+                                    Tất cả
+                                </SelectItem>
                                 {ratingStatus.map((status) => (
                                     <SelectItem value={status.value} key={status.value}>
                                         {status.title}

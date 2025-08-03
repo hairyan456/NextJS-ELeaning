@@ -172,10 +172,21 @@ type TRatingItem = {
     status: ERatingStatus,
 }
 
+type TCouponItem = Omit<ICoupon, "_id" | "course">;
+
+// filter, paginate
+interface IFilterData {
+    page?: number;
+    limit?: number;
+    search?: string;
+    status?: string;
+    active?: boolean;
+};
+
 export {
     IActiveLinkProps, IMenuItems, ICreateUserParams, ICreateCourseParams, IUpdateCourseParams, ICreateLectureParams,
     IUpdateLectureParams, ICourseUpdateParams, ICreateLessonParams, IUpdateCourseLecture, IUpdateLessonParams,
     ICreateHistoryParams, IGetAllCourseParams,
     ICreateOrderParams, TCreateCouponParams, TCouponParams, TUpdateCouponParams, IStudyCoursesProps,
-    TRatingIcon, ICreateRatingParams, TRatingItem
+    TRatingIcon, ICreateRatingParams, TRatingItem, IFilterData, TCouponItem
 };

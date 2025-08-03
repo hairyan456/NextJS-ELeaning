@@ -10,13 +10,14 @@ import {
 import {
     Select,
     SelectContent,
+    SelectGroup,
     SelectItem,
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
 import Heading from "../typography/Heading";
 import Image from "next/image";
-import { commonClassName, courseStatus } from "@/constants";
+import { allValue, commonClassName, courseStatus } from "@/constants";
 import { cn } from "@/lib/utils";
 import IconEdit from "../icons/IconEdit";
 import { IconDelete, IconEye, IconStudy } from "../icons";
@@ -33,7 +34,7 @@ import useQueryString from "@/hooks/useQueryString";
 import { BouncedLink } from "../common";
 
 const CourseManage = ({ courses }: { courses: ICourse[] }) => {
-    const { createQueryString, router, pathname } = useQueryString();
+    const { handleSearchData, handleSelectStatus } = useQueryString();
     const [page, setPage] = useState<number>(1);
 
     const handleDeleteCourse = async (slug: string) => {
@@ -79,7 +80,7 @@ const CourseManage = ({ courses }: { courses: ICourse[] }) => {
                         path: '/manage/course',
                     });
                     toast.success("Cập nhật trạng thái thành công");
-                    router.push(`${pathname}?${createQueryString('status', "")}`);
+                    // router.push(`${pathname}?${createQueryString('status', "")}`);
                 }
             });
         } catch (error) {
@@ -87,23 +88,15 @@ const CourseManage = ({ courses }: { courses: ICourse[] }) => {
         }
     };
 
-    const handleSelectStatus = (status: ECourseStatus) => {
-        router.push(`${pathname}?${createQueryString('status', status)}`);
-    };
-
-    const handleSearchCourse = _.debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
-        router.push(`${pathname}?${createQueryString('search', e.target.value)}`);
-    }, 500);
-
     const handleChangePage = (type: "prev" | "next") => {
         if (type === "prev" && page === 1) return;
         if (type === "prev") setPage(p => p - 1);
         if (type === "next") setPage(p => p + 1);
     };
 
-    useEffect(() => {
-        router.push(`${pathname}?${createQueryString('page', page.toString())}`);
-    }, [page]);
+    // useEffect(() => {
+    //     router.push(`${pathname}?${createQueryString('page', page.toString())}`);
+    // }, [page]);
 
     return (
         <>
@@ -112,7 +105,7 @@ const CourseManage = ({ courses }: { courses: ICourse[] }) => {
                 <Heading className="uppercase">Quản lý khóa học</Heading>
                 <div className="flex gap-3">
                     <div className="w-full lg:w-[300px]">
-                        <Input onChange={(e) => handleSearchCourse(e)} placeholder="Tìm kiếm khóa học..." />
+                        <Input onChange={handleSearchData} placeholder="Tìm kiếm khóa học..." />
                     </div>
                     <Select
                         onValueChange={(value) => handleSelectStatus(value as ECourseStatus)}
@@ -121,14 +114,19 @@ const CourseManage = ({ courses }: { courses: ICourse[] }) => {
                             <SelectValue placeholder="Chọn trạng thái" />
                         </SelectTrigger>
                         <SelectContent>
-                            {courseStatus.map((status) => (
-                                <SelectItem
-                                    key={status.value}
-                                    value={status.value}
-                                >
-                                    {status.title}
+                            <SelectGroup>
+                                <SelectItem value={allValue}>
+                                    Tất cả
                                 </SelectItem>
-                            ))}
+                                {courseStatus.map((status) => (
+                                    <SelectItem
+                                        key={status.value}
+                                        value={status.value}
+                                    >
+                                        {status.title}
+                                    </SelectItem>
+                                ))}
+                            </SelectGroup>
                         </SelectContent>
                     </Select>
                 </div>
@@ -201,7 +199,7 @@ const CourseManage = ({ courses }: { courses: ICourse[] }) => {
                 </TableBody>
             </Table>
             {/* Paginate */}
-            <div className="flex justify-end gap-3 mt-5">
+            {/* <div className="flex justify-end gap-3 mt-5">
                 <button onClick={() => handleChangePage("prev")} className={commonClassName.paginationButton}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
@@ -212,7 +210,7 @@ const CourseManage = ({ courses }: { courses: ICourse[] }) => {
                         <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                     </svg>
                 </button>
-            </div>
+            </div> */}
         </>
     );
 };

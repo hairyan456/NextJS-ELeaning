@@ -218,3 +218,5 @@ export const ratingStatus: {
             className: "text-orange-500 bg-orange-500",
         },
     ];
+
+export const allValue = 'ALL';

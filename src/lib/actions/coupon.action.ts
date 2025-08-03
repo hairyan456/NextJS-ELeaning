@@ -3,12 +3,19 @@
 import Coupon, { ICoupon } from "@/database/coupon.model";
 import { connectToDatabase } from "../mongoose";
 import { revalidatePath } from "next/cache";
-import { TCouponParams, TCreateCouponParams, TUpdateCouponParams } from "@/types";
+import { IFilterData, TCouponItem, TCouponParams, TCreateCouponParams, TUpdateCouponParams } from "@/types";
+import { FilterQuery } from "mongoose";
 
-export async function getAllCoupons(params: any): Promise<ICoupon[] | undefined> {
+export async function getAllCoupons(params: IFilterData): Promise<TCouponItem[] | undefined> {
     try {
         connectToDatabase();
-        const coupons = await Coupon.find(params).sort({ created_at: -1 });
+        const { page = 1, limit = 10, search = "", active } = params;
+        const skip = (page - 1) * limit;
+        const query: FilterQuery<typeof Coupon> = {};
+        if (search)
+            query.$or = [{ code: { $regex: search, $options: 'i' } }];
+        // query.active = active;
+        const coupons = await Coupon.find(query).skip(skip).limit(limit).sort({ created_at: -1 });
         return coupons ? JSON.parse(JSON.stringify(coupons)) : [];
     } catch (error) {
         console.error('Error fetching all coupons:', error);
