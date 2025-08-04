@@ -43,7 +43,7 @@ const Pagination = ({ totalPages, total }: IPaginateProps) => {
             />
             <PaginateButton
                 disabled={currentPage === totalPages}
-                onClick={() => handleChangePage(currentPage + 1)}            >
+                onClick={() => handleChangePage(currentPage + 1)}>
                 <IconArrowRight className="size-4" />
             </PaginateButton>
             <PaginateButton

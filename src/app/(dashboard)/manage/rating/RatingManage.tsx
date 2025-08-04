@@ -1,5 +1,6 @@
 "use client";
 import { StatusBadge, TableAction } from "@/components/common";
+import Pagination from "@/components/common/Pagination";
 import TableActionItem from "@/components/common/TableActionItem";
 import Heading from "@/components/typography/Heading";
 import { Input } from "@/components/ui/input";
@@ -19,20 +20,18 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { allValue, commonClassName, ratingList, ratingStatus } from "@/constants";
+import { allValue, ratingList, ratingStatus } from "@/constants";
 import useQueryString from "@/hooks/useQueryString";
 import { deleteRating, updateRating } from "@/lib/actions/rating.action";
 import { TRatingItem } from "@/types";
 import { ERatingStatus } from "@/types/enums";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 
-const RatingManage = ({ ratings }: { ratings: TRatingItem[] }) => {
+const RatingManage = ({ ratings, totalPages, total }: { ratings: TRatingItem[]; totalPages: number; total: number; }) => {
     const { handleSearchData, handleSelectStatus } = useQueryString();
-    const [page, setPage] = useState<number>(1);
 
     const handleUpdateRating = async (id: string) => {
         try {
@@ -58,11 +57,6 @@ const RatingManage = ({ ratings }: { ratings: TRatingItem[] }) => {
         });
     };
 
-    const handleChangePage = (type: "prev" | "next") => {
-        if (type === "prev" && page === 1) return;
-        if (type === "prev") setPage(p => p - 1);
-        if (type === "next") setPage(p => p + 1);
-    };
     return (
         <>
             <div className="flex flex-col lg:flex-row lg:items-center gap-5 justify-between mb-10">
@@ -144,7 +138,10 @@ const RatingManage = ({ ratings }: { ratings: TRatingItem[] }) => {
                 </TableBody>
             </Table>
             {/* Paginate */}
-
+            <Pagination
+                totalPages={totalPages}
+                total={total}
+            />
         </>
     );
 };

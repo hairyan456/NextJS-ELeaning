@@ -1,4 +1,4 @@
-import { IconExplore, IconPlay, IconComment, IconOrder, IconStudy, IconUsers, IconCoupon } from "@/components/icons";
+import { IconExplore, IconPlay, IconComment, IconOrder, IconStudy, IconUsers, IconCoupon, IconStar } from "@/components/icons";
 import { IMenuItems, TRatingIcon } from "@/types";
 import { ECouponType, ECourseLevel, ECourseStatus, EOrderStatus, ERatingStatus } from "@/types/enums";
 import { z } from "zod";
@@ -37,6 +37,11 @@ export const menuItems: IMenuItems[] = [
     {
         url: '/manage/rating',
         title: 'Quản lí đánh giá',
+        icon: <IconStar className="size-5" />
+    },
+    {
+        url: '/manage/comment',
+        title: 'Quản lí bình luận',
         icon: <IconComment className="size-5" />
     },
 ];

@@ -43,4 +43,14 @@ enum ERatingStatus {
     UNACTIVE = "UNACTIVE"
 }
 
-export { EUserStatus, EUserRole, ECourseStatus, ECourseLevel, ELessonType, EOrderStatus, ECouponType, ERatingStatus };
+
+enum ECommentStatus {
+    APPROVED = "APPROVED",
+    PENDING = "PENDING",
+    REJECTED = "REJECTED"
+};
+
+export {
+    EUserStatus, EUserRole, ECourseStatus, ECourseLevel, ELessonType, EOrderStatus, ECouponType, ERatingStatus,
+    ECommentStatus
+};

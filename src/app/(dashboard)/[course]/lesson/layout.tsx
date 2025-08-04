@@ -6,7 +6,7 @@ import LoadingPlayer from "./@player/LoadingPlayer";
 import LoadingOutline from "./@outline/LoadingOutline";
 import LessonWrapper from "./LessonWrapper";
 
-const Layout = async ({ player, outline }: { player: React.ReactNode; outline: React.ReactNode; }) => {
+const Layout = async ({ player, outline, comment }: { player: React.ReactNode; outline: React.ReactNode; comment: React.ReactNode; }) => {
     // Authenticate user
     const { userId } = await auth();
     if (!userId) return <PageNotFound />;
@@ -15,7 +15,12 @@ const Layout = async ({ player, outline }: { player: React.ReactNode; outline: R
 
     return (
         <LessonWrapper>
-            <Suspense fallback={<LoadingPlayer />}>{player}</Suspense>
+            <Suspense fallback={<LoadingPlayer />}>
+                <div>
+                    {player}
+                    {comment}
+                </div>
+            </Suspense>
             <Suspense fallback={<LoadingOutline />}>{outline}</Suspense>
         </LessonWrapper>
     );

@@ -8,7 +8,10 @@ import { revalidatePath } from "next/cache";
 import { ERatingStatus } from "@/types/enums";
 import { FilterQuery } from "mongoose";
 
-export async function getAllRatings(params: IFilterData): Promise<TRatingItem[] | undefined> {
+export async function getAllRatings(params: IFilterData): Promise<{
+    ratings: TRatingItem[];
+    total: number;
+} | undefined> {
     try {
         connectToDatabase();
         const { page = 1, limit = 10, search = "", status } = params;
@@ -18,6 +21,7 @@ export async function getAllRatings(params: IFilterData): Promise<TRatingItem[] 
             query.$or = [{ content: { $regex: search, $options: 'i' } }];
         if (status)
             query.status = status;
+        const total = await Rating.countDocuments(query);
         const ratings = await Rating.find(query).populate({
             path: "course",
             select: "title slug",
@@ -27,7 +31,10 @@ export async function getAllRatings(params: IFilterData): Promise<TRatingItem[] 
                 select: "name",
             })
             .skip(skip).limit(limit).sort({ created_at: -1 });
-        return ratings ? JSON.parse(JSON.stringify(ratings)) : [];
+        return {
+            ratings: ratings ? JSON.parse(JSON.stringify(ratings)) : [],
+            total,
+        }
     } catch (error) {
         console.log(error);
     }
