@@ -27,6 +27,7 @@ const page = async ({
         <OrderManage
             orders={orders ? JSON.parse(JSON.stringify(orders)) : []}
             totalPages={totalPages}
+            total={total}
         />
     );
 };

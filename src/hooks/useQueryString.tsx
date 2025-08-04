@@ -28,8 +28,14 @@ export default function useQueryString() {
 
     const handleChangePage = (page: number) => {
         createQueryString("page", page + "");
-
     }
 
-    return { createQueryString, router, pathname, handleSearchData, handleSelectStatus, handleChangePage, currentPage };
+    const handleChangeQS = (key: string, value: string) => {
+        createQueryString(key, value);
+    }
+
+    return {
+        createQueryString, router, pathname, handleSearchData, handleSelectStatus, handleChangePage, currentPage,
+        handleChangeQS
+    };
 }

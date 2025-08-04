@@ -11,15 +11,24 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { commonClassName } from "@/constants";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import { allValue, commonClassName, couponStatus } from "@/constants";
 import { ECouponType } from "@/types/enums";
 import Link from "next/link";
 import ActionDeleteCoupon from "./ActionDeleteCoupon";
 import { TCouponItem } from "@/types";
 import useQueryString from "@/hooks/useQueryString";
+import Pagination from "@/components/common/Pagination";
 
-const CouponManage = ({ coupons }: { coupons: TCouponItem[] | undefined }) => {
-    const { handleSearchData, handleSelectStatus } = useQueryString();
+const CouponManage = ({ coupons, totalPages, total }: { coupons: TCouponItem[] | undefined; totalPages: number; total: number; }) => {
+    const { handleSearchData, handleChangeQS } = useQueryString();
 
     return (
         <div>
@@ -33,7 +42,24 @@ const CouponManage = ({ coupons }: { coupons: TCouponItem[] | undefined }) => {
                             onChange={handleSearchData}
                         />
                     </div>
-
+                    <Select
+                        defaultValue={allValue}
+                        onValueChange={(value) => handleChangeQS("active", value)}
+                    >
+                        <SelectTrigger className="w-[180px]">
+                            <SelectValue placeholder="Chọn trạng thái" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectItem value={allValue}>Tất cả</SelectItem>
+                                {couponStatus.map((status) => (
+                                    <SelectItem value={status.value + ""} key={status.value}>
+                                        {status.title}
+                                    </SelectItem>
+                                ))}
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
                 </div>
             </div>
             <Table className="table-responsive">
@@ -66,7 +92,7 @@ const CouponManage = ({ coupons }: { coupons: TCouponItem[] | undefined }) => {
                                 <>{coupon.used}/{coupon.limit}</>
                             </TableCell>
                             <TableCell>
-                                {coupon.active ? <StatusBadge item={{ title: "Đang hoạt động", className: 'text-green-500' }} />
+                                {coupon.active ? <StatusBadge item={{ title: "Đang kích hoạt", className: 'text-green-500' }} />
                                     : <StatusBadge item={{ title: "Chưa kích hoạt", className: 'text-orange-500' }} />
                                 }
                             </TableCell>
@@ -88,7 +114,10 @@ const CouponManage = ({ coupons }: { coupons: TCouponItem[] | undefined }) => {
                     ))}
                 </TableBody>
             </Table>
-
+            <Pagination
+                totalPages={totalPages}
+                total={total}
+            />
         </div >
     );
 };

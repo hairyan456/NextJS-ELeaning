@@ -109,6 +109,7 @@ const CourseManage = ({ courses }: { courses: ICourse[] }) => {
                     </div>
                     <Select
                         onValueChange={(value) => handleSelectStatus(value as ECourseStatus)}
+                        defaultValue={allValue}
                     >
                         <SelectTrigger className="w-[180px]">
                             <SelectValue placeholder="Chọn trạng thái" />
@@ -199,18 +200,7 @@ const CourseManage = ({ courses }: { courses: ICourse[] }) => {
                 </TableBody>
             </Table>
             {/* Paginate */}
-            {/* <div className="flex justify-end gap-3 mt-5">
-                <button onClick={() => handleChangePage("prev")} className={commonClassName.paginationButton}>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-                    </svg>
-                </button>
-                <button onClick={() => handleChangePage("next")} className={commonClassName.paginationButton}>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                    </svg>
-                </button>
-            </div> */}
+
         </>
     );
 };

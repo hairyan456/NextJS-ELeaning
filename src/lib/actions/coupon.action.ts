@@ -6,7 +6,10 @@ import { revalidatePath } from "next/cache";
 import { IFilterData, TCouponItem, TCouponParams, TCreateCouponParams, TUpdateCouponParams } from "@/types";
 import { FilterQuery } from "mongoose";
 
-export async function getAllCoupons(params: IFilterData): Promise<TCouponItem[] | undefined> {
+export async function getAllCoupons(params: IFilterData): Promise<{
+    coupons: TCouponItem[];
+    total: number;
+} | undefined> {
     try {
         connectToDatabase();
         const { page = 1, limit = 10, search = "", active } = params;
@@ -14,9 +17,14 @@ export async function getAllCoupons(params: IFilterData): Promise<TCouponItem[] 
         const query: FilterQuery<typeof Coupon> = {};
         if (search)
             query.$or = [{ code: { $regex: search, $options: 'i' } }];
-        // query.active = active;
+        if (active)
+            query.active = Boolean(+active);
+        const total = await Coupon.countDocuments(query);
         const coupons = await Coupon.find(query).skip(skip).limit(limit).sort({ created_at: -1 });
-        return coupons ? JSON.parse(JSON.stringify(coupons)) : [];
+        return {
+            coupons: coupons ? JSON.parse(JSON.stringify(coupons)) : [],
+            total,
+        };
     } catch (error) {
         console.error('Error fetching all coupons:', error);
     }

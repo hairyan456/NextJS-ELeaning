@@ -3,12 +3,14 @@ import useQueryString from "@/hooks/useQueryString";
 import { IconArrowLeft, IconArrowRight, IconDoubleLeftArrow, IconDoubleRightArrow } from "../icons";
 import { debounce } from "lodash";
 import React from "react";
+import { ITEMS_PER_PAGE } from "@/constants";
 
 interface IPaginateProps {
     totalPages: number;
+    total: number;
 };
 
-const Pagination = ({ totalPages }: IPaginateProps) => {
+const Pagination = ({ totalPages, total }: IPaginateProps) => {
     const { handleChangePage, currentPage } = useQueryString();
 
     const onInputChange = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -17,6 +19,7 @@ const Pagination = ({ totalPages }: IPaginateProps) => {
         handleChangePage(value);
     }, 250);
 
+    if (total <= ITEMS_PER_PAGE) return null;
     return (
         <div className="flex items-center justify-center mt-10 gap-3">
             <PaginateButton

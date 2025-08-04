@@ -46,7 +46,7 @@ interface IOrderManageProps {
         name: string;
     };
 }
-const OrderManage = ({ orders = [], totalPages = 1 }: { orders: IOrderManageProps[]; totalPages: number; }) => {
+const OrderManage = ({ orders = [], totalPages = 1, total }: { orders: IOrderManageProps[]; totalPages: number; total: number; }) => {
     const { handleSearchData, handleSelectStatus } = useQueryString();
 
     const handleUpdateOrder = async ({ orderId, status }: { orderId: string; status: EOrderStatus; }) => {
@@ -86,6 +86,7 @@ const OrderManage = ({ orders = [], totalPages = 1 }: { orders: IOrderManageProp
                     </div>
                     <Select
                         onValueChange={(value) => handleSelectStatus(value as EOrderStatus)}
+                        defaultValue={allValue}
                     >
                         <SelectTrigger className="w-[180px]">
                             <SelectValue placeholder="Chọn trạng thái" />
@@ -179,6 +180,7 @@ const OrderManage = ({ orders = [], totalPages = 1 }: { orders: IOrderManageProp
             </Table>
             <Pagination
                 totalPages={totalPages}
+                total={total}
             />
         </div>
     );
