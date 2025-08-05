@@ -15,7 +15,7 @@ export default function useQueryString() {
         if (!value || value === allValue) {
             params.delete(name);
         }
-        router.push(`${pathname}?${params?.toString() || ""}`);
+        router.push(`${pathname}?${params?.toString() || ""}`, { scroll: false });
     }
 
     const handleSearchData = debounce((e: React.ChangeEvent<HTMLInputElement>) => {

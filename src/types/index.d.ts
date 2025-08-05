@@ -192,6 +192,7 @@ interface ICreateCommentParams {
     user: string;
     level: number;
     parentId?: string;
+    path?: string;
 }
 
 interface ICommentItem extends Omit<IComment, "user"> {

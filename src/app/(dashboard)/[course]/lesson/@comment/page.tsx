@@ -6,10 +6,11 @@ import { auth } from '@clerk/nextjs/server';
 import { getUserInfo } from '@/lib/actions/user.actions';
 import { getCommentsByLesson } from '@/lib/actions/comment.action';
 import CommentItem from './CommentItem';
+import CommentSorting from './CommentSorting';
 
 const page = async ({ params, searchParams }: {
     params: { course: string };
-    searchParams: { slug: string; };
+    searchParams: { slug: string; sort: "recent" | "oldest" };
 }) => {
     const { userId } = await auth();
     if (!userId) return <PageNotFound />;
@@ -23,7 +24,7 @@ const page = async ({ params, searchParams }: {
     const lesson = await getLessonBySlug({ slug, course: findCourse?._id?.toString() });
     if (!lesson?._id) return <PageNotFound />;
 
-    const comments = await getCommentsByLesson(lesson?._id?.toString() || "");
+    const comments = await getCommentsByLesson(lesson?._id?.toString() || "", searchParams.sort);
     const rootComments = comments?.filter((item) => !item.parentId || item.parentId === null) // comment level 0
     const commentLessonId = lesson?._id?.toString();
     const commentUserId = findUser?._id?.toString();
@@ -36,7 +37,15 @@ const page = async ({ params, searchParams }: {
             />
             {rootComments && rootComments?.length > 0 &&
                 <div className='flex flex-col gap-10 mt-10'>
-                    <h2 className='text-xl font-bold'>Comments</h2>
+                    <div className='flex items-center justify-between'>
+                        <h2 className='text-xl font-bold flex items-center gap-2'>
+                            <span>Comments</span>
+                            <span className='flex items-center justify-center bg-primary text-white text-sm font-semibold rounded-full py-0.5 px-4'>
+                                {comments?.length}
+                            </span>
+                        </h2>
+                        <CommentSorting />
+                    </div>
                     <div className="flex flex-col gap-5">
                         {rootComments.map(item => (
                             <CommentItem

@@ -31,6 +31,7 @@ const CommentReply = ({ comment, lessonId, userId }: CommentReplyProps) => {
                     lessonId={lessonId}
                     userId={userId}
                     isReply
+                    closeReply={() => setShowReply(false)}
                 />
             )}
         </>

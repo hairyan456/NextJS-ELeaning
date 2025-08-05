@@ -11,13 +11,25 @@ import { useTransition } from 'react';
 import { createNewComment } from '@/lib/actions/comment.action';
 import { toast } from 'react-toastify';
 import { ICommentItem } from '@/types';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 const formSchema = z.object({
     content: z.string({ message: "Vui lòng nhập bình luận" }).min(10, { message: "Comment must be at least 10 characters long." })
 })
 
-const CommentForm = ({ lessonId, userId, comment, isReply }: { lessonId: string; userId: string; comment?: ICommentItem; isReply?: boolean }) => {
+interface CommentFormProps {
+    lessonId: string;
+    userId: string;
+    comment?: ICommentItem;
+    isReply?: boolean;
+    closeReply?: () => void;
+};
+
+const CommentForm = ({ lessonId, userId, comment, isReply, closeReply = () => { } }: CommentFormProps) => {
     const [isPending, startTransition] = useTransition();
+    const pathName = usePathname();
+    const slug = useSearchParams().get("slug");
+    const path = `${pathName}?slug=${slug}`;
 
     // 1. Define your form.
     const form = useForm<z.infer<typeof formSchema>>({
@@ -36,6 +48,7 @@ const CommentForm = ({ lessonId, userId, comment, isReply }: { lessonId: string;
                 user: userId,
                 level: comment && comment?.level >= 0 ? comment?.level + 1 : 0,
                 parentId: comment?._id,
+                path,
             });
             if (!res) {
                 toast.error("Đăng bình luận thất bại");
@@ -44,6 +57,7 @@ const CommentForm = ({ lessonId, userId, comment, isReply }: { lessonId: string;
             else {
                 toast.success("Đăng bình luận thành công");
                 form.setValue("content", "");
+                closeReply?.();
             }
         })
     }

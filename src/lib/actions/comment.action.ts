@@ -1,18 +1,18 @@
 'use server';
-
 import Comment from "@/database/comment.model";
 import { connectToDatabase } from "../mongoose";
 import { ICommentItem, ICreateCommentParams } from "@/types";
-import { ECommentStatus } from "@/types/enums";
 import User from "@/database/user.model";
+import { revalidatePath } from "next/cache";
 
-export async function getCommentsByLesson(lessonId: string): Promise<ICommentItem[] | undefined> {
+export async function getCommentsByLesson(lessonId: string, sort: "recent" | "oldest" = "recent"): Promise<ICommentItem[] | undefined> {
     try {
         connectToDatabase();
         const comments = await Comment.find<ICommentItem>({
             lesson: lessonId,
-            status: ECommentStatus.APPROVED
+            // status: ECommentStatus.APPROVED
         })
+            .sort({ created_at: sort === "recent" ? -1 : 1 })
             .populate({
                 path: "user",
                 model: User,
@@ -29,6 +29,7 @@ export async function createNewComment(params: ICreateCommentParams): Promise<bo
     try {
         connectToDatabase();
         const newComment = await Comment.create(params);
+        revalidatePath(params?.path || "/");
         return (!newComment?._id) ? false : true;
     } catch (error) {
         console.log('Error create new comment:', error);
