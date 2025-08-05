@@ -36,7 +36,8 @@ const commentSchema = new Schema<IComment>({
     },
     parentId: {
         type: Schema.Types.ObjectId,
-        ref: "Comment"
+        ref: "Comment",
+        default: null,
     },
     created_at: {
         type: Date,

@@ -228,3 +228,5 @@ export const allValue = 'ALL';
 export const ITEMS_PER_PAGE = 5;
 
 export const couponStatus = [{ title: "Đang kích hoạt", value: 1 }, { title: "Chưa kích hoạt", value: 0 }];
+
+export const MAX_COMMENT_LEVEL = 3;

@@ -16,7 +16,7 @@ const formSchema = z.object({
     content: z.string({ message: "Vui lòng nhập bình luận" }).min(10, { message: "Comment must be at least 10 characters long." })
 })
 
-const CommentForm = ({ lessonId, userId, comment }: { lessonId: string; userId: string; comment?: ICommentItem; }) => {
+const CommentForm = ({ lessonId, userId, comment, isReply }: { lessonId: string; userId: string; comment?: ICommentItem; isReply?: boolean }) => {
     const [isPending, startTransition] = useTransition();
 
     // 1. Define your form.
@@ -62,7 +62,11 @@ const CommentForm = ({ lessonId, userId, comment }: { lessonId: string; userId: 
                         render={({ field }) => (
                             <FormItem>
                                 <FormControl>
-                                    <Textarea placeholder='Nhập bình luận của bạn...' className='min-h-[150px]' {...field} />
+                                    <Textarea
+                                        placeholder='Nhập bình luận của bạn...'
+                                        className={`${isReply ? 'min-h-[100px]' : 'min-h-[150px]'}`}
+                                        {...field}
+                                    />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -74,7 +78,7 @@ const CommentForm = ({ lessonId, userId, comment }: { lessonId: string; userId: 
                         variant={'primary'}
                         className='w-[70px] ml-auto'
                     >
-                        Đăng
+                        {isReply ? "Phản hồi" : "Đăng"}
                     </Button>
                 </form>
             </Form>
