@@ -3,6 +3,7 @@ import { ICourse } from "@/database/course.model";
 import { ILecture } from "@/database/lecture.model";
 import { ILesson } from "@/database/lesson.model";
 import { ECouponType } from "./enums";
+import { IComment } from "@/database/comment.model";
 
 interface IActiveLinkProps {
     url: string;
@@ -183,10 +184,26 @@ interface IFilterData {
     active?: boolean;
 };
 
+// COMMENT
+
+interface ICreateCommentParams {
+    content: string;
+    lesson: string;
+    user: string;
+}
+
+interface ICommentItem extends Omit<IComment, "user"> {
+    user: {
+        name: string;
+        avatar: string;
+    }
+}
+
 export {
     IActiveLinkProps, IMenuItems, ICreateUserParams, ICreateCourseParams, IUpdateCourseParams, ICreateLectureParams,
     IUpdateLectureParams, ICourseUpdateParams, ICreateLessonParams, IUpdateCourseLecture, IUpdateLessonParams,
     ICreateHistoryParams, IGetAllCourseParams,
     ICreateOrderParams, TCreateCouponParams, TCouponParams, TUpdateCouponParams, IStudyCoursesProps,
-    TRatingIcon, ICreateRatingParams, TRatingItem, IFilterData, TCouponItem
+    TRatingIcon, ICreateRatingParams, TRatingItem, IFilterData, TCouponItem,
+    ICreateCommentParams, ICommentItem
 };

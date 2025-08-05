@@ -1,0 +1,82 @@
+'use client';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import {
+    Form, FormControl, FormField, FormItem, FormMessage,
+} from "@/components/ui/form";
+import { useTransition } from 'react';
+import { createNewComment } from '@/lib/actions/comment.action';
+import { toast } from 'react-toastify';
+
+const formSchema = z.object({
+    content: z.string({ message: "Vui lòng nhập bình luận" }).min(10, { message: "Comment must be at least 10 characters long." })
+})
+
+const CommentForm = ({ lessonId, userId }: { lessonId: string; userId: string; }) => {
+    const [isPending, startTransition] = useTransition();
+
+    // 1. Define your form.
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+
+        },
+    });
+
+    // 2. Define a submit handler.
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        startTransition(async () => {
+            const res = await createNewComment({
+                content: values.content,
+                lesson: lessonId,
+                user: userId
+            });
+            if (!res) {
+                toast.error("Đăng bình luận thất bại");
+                return;
+            }
+            else {
+                toast.success("Đăng bình luận thành công");
+                form.setValue("content", "");
+            }
+        })
+    }
+
+    return (
+        <>
+            <Form {...form}>
+                <form
+                    className='flex flex-col gap-5 mt-10'
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    autoComplete="off"
+                >
+                    <FormField
+                        control={form.control}
+                        name="content"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormControl>
+                                    <Textarea placeholder='Nhập bình luận của bạn...' className='min-h-[150px]' {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <Button
+                        isLoading={isPending}
+                        type='submit'
+                        variant={'primary'}
+                        className='w-[70px] ml-auto'
+                    >
+                        Đăng
+                    </Button>
+                </form>
+            </Form>
+        </>
+    );
+};
+
+export default CommentForm;
