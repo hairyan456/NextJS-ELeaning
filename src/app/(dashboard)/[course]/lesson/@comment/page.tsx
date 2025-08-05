@@ -6,8 +6,9 @@ import { auth } from '@clerk/nextjs/server';
 import { getUserInfo } from '@/lib/actions/user.actions';
 import { getCommentsByLesson } from '@/lib/actions/comment.action';
 import { ICommentItem } from '@/types';
-import { formatDateVN, timeAgo } from '@/utils';
+import { timeAgo } from '@/utils';
 import Image from 'next/image';
+import CommentReply from './CommentReply';
 
 const page = async ({ params, searchParams }: {
     params: { course: string };
@@ -28,7 +29,7 @@ const page = async ({ params, searchParams }: {
     const comments = await getCommentsByLesson(lesson?._id?.toString() || "");
     const renderCommentItem = (comment: ICommentItem) => {
         return (
-            <div className='flex items-start gap-3 p-3 rounded-xl bgDarkMode shadow-sm border borderDarkMode'>
+            <div key={comment._id} className='flex items-start gap-3 p-3 rounded-xl bgDarkMode shadow-sm border borderDarkMode'>
                 <div className="size-10 border rounded-full borderDarkMode shadow-sm flex-shrink-0">
                     <Image
                         alt='avatar user'
@@ -38,17 +39,17 @@ const page = async ({ params, searchParams }: {
                     />
                 </div>
 
-                <div className='flex flex-col gap-1'>
+                <div className='flex flex-col gap-1 w-full'>
                     <div className='flex items-center gap-3'>
                         <h4 className='font-bold'>{comment.user.name}</h4>
                         <span className='text-sm text-gray-400 font-medium'>{timeAgo(comment.created_at.toString())}</span>
                     </div>
                     <p className='mb-3 text-sm leading-relaxed text-gray-900 dark:text-white'>{comment.content}</p>
-                    <div className='flex items-center gap-5 text-sm text-gray-400 font-medium'>
-                        <span>{formatDateVN(comment.created_at.toString())}</span>
-                        <span className='rounded-full size-1 bg-gray-300'></span>
-                        <button type='button'>Reply</button>
-                    </div>
+                    <CommentReply
+                        lessonId={lesson?._id.toString() || ""}
+                        userId={findUser?._id.toString() || ""}
+                        comment={comment}
+                    />
                 </div>
             </div>
         )

@@ -10,12 +10,13 @@ import {
 import { useTransition } from 'react';
 import { createNewComment } from '@/lib/actions/comment.action';
 import { toast } from 'react-toastify';
+import { ICommentItem } from '@/types';
 
 const formSchema = z.object({
     content: z.string({ message: "Vui lòng nhập bình luận" }).min(10, { message: "Comment must be at least 10 characters long." })
 })
 
-const CommentForm = ({ lessonId, userId }: { lessonId: string; userId: string; }) => {
+const CommentForm = ({ lessonId, userId, comment }: { lessonId: string; userId: string; comment?: ICommentItem; }) => {
     const [isPending, startTransition] = useTransition();
 
     // 1. Define your form.
@@ -32,7 +33,9 @@ const CommentForm = ({ lessonId, userId }: { lessonId: string; userId: string; }
             const res = await createNewComment({
                 content: values.content,
                 lesson: lessonId,
-                user: userId
+                user: userId,
+                level: comment && comment?.level >= 0 ? comment?.level + 1 : 0,
+                parentId: comment?._id,
             });
             if (!res) {
                 toast.error("Đăng bình luận thất bại");
@@ -49,7 +52,7 @@ const CommentForm = ({ lessonId, userId }: { lessonId: string; userId: string; }
         <>
             <Form {...form}>
                 <form
-                    className='flex flex-col gap-5 mt-10'
+                    className='flex flex-col gap-5'
                     onSubmit={form.handleSubmit(onSubmit)}
                     autoComplete="off"
                 >

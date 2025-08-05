@@ -7,6 +7,8 @@ export interface IComment extends Document {
     status: ECommentStatus;
     lesson: Schema.Types.ObjectId;
     user: Schema.Types.ObjectId;
+    level: number;
+    parentId?: Schema.Types.ObjectId;
     created_at: Date;
 }
 
@@ -27,6 +29,14 @@ const commentSchema = new Schema<IComment>({
         type: String,
         default: ECommentStatus.PENDING,
         enum: Object.values(ECommentStatus),
+    },
+    level: {
+        type: Number,
+        default: 0,
+    },
+    parentId: {
+        type: Schema.Types.ObjectId,
+        ref: "Comment"
     },
     created_at: {
         type: Date,

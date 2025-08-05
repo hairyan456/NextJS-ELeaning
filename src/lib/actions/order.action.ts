@@ -66,6 +66,7 @@ export async function getOrderDetail({ code }: { code: string }) {
 export async function createNewOrder(params: ICreateOrderParams) {
     try {
         connectToDatabase();
+        // if (!params.coupon) delete params.coupon; // cách fix khác nếu không truyền coupon khi tạo Đơn hàng.
         const newOrder = await Order.create({ ...params, coupon: params.coupon ? params.coupon : null });
         if (params?.coupon) {
             await Coupon.findByIdAndUpdate(params.coupon, {

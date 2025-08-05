@@ -190,6 +190,8 @@ interface ICreateCommentParams {
     content: string;
     lesson: string;
     user: string;
+    level: number;
+    parentId?: string;
 }
 
 interface ICommentItem extends Omit<IComment, "user"> {
