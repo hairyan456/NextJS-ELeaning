@@ -1,7 +1,7 @@
 'use client';
 
 import { IconStar } from "@/components/icons";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import {
     Dialog,
     DialogContent,
@@ -9,8 +9,8 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@/components/ui/dialog";
-import { Textarea } from "@/components/ui/textarea";
+} from "@/shared/components/ui/dialog";
+import { Textarea } from "@/shared/components/ui/textarea";
 import { ratingList } from "@/constants";
 import { createNewRating, getRatingByUserId } from "@/lib/actions/rating.action";
 import { cn } from "@/lib/utils";

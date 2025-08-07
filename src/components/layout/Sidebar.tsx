@@ -3,10 +3,9 @@ import React from 'react';
 import { menuItems } from '@/constants';
 import { IMenuItems } from '@/types';
 import Link from 'next/link';
-import { ActiveLink } from '../common';
 import { UserButton, useAuth } from '@clerk/nextjs';
-import { ModeToggle } from '../common/ModeToggle';
 import { IconUsers } from '../icons';
+import { ActiveLink, ModeToggle } from '@/shared/components';
 
 const Sidebar = () => {
     const { userId } = useAuth();

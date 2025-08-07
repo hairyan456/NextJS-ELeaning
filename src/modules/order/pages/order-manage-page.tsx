@@ -1,10 +1,5 @@
 "use client";
-import { StatusBadge } from "@/components/common";
-import EmptyData from "@/components/common/EmptyData";
-import Pagination from "@/components/common/Pagination";
 import { IconCancel, IconCheck } from "@/components/icons";
-import Heading from "@/components/typography/Heading";
-import { Input } from "@/components/ui/input";
 import {
     Select,
     SelectContent,
@@ -12,7 +7,7 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select";
+} from "@/shared/components/ui/select";
 import {
     Table,
     TableBody,
@@ -20,36 +15,22 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
+} from "@/shared/components/ui/table";
 import { allValue, commonClassName, orderStatus } from "@/constants";
 import useQueryString from "@/hooks/useQueryString";
 import { updateOrder } from "@/lib/actions/order.action";
 import { cn } from "@/lib/utils";
-import { EOrderStatus } from "@/types/enums";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import { IOrderManageProps } from "../types/order.types";
+import { EmptySpace, Heading, Pagination, StatusBadge } from "@/shared/components";
+import { Input } from "@/shared/components/ui/input";
+import { EOrderStatus } from "@/shared/types/enum";
 
-interface IOrderManageProps {
-    _id: string;
-    code: string;
-    total: number;
-    amount: number;
-    discount: number;
-    status: EOrderStatus;
-    coupon: {
-        code: string;
-    };
-    course: {
-        title: string;
-    };
-    user: {
-        name: string;
-    };
-}
-const OrderManage = ({ orders = [], totalPages = 1, total }: { orders: IOrderManageProps[]; totalPages: number; total: number; }) => {
+const OrderManagePage = ({ orders = [], totalPages = 1, total }: IOrderManageProps) => {
     const { handleSearchData, handleSelectStatus } = useQueryString();
 
-    const handleUpdateOrder = async ({ orderId, status }: { orderId: string; status: EOrderStatus; }) => {
+    const handleUpdateOrder = async ({ orderId, status }: { orderId: string; status: EOrderStatus }) => {
         if (status === EOrderStatus.CANCELED) {
             Swal.fire({
                 title: "Bạn có chắc muốn hủy đơn hàng không?",
@@ -119,7 +100,7 @@ const OrderManage = ({ orders = [], totalPages = 1, total }: { orders: IOrderMan
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {orders?.length <= 0 && <EmptyData />}
+                    {orders?.length <= 0 && <EmptySpace />}
                     {orders?.length > 0 &&
                         orders.map((order) => {
                             const orderStatusItem = orderStatus.find((item) => item.value === order.status);
@@ -186,4 +167,4 @@ const OrderManage = ({ orders = [], totalPages = 1, total }: { orders: IOrderMan
     );
 };
 
-export default OrderManage;
+export default OrderManagePage;

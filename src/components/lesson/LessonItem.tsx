@@ -2,8 +2,8 @@
 import Link from "next/link";
 import { IconPlay } from "../icons";
 import { cn } from "@/lib/utils";
-import { Checkbox } from "../ui/checkbox";
 import { createNewHistory } from "@/lib/actions/history.action";
+import { Checkbox } from "@/shared/components/ui/checkbox";
 
 interface ILessonItem {
     lesson: {

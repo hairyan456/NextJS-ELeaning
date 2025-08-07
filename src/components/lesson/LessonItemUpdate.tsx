@@ -1,6 +1,6 @@
 "use client";
 import { ILesson } from '@/database/lesson.model';
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";;
@@ -11,8 +11,8 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input";
+} from "@/shared/components/ui/form"
+import { Input } from "@/shared/components/ui/input";
 import { toast } from 'react-toastify';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';

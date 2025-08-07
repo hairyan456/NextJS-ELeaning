@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/shared/components/ui/button"
 import {
     Form,
     FormControl,
@@ -11,13 +11,12 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+} from "@/shared/components/ui/form"
+import { Input } from "@/shared/components/ui/input"
 import { vi } from "zod/locales";
 import { useState } from "react"
 import { toast } from "react-toastify"
 import { useRouter } from "next/navigation"
-import { Textarea } from "../ui/textarea"
 import { ECourseLevel, ECourseStatus } from "@/types/enums"
 import { updateCourse } from "@/lib/actions/course.action"
 import { ICourse } from "@/database/course.model";
@@ -29,10 +28,11 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select"
+} from "@/shared/components/ui/select"
 import { courseLevel, courseStatus } from "@/constants"
 import { UploadButton } from "@/utils/uploadthing"
 import Image from "next/image"
+import { Textarea } from "@/shared/components/ui/textarea"
 
 const formSchema = z.object({
     title: z.string().min(10, "Tên khóa học phải có ít nhất 10 ký tự").max(100, "Tên khóa học không được quá 100 ký tự"),

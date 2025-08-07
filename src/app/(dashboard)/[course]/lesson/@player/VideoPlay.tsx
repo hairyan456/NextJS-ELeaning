@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import LessonNavigation from "../LessonNavigation";
 import useGlobalStore from "@/store";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import RatingButton from "./RatingButton";
 
 const VideoPlay = ({ nextLesson, prevLesson, data }: { nextLesson: string; prevLesson: string; data: { userId: string; courseId: string; } }) => {

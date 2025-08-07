@@ -1,8 +1,6 @@
 "use client";
-import { BouncedLink, StatusBadge, TableAction } from "@/components/common";
 import { IconEdit } from "@/components/icons";
-import Heading from "@/components/typography/Heading";
-import { Input } from "@/components/ui/input";
+import { Input } from "@/shared/components/ui/input";
 import {
     Table,
     TableBody,
@@ -10,7 +8,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
+} from "@/shared/components/ui/table";
 import {
     Select,
     SelectContent,
@@ -18,14 +16,14 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select";
+} from "@/shared/components/ui/select";
 import { allValue, commonClassName, couponStatus } from "@/constants";
 import { ECouponType } from "@/types/enums";
 import Link from "next/link";
 import ActionDeleteCoupon from "./ActionDeleteCoupon";
 import { TCouponItem } from "@/types";
 import useQueryString from "@/hooks/useQueryString";
-import Pagination from "@/components/common/Pagination";
+import { BouncedLink, StatusBadge, TableAction, Pagination, Heading } from "@/shared/components";
 
 const CouponManage = ({ coupons, totalPages, total }: { coupons: TCouponItem[] | undefined; totalPages: number; total: number; }) => {
     const { handleSearchData, handleChangeQS } = useQueryString();

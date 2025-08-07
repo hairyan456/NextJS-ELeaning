@@ -1,8 +1,8 @@
 "use client";
 
-import { CourseGrid } from "@/components/common";
 import CourseItem from "@/components/course/CourseItem";
 import { lastLessonKey } from "@/constants";
+import { CourseGrid } from "@/shared/components";
 import { IStudyCoursesProps } from "@/types";
 
 const StudyCourses = ({ courses }: { courses: IStudyCoursesProps[] | null | undefined }) => {

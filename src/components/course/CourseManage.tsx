@@ -6,7 +6,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
+} from "@/shared/components/ui/table";
 import {
     Select,
     SelectContent,
@@ -14,8 +14,7 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select";
-import Heading from "../typography/Heading";
+} from "@/shared/components/ui/select";
 import Image from "next/image";
 import { allValue, commonClassName, courseStatus } from "@/constants";
 import { cn } from "@/lib/utils";
@@ -27,11 +26,11 @@ import { ICourse } from "@/database/course.model";
 import { updateCourse } from "@/lib/actions/course.action";
 import { ECourseStatus } from "@/types/enums";
 import { toast } from "react-toastify";
-import { Input } from "../ui/input";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import _ from 'lodash';
 import useQueryString from "@/hooks/useQueryString";
-import { BouncedLink } from "../common";
+import { Input } from "@/shared/components/ui/input";
+import { BouncedLink, Heading } from "@/shared/components";
 
 const CourseManage = ({ courses }: { courses: ICourse[] }) => {
     const { handleSearchData, handleSelectStatus } = useQueryString();

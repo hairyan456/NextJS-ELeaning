@@ -4,22 +4,21 @@ import {
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
-} from "@/components/ui/accordion";
+} from "@/shared/components/ui/accordion";
 import { commonClassName } from "@/constants";
 import { IconCancel, IconCheck, IconDelete, IconEdit } from "../icons";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
 import { createNewLecture, updateLecture } from "@/lib/actions/lecture.action";
 import { toast } from "react-toastify";
 import { MouseEvent, useState } from "react";
 import Swal from "sweetalert2";
-import { ILecture } from "@/database/lecture.model";
 import { ICourseUpdateParams, IUpdateCourseLecture } from "@/types";
 import { cn } from "@/lib/utils";
 import { createNewLesson, updateLesson } from "@/lib/actions/lesson.action";
 import { ILesson } from "@/database/lesson.model";
 import slugify from "slugify";
 import LessonItemUpdate from "../lesson/LessonItemUpdate";
+import { Input } from "@/shared/components/ui/input";
+import { Button } from "@/shared/components/ui/button";
 
 const CourseUpdateContent = ({ course }: { course: ICourseUpdateParams }) => {
     const lectures = course?.lectures || [];

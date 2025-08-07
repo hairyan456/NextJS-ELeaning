@@ -1,9 +1,5 @@
 "use client";
-import { StatusBadge, TableAction } from "@/components/common";
-import Pagination from "@/components/common/Pagination";
-import TableActionItem from "@/components/common/TableActionItem";
-import Heading from "@/components/typography/Heading";
-import { Input } from "@/components/ui/input";
+import { Input } from "@/shared/components/ui/input";
 import {
     Select,
     SelectContent,
@@ -11,7 +7,7 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select";
+} from "@/shared/components/ui/select";
 import {
     Table,
     TableBody,
@@ -19,7 +15,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
+} from "@/shared/components/ui/table";
 import { allValue, ratingList, ratingStatus } from "@/constants";
 import useQueryString from "@/hooks/useQueryString";
 import { deleteRating, updateRating } from "@/lib/actions/rating.action";
@@ -29,6 +25,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import { Heading, Pagination, StatusBadge, TableAction, TableActionItem } from "@/shared/components";
 
 const RatingManage = ({ ratings, totalPages, total }: { ratings: TRatingItem[]; totalPages: number; total: number; }) => {
     const { handleSearchData, handleSelectStatus } = useQueryString();
