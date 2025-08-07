@@ -5,7 +5,7 @@ import CommentReply from "./CommentReply";
 import { ICommentItem } from "@/types";
 import { getRepliesComment, timeAgo } from "@/utils";
 import { cn } from "@/lib/utils";
-import { ECommentStatus } from "@/types/enums";
+import { ECommentStatus } from "@/shared/types/enum";
 
 const CommentItem = ({ comment, lessonId, userId, comments = [] }: {
     comment: ICommentItem;

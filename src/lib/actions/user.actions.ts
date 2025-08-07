@@ -2,7 +2,7 @@
 'use server';
 
 import User, { IUser } from "@/database/user.model";
-import { connectToDatabase } from "../mongoose";
+import { connectToDatabase } from "@/shared/lib/mongoose";
 import { ICreateUserParams } from "@/types";
 import { auth } from "@clerk/nextjs/server";
 import Course, { ICourse } from "@/database/course.model";

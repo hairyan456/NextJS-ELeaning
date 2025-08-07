@@ -22,9 +22,9 @@ import {
 } from "@/shared/components/ui/popover";
 import { RadioGroup, RadioGroupItem } from "@/shared/components/ui/radio-group";
 import { Switch } from "@/shared/components/ui/switch";
-import { IconCalendar, IconCancel } from "@/components/icons";
+import { IconCalendar, IconCancel } from "@/shared/components/icons";
 import { useEffect, useState } from "react";
-import { couponFormSchema, couponTypes } from "@/constants";
+import { couponFormSchema, couponTypes } from "@/shared/constants";
 import { ECouponType } from "@/types/enums";
 import { format } from "date-fns";
 import { updateCoupon } from "@/lib/actions/coupon.action";

@@ -1,7 +1,7 @@
 import { getAllRatings } from '@/lib/actions/rating.action';
 import RatingManage from './RatingManage';
 import { ERatingStatus } from '@/types/enums';
-import { ITEMS_PER_PAGE } from '@/constants';
+import { ITEMS_PER_PAGE } from '@/shared/constants';
 
 const page = async ({ searchParams }: { searchParams: { page: number; search: string; status: ERatingStatus } }) => {
     const data = await getAllRatings({

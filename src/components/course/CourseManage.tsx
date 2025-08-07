@@ -16,17 +16,17 @@ import {
     SelectValue,
 } from "@/shared/components/ui/select";
 import Image from "next/image";
-import { allValue, commonClassName, courseStatus } from "@/constants";
+import { allValue, commonClassName, courseStatus } from "@/shared/constants";
 import { cn } from "@/lib/utils";
-import IconEdit from "../icons/IconEdit";
-import { IconDelete, IconEye, IconStudy } from "../icons";
+import IconEdit from "../../shared/components/icons/IconEdit";
+import { IconDelete, IconEye, IconStudy } from "../../shared/components/icons";
 import Link from "next/link";
 import Swal from "sweetalert2";
 import { ICourse } from "@/database/course.model";
 import { updateCourse } from "@/lib/actions/course.action";
 import { ECourseStatus } from "@/types/enums";
 import { toast } from "react-toastify";
-import {  useState } from "react";
+import { useState } from "react";
 import _ from 'lodash';
 import useQueryString from "@/hooks/useQueryString";
 import { Input } from "@/shared/components/ui/input";

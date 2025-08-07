@@ -1,5 +1,5 @@
 
-import Heading from "@/components/typography/Heading";
+import { Heading } from "@/shared/components";
 import NewCouponForm from "./NewCouponForm";
 
 const page = () => {

@@ -1,5 +1,5 @@
 import CourseAddNewForm from '@/components/course/CourseAddNewForm';
-import Heading from '@/components/typography/Heading';
+import { Heading } from '@/shared/components';
 import { getUserInfo } from '@/lib/actions/user.actions';
 import { auth } from '@clerk/nextjs/server';
 

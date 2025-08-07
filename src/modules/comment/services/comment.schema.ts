@@ -1,4 +1,4 @@
-import { ECommentStatus } from "@/types/enums";
+import { ECommentStatus } from "@/shared/types/enum";
 import { Document, Schema, model, models } from "mongoose";
 
 export interface IComment extends Document {
@@ -45,5 +45,5 @@ const commentSchema = new Schema<IComment>({
     },
 });
 
-const Comment = models?.Comment || model<IComment>("Comment", commentSchema);
-export default Comment;
+const CommentSchema = models?.Comment || model<IComment>("Comment", commentSchema);
+export default CommentSchema;

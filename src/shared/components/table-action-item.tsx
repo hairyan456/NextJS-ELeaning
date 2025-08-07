@@ -1,5 +1,5 @@
-import { IconCheck, IconDelete, IconEdit, IconEye, IconStudy } from "@/components/icons";
-import { commonClassName } from "@/constants";
+import { IconCheck, IconDelete, IconEdit, IconEye, IconStudy } from "@/shared/components/icons";
+import { commonClassName } from "@/shared/constants";
 import Link from "next/link";
 
 type TableActionIcon = "edit" | "delete" | "view" | "study" | "approve";

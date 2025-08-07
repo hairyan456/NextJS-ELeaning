@@ -1,5 +1,5 @@
 "use client";
-import { IconCancel, IconCheck } from "@/components/icons";
+import { IconCancel, IconCheck } from "@/shared/components/icons";
 import {
     Select,
     SelectContent,
@@ -16,7 +16,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/shared/components/ui/table";
-import { allValue, commonClassName, orderStatus } from "@/constants";
+import { allValue, commonClassName, orderStatus } from "@/shared/constants";
 import useQueryString from "@/hooks/useQueryString";
 import { updateOrder } from "@/lib/actions/order.action";
 import { cn } from "@/lib/utils";

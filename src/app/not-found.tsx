@@ -1,4 +1,4 @@
-import { IconHome } from '@/components/icons';
+import { IconHome } from '@/shared/components/icons';
 import Link from 'next/link';
 import React from 'react';
 

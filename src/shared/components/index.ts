@@ -9,4 +9,7 @@ export { default as TableActionItem } from './table-action-item';
 export { default as Pagination } from './pagination';
 export { default as ThemeProvider } from './theme-provider';
 export { default as ModeToggle } from './mode-toggle';
+export { default as MenuItem } from './menu-item';
+export { default as Sidebar } from './layout/sidebar';
+
 

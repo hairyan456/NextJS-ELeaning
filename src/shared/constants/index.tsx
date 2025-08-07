@@ -1,4 +1,4 @@
-import { IconExplore, IconPlay, IconComment, IconOrder, IconStudy, IconUsers, IconCoupon, IconStar } from "@/components/icons";
+import { IconExplore, IconPlay, IconComment, IconOrder, IconStudy, IconUsers, IconCoupon, IconStar } from "@/shared/components/icons";
 import { IMenuItems, TRatingIcon } from "@/types";
 import { ECouponType, ECourseLevel, ECourseStatus, EOrderStatus, ERatingStatus } from "@/types/enums";
 import { z } from "zod";

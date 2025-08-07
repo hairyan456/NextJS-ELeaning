@@ -1,7 +1,7 @@
 'use server';
 
 import Order from "@/database/order.model";
-import { connectToDatabase } from "../mongoose";
+import { connectToDatabase } from "@/shared/lib/mongoose";
 import { ICreateOrderParams } from "@/types";
 import { FilterQuery } from "mongoose";
 import Course from "@/database/course.model";

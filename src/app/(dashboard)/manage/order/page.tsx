@@ -1,6 +1,6 @@
 
 import { fetchOrders } from "@/lib/actions/order.action";
-import { ITEMS_PER_PAGE } from "@/constants";
+import { ITEMS_PER_PAGE } from "@/shared/constants";
 import OrderManagePage from "@/modules/order/pages/order-manage-page";
 import { OrderManagePageParams } from "@/modules/order/types/order.types";
 

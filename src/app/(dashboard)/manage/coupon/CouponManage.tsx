@@ -1,5 +1,5 @@
 "use client";
-import { IconEdit } from "@/components/icons";
+import { IconEdit } from "@/shared/components/icons";
 import { Input } from "@/shared/components/ui/input";
 import {
     Table,
@@ -17,7 +17,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/shared/components/ui/select";
-import { allValue, commonClassName, couponStatus } from "@/constants";
+import { allValue, commonClassName, couponStatus } from "@/shared/constants";
 import { ECouponType } from "@/types/enums";
 import Link from "next/link";
 import ActionDeleteCoupon from "./ActionDeleteCoupon";

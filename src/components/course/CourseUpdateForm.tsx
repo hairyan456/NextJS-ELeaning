@@ -21,7 +21,7 @@ import { ECourseLevel, ECourseStatus } from "@/types/enums"
 import { updateCourse } from "@/lib/actions/course.action"
 import { ICourse } from "@/database/course.model";
 import { useImmer } from 'use-immer';
-import { IconAdd } from "../icons";
+import { IconAdd } from "../../shared/components/icons";
 import {
     Select,
     SelectContent,
@@ -29,7 +29,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/shared/components/ui/select"
-import { courseLevel, courseStatus } from "@/constants"
+import { courseLevel, courseStatus } from "@/shared/constants"
 import { UploadButton } from "@/utils/uploadthing"
 import Image from "next/image"
 import { Textarea } from "@/shared/components/ui/textarea"

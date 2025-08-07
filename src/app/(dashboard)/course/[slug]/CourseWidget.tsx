@@ -1,5 +1,5 @@
 'use client';
-import { IconPlay, IconStudy, IconUsers } from '@/components/icons';
+import { IconPlay, IconStudy, IconUsers } from '@/shared/components/icons';
 import ButtonEnroll from './ButtonEnroll';
 import CouponForm from './CouponForm';
 import { useState } from 'react';

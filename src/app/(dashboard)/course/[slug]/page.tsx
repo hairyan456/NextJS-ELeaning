@@ -1,6 +1,5 @@
 import PageNotFound from '@/app/not-found';
-import { IconCheck } from '@/components/icons';
-import { courseLevelTitle } from '@/constants';
+import { IconCheck } from '@/shared/components/icons';
 import { getCourseBySlug, getCourseLessonsInfo, updateCourseView } from '@/lib/actions/course.action';
 import { ECourseStatus } from '@/types/enums';
 import Image from 'next/image';
@@ -16,6 +15,7 @@ import { getUserInfo } from '@/lib/actions/user.actions';
 import CourseWidget from './CourseWidget';
 import AlreadyEnroll from './AlreadyEnroll';
 import { formatMinutesToHour } from '@/utils';
+import { courseLevelTitle } from '@/shared/constants';
 
 const page = async ({ params }: { params: { slug: string } }) => {
     await updateCourseView({ slug: params.slug }); // tăng 1 lượt xem khóa học mỗi khi truy cập

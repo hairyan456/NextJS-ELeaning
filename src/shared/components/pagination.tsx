@@ -2,8 +2,8 @@
 import useQueryString from "@/hooks/useQueryString";
 import { debounce } from "lodash";
 import React from "react";
-import { ITEMS_PER_PAGE } from "@/constants";
-import { IconArrowLeft, IconArrowRight, IconDoubleLeftArrow, IconDoubleRightArrow } from "@/components/icons";
+import { ITEMS_PER_PAGE } from "@/shared/constants";
+import { IconArrowLeft, IconArrowRight, IconDoubleLeftArrow, IconDoubleRightArrow } from "@/shared/components/icons";
 
 interface IPaginateProps {
     totalPages: number;

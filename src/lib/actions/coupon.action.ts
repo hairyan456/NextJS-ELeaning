@@ -1,7 +1,7 @@
 'use server';
 
 import Coupon, { ICoupon } from "@/database/coupon.model";
-import { connectToDatabase } from "../mongoose";
+import { connectToDatabase } from "@/shared/lib/mongoose";
 import { revalidatePath } from "next/cache";
 import { IFilterData, TCouponItem, TCouponParams, TCreateCouponParams, TUpdateCouponParams } from "@/types";
 import { FilterQuery } from "mongoose";

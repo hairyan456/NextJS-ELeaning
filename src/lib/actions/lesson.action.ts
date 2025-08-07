@@ -1,6 +1,6 @@
 'use server';
 import { ICreateLessonParams, IUpdateLessonParams } from "@/types";
-import { connectToDatabase } from "../mongoose";
+import { connectToDatabase } from "@/shared/lib/mongoose";
 import Course from "@/database/course.model";
 import Lecture from "@/database/lecture.model";
 import Lesson, { ILesson } from "@/database/lesson.model";

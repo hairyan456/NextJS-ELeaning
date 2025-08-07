@@ -5,8 +5,8 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/shared/components/ui/accordion";
-import { commonClassName } from "@/constants";
-import { IconCancel, IconCheck, IconDelete, IconEdit } from "../icons";
+import { commonClassName } from "@/shared/constants";
+import { IconCancel, IconCheck, IconDelete, IconEdit } from "../../shared/components/icons";
 import { createNewLecture, updateLecture } from "@/lib/actions/lecture.action";
 import { toast } from "react-toastify";
 import { MouseEvent, useState } from "react";

@@ -4,3 +4,9 @@ export enum EOrderStatus {
     COMPLETED = "COMPLETED",
     CANCELED = "CANCELED"
 };
+
+export enum ECommentStatus {
+    APPROVED = "APPROVED",
+    PENDING = "PENDING",
+    REJECTED = "REJECTED"
+};

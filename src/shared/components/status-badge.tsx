@@ -1,5 +1,5 @@
 
-import { commonClassName } from "@/constants";
+import { commonClassName } from "@/shared/constants";
 import { cn } from "@/lib/utils";
 
 interface StatusBadgeProps {

@@ -8,10 +8,10 @@ import {
     Form, FormControl, FormField, FormItem, FormMessage,
 } from "@/shared/components/ui/form";
 import { useTransition } from 'react';
-import { createNewComment } from '@/lib/actions/comment.action';
 import { toast } from 'react-toastify';
 import { ICommentItem } from '@/types';
 import { usePathname, useSearchParams } from 'next/navigation';
+import { createNewComment } from '@/modules/comment/services/comment.action';
 
 const formSchema = z.object({
     content: z.string({ message: "Vui lòng nhập bình luận" }).min(10, { message: "Comment must be at least 10 characters long." })

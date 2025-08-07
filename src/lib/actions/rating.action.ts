@@ -1,7 +1,7 @@
 'use server';
 
 import Rating from "@/database/rating.model";
-import { connectToDatabase } from "../mongoose";
+import { connectToDatabase } from "@/shared/lib/mongoose";
 import { ICreateRatingParams, IFilterData, TRatingItem } from "@/types";
 import Course from "@/database/course.model";
 import { revalidatePath } from "next/cache";

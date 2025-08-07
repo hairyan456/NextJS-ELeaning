@@ -16,7 +16,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/shared/components/ui/table";
-import { allValue, ratingList, ratingStatus } from "@/constants";
+import { allValue, ratingList, ratingStatus } from "@/shared/constants";
 import useQueryString from "@/hooks/useQueryString";
 import { deleteRating, updateRating } from "@/lib/actions/rating.action";
 import { TRatingItem } from "@/types";

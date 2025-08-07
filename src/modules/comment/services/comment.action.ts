@@ -1,14 +1,14 @@
 'use server';
-import Comment from "@/database/comment.model";
-import { connectToDatabase } from "@/shared/lib/mongoose";
 import { ICommentItem, ICreateCommentParams } from "@/types";
 import User from "@/database/user.model";
 import { revalidatePath } from "next/cache";
+import { connectToDatabase } from "@/shared/lib/mongoose";
+import CommentSchema from "./comment.schema";
 
 export async function getCommentsByLesson(lessonId: string, sort: "recent" | "oldest" = "recent"): Promise<ICommentItem[] | undefined> {
     try {
         connectToDatabase();
-        const comments = await Comment.find<ICommentItem>({
+        const comments = await CommentSchema.find<ICommentItem>({
             lesson: lessonId,
             // status: ECommentStatus.APPROVED
         })
@@ -28,7 +28,7 @@ export async function getCommentsByLesson(lessonId: string, sort: "recent" | "ol
 export async function createNewComment(params: ICreateCommentParams): Promise<boolean | undefined> {
     try {
         connectToDatabase();
-        const newComment = await Comment.create(params);
+        const newComment = await CommentSchema.create(params);
         revalidatePath(params?.path || "/");
         return (!newComment?._id) ? false : true;
     } catch (error) {

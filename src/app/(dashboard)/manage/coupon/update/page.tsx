@@ -1,4 +1,4 @@
-import Heading from '@/components/typography/Heading';
+import { Heading } from '@/shared/components';
 import React from 'react';
 import UpdateCouponForm from './UpdateCouponForm';
 import PageNotFound from '@/app/not-found';

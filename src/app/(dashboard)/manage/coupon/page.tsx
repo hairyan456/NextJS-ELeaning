@@ -1,6 +1,6 @@
 import { getAllCoupons } from "@/lib/actions/coupon.action";
 import CouponManage from "./CouponManage";
-import { ITEMS_PER_PAGE } from "@/constants";
+import { ITEMS_PER_PAGE } from "@/shared/constants";
 
 
 const page = async ({ searchParams }: { searchParams: { page: number; search: string; active: boolean } }) => {

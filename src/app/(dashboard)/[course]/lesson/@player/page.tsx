@@ -2,10 +2,10 @@ import { getCourseBySlug } from "@/lib/actions/course.action";
 import LessonSaveUrl from "../LessonSaveUrl";
 import PageNotFound from "@/app/not-found";
 import { findAllLessons } from "@/lib/actions/lesson.action";
-import Heading from "@/components/typography/Heading";
 import VideoPlay from "./VideoPlay";
 import { auth } from "@clerk/nextjs/server";
 import { getUserInfo } from "@/lib/actions/user.actions";
+import { Heading } from "@/shared/components";
 
 const page = async ({ params, searchParams }: {
     params: { course: string };

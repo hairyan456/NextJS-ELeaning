@@ -4,9 +4,9 @@ import { getLessonBySlug } from '@/lib/actions/lesson.action';
 import PageNotFound from '@/app/not-found';
 import { auth } from '@clerk/nextjs/server';
 import { getUserInfo } from '@/lib/actions/user.actions';
-import { getCommentsByLesson } from '@/lib/actions/comment.action';
 import CommentItem from './CommentItem';
 import CommentSorting from './CommentSorting';
+import { getCommentsByLesson } from '@/modules/comment/services/comment.action';
 
 const page = async ({ params, searchParams }: {
     params: { course: string };

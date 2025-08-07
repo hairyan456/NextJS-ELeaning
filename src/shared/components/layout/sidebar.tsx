@@ -1,11 +1,9 @@
 'use client';
-import React from 'react';
-import { menuItems } from '@/constants';
-import { IMenuItems } from '@/types';
 import Link from 'next/link';
 import { UserButton, useAuth } from '@clerk/nextjs';
-import { IconUsers } from '../icons';
-import { ActiveLink, ModeToggle } from '@/shared/components';
+import { MenuItem, ModeToggle } from '@/shared/components';
+import { IconUsers } from '@/shared/components/icons';
+import { menuItems } from '@/shared/constants';
 
 const Sidebar = () => {
     const { userId } = useAuth();
@@ -37,19 +35,6 @@ const Sidebar = () => {
             </div>
         </div>
     );
-};
-
-export function MenuItem({ url = "/", title = "", icon, onlyIcon = false }: IMenuItems) {
-    return (
-        <li>
-            <ActiveLink
-                url={url}
-            >
-                {icon}
-                {!onlyIcon && title}
-            </ActiveLink>
-        </li>
-    )
 };
 
 

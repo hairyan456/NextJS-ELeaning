@@ -1,6 +1,6 @@
 'use server';
 import { ICourseUpdateParams, ICreateCourseParams, IGetAllCourseParams, IUpdateCourseParams, IStudyCoursesProps, IFilterData } from "@/types";
-import { connectToDatabase } from "../mongoose";
+import { connectToDatabase } from "@/shared/lib/mongoose";
 import Course, { ICourse } from "@/database/course.model";
 import { revalidatePath } from "next/cache";
 import Lecture from "@/database/lecture.model";

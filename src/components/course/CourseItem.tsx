@@ -3,11 +3,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import { IconClock, IconEye, IconStar } from '../icons';
-import { commonClassName } from '@/constants';
+import { IconClock, IconEye, IconStar } from '../../shared/components/icons';
 import { IStudyCoursesProps } from '@/types';
 import { formatMinutesToHour, formatNumberToK } from '@/utils';
 import { getCourseLessonsInfo } from '@/lib/actions/course.action';
+import { commonClassName } from '@/shared/constants';
 
 const CourseItem = ({ data, cta, url = '' }: { data?: IStudyCoursesProps; cta?: string; url?: string; }) => {
     const [duration, setDuration] = useState<number>(0);

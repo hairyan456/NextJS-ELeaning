@@ -1,5 +1,5 @@
 import CourseUpdateForm from '@/components/course/CourseUpdateForm';
-import Heading from '@/components/typography/Heading';
+import { Heading } from '@/shared/components';
 import { getCourseBySlug } from '@/lib/actions/course.action';
 import React from 'react';
 

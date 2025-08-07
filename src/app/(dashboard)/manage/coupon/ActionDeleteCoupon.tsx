@@ -1,12 +1,11 @@
 'use client';
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
-
-import { IconDelete } from "@/components/icons";
+import { IconDelete } from "@/shared/components/icons";
 import { deleteCoupon } from "@/lib/actions/coupon.action";
 
 const ActionDeleteCoupon = ({ code, className }: { code: string, className: string; }) => {
-    
+
     const handleDeleteCoupon = async (code: string) => {
         if (!code) return;
         try {

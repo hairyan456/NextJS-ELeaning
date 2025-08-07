@@ -19,8 +19,8 @@ import { useEffect, useRef, useState } from 'react';
 import { updateLesson } from '@/lib/actions/lesson.action';
 import { Editor as ReactEditor } from '@tinymce/tinymce-react';
 import { Editor as TinyMCEEditor } from 'tinymce';
-import { editorOptions } from '@/constants';
 import { useTheme } from 'next-themes';
+import { editorOptions } from '@/shared/constants';
 
 const formSchema = z.object({
     slug: z.string().optional(),
