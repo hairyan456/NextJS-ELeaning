@@ -1,11 +1,7 @@
-import React from 'react';
+import React from 'react'
 
 const page = () => {
-    return (
-        <div>
-            manage users
-        </div>
-    );
-};
+  return <div>manage users</div>
+}
 
-export default page;
+export default page

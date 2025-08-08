@@ -1,103 +1,112 @@
-'use client';
-import { Button } from '@/shared/components/ui/button';
-import { Textarea } from '@/shared/components/ui/textarea';
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+'use client'
+import { Button } from '@/shared/components/ui/button'
+import { Textarea } from '@/shared/components/ui/textarea'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 import {
-    Form, FormControl, FormField, FormItem, FormMessage,
-} from "@/shared/components/ui/form";
-import { useTransition } from 'react';
-import { toast } from 'react-toastify';
-import { ICommentItem } from '@/types';
-import { usePathname, useSearchParams } from 'next/navigation';
-import { createNewComment } from '@/modules/comment/services/comment.action';
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/shared/components/ui/form'
+import { useTransition } from 'react'
+import { toast } from 'react-toastify'
+import { ICommentItem } from '@/types'
+import { usePathname, useSearchParams } from 'next/navigation'
+import { createNewComment } from '@/modules/comment/services/comment.action'
 
 const formSchema = z.object({
-    content: z.string({ message: "Vui lòng nhập bình luận" }).min(10, { message: "Comment must be at least 10 characters long." })
+  content: z
+    .string({ message: 'Vui lòng nhập bình luận' })
+    .min(10, { message: 'Comment must be at least 10 characters long.' }),
 })
 
 interface CommentFormProps {
-    lessonId: string;
-    userId: string;
-    comment?: ICommentItem;
-    isReply?: boolean;
-    closeReply?: () => void;
-};
+  lessonId: string
+  userId: string
+  comment?: ICommentItem
+  isReply?: boolean
+  closeReply?: () => void
+}
 
-const CommentForm = ({ lessonId, userId, comment, isReply, closeReply = () => { } }: CommentFormProps) => {
-    const [isPending, startTransition] = useTransition();
-    const pathName = usePathname();
-    const slug = useSearchParams().get("slug");
-    const path = `${pathName}?slug=${slug}`;
+const CommentForm = ({
+  lessonId,
+  userId,
+  comment,
+  isReply,
+  closeReply = () => {},
+}: CommentFormProps) => {
+  const [isPending, startTransition] = useTransition()
+  const pathName = usePathname()
+  const slug = useSearchParams().get('slug')
+  const path = `${pathName}?slug=${slug}`
 
-    // 1. Define your form.
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
+  // 1. Define your form.
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {},
+  })
 
-        },
-    });
+  // 2. Define a submit handler.
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    startTransition(async () => {
+      const hasComment = await createNewComment({
+        content: values.content,
+        lesson: lessonId,
+        user: userId,
+        level: comment && comment?.level >= 0 ? comment?.level + 1 : 0,
+        parentId: comment?._id,
+        path,
+      })
+      if (!hasComment) {
+        toast.error('Đăng bình luận thất bại')
+        return
+      } else {
+        toast.success('Đăng bình luận thành công')
+        form.setValue('content', '')
+        closeReply?.()
+      }
+    })
+  }
 
-    // 2. Define a submit handler.
-    async function onSubmit(values: z.infer<typeof formSchema>) {
-        startTransition(async () => {
-            const res = await createNewComment({
-                content: values.content,
-                lesson: lessonId,
-                user: userId,
-                level: comment && comment?.level >= 0 ? comment?.level + 1 : 0,
-                parentId: comment?._id,
-                path,
-            });
-            if (!res) {
-                toast.error("Đăng bình luận thất bại");
-                return;
-            }
-            else {
-                toast.success("Đăng bình luận thành công");
-                form.setValue("content", "");
-                closeReply?.();
-            }
-        })
-    }
+  return (
+    <>
+      <Form {...form}>
+        <form
+          autoComplete="off"
+          className="flex flex-col gap-5"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
+          <FormField
+            control={form.control}
+            name="content"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Textarea
+                    className={`${isReply ? 'min-h-[100px]' : 'min-h-[150px]'}`}
+                    placeholder="Nhập bình luận của bạn..."
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button
+            className="w-[70px] ml-auto"
+            isLoading={isPending}
+            type="submit"
+            variant={'primary'}
+          >
+            {isReply ? 'Phản hồi' : 'Đăng'}
+          </Button>
+        </form>
+      </Form>
+    </>
+  )
+}
 
-    return (
-        <>
-            <Form {...form}>
-                <form
-                    className='flex flex-col gap-5'
-                    onSubmit={form.handleSubmit(onSubmit)}
-                    autoComplete="off"
-                >
-                    <FormField
-                        control={form.control}
-                        name="content"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormControl>
-                                    <Textarea
-                                        placeholder='Nhập bình luận của bạn...'
-                                        className={`${isReply ? 'min-h-[100px]' : 'min-h-[150px]'}`}
-                                        {...field}
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <Button
-                        isLoading={isPending}
-                        type='submit'
-                        variant={'primary'}
-                        className='w-[70px] ml-auto'
-                    >
-                        {isReply ? "Phản hồi" : "Đăng"}
-                    </Button>
-                </form>
-            </Form>
-        </>
-    );
-};
-
-export default CommentForm;
+export default CommentForm

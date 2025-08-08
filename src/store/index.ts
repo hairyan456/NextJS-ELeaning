@@ -2,24 +2,25 @@ import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
 
 interface GlobalState {
-    expandedPlayer: boolean;
-    setExpandedPlayer: (expanded: boolean) => void;
+  isExpandedPlayer: boolean
+  setIsExpandedPlayer: (expanded: boolean) => void
 }
 
 const useGlobalStore = create<GlobalState>()(
-    devtools(
-        persist(
-            (set) => ({
-                expandedPlayer: false,
-                setExpandedPlayer: (expanded: boolean) => set({
-                    expandedPlayer: expanded,
-                }),
-            }),
-            {
-                name: 'global-storage',
-            },
-        ),
+  devtools(
+    persist(
+      (set) => ({
+        isExpandedPlayer: false,
+        setIsExpandedPlayer: (expanded: boolean) =>
+          set({
+            isExpandedPlayer: expanded,
+          }),
+      }),
+      {
+        name: 'global-storage',
+      },
     ),
+  ),
 )
 
-export default useGlobalStore;
+export default useGlobalStore

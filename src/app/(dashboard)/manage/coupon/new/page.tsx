@@ -1,14 +1,13 @@
-
-import { Heading } from "@/shared/components";
-import NewCouponForm from "./NewCouponForm";
+import { Heading } from '@/shared/components'
+import NewCouponForm from './NewCouponForm'
 
 const page = () => {
-    return (
-        <div>
-            <Heading className="mb-10">Tạo mới mã giảm giá</Heading>
-            <NewCouponForm></NewCouponForm>
-        </div>
-    );
-};
+  return (
+    <div>
+      <Heading className="mb-10">Tạo mới mã giảm giá</Heading>
+      <NewCouponForm></NewCouponForm>
+    </div>
+  )
+}
 
-export default page;
+export default page

@@ -1,36 +1,42 @@
-import { IconCheck, IconDelete, IconEdit, IconEye, IconStudy } from "@/shared/components/icons";
-import { commonClassName } from "@/shared/constants";
-import Link from "next/link";
+import {
+  IconCheck,
+  IconDelete,
+  IconEdit,
+  IconEye,
+  IconStudy,
+} from '@/shared/components/icons'
+import { commonClassName } from '@/shared/constants'
+import Link from 'next/link'
 
-type TableActionIcon = "edit" | "delete" | "view" | "study" | "approve";
+type TableActionIcon = 'edit' | 'delete' | 'view' | 'study' | 'approve'
 
 const TableActionItem = ({
-    onClick,
-    type,
-    url,
+  onClick,
+  type,
+  url,
 }: {
-    onClick?: () => void;
-    type: TableActionIcon;
-    url?: string;
+  onClick?: () => void
+  type: TableActionIcon
+  url?: string
 }) => {
-    const icon: Record<TableActionIcon, any> = {
-        edit: <IconEdit />,
-        delete: <IconDelete />,
-        view: <IconEye />,
-        study: <IconStudy />,
-        approve: <IconCheck />,
-    };
-    if (url)
-        return (
-            <Link href={url} className={commonClassName.action}>
-                {icon[type]}
-            </Link>
-        );
+  const icon: Record<TableActionIcon, React.JSX.Element> = {
+    edit: <IconEdit />,
+    delete: <IconDelete />,
+    view: <IconEye />,
+    study: <IconStudy />,
+    approve: <IconCheck />,
+  }
+  if (url)
     return (
-        <button className={commonClassName.action} onClick={onClick}>
-            {icon[type]}
-        </button>
-    );
-};
+      <Link className={commonClassName.action} href={url}>
+        {icon[type]}
+      </Link>
+    )
+  return (
+    <button className={commonClassName.action} onClick={onClick}>
+      {icon[type]}
+    </button>
+  )
+}
 
-export default TableActionItem;
+export default TableActionItem

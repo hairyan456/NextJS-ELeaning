@@ -1,15 +1,23 @@
-import React, { ComponentProps } from 'react';
+import { ComponentProps } from 'react'
 
-const IconArrowLeft
-    = (props: ComponentProps<"svg">) => {
-        return (
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"
-                className="size-6" {...props}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-            </svg>
+const IconArrowLeft = (props: ComponentProps<'svg'>) => {
+  return (
+    <svg
+      className="size-6"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.5}
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
 
-
-        );
-    };
-
-export default IconArrowLeft;
+export default IconArrowLeft
