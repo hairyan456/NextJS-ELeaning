@@ -1,15 +1,17 @@
-'use client'
+'use client';
 
-import useQueryString from '@/hooks/useQueryString'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation';
+
+import useQueryString from '@/hooks/useQueryString';
 
 const CommentSorting = () => {
-  const { createQueryString } = useQueryString()
-  const params = useSearchParams()
-  const sortValue = params.get('sort')
+  const { createQueryString } = useQueryString();
+  const params = useSearchParams();
+  const sortValue = params.get('sort');
   const handleSortComment = () => {
-    createQueryString('sort', sortValue === 'recent' ? 'oldest' : 'recent')
-  }
+    createQueryString('sort', sortValue === 'recent' ? 'oldest' : 'recent');
+  };
+
   return (
     <button
       className="flex items-center gap-2 text-sm font-medium"
@@ -32,7 +34,7 @@ const CommentSorting = () => {
       </svg>
       <span>{sortValue !== 'recent' ? 'Oldest' : 'Most recent'}</span>
     </button>
-  )
-}
+  );
+};
 
-export default CommentSorting
+export default CommentSorting;

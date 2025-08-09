@@ -1,26 +1,27 @@
-import PageNotFound from '@/app/not-found'
-import LessonContent from '@/components/lesson/LessonContent'
-import { getCourseBySlug } from '@/lib/actions/course.action'
-import { getHistory } from '@/lib/actions/history.action'
-import { countLessonsByCourseId } from '@/lib/actions/lesson.action'
+import PageNotFound from '@/app/not-found';
+import LessonContent from '@/components/lesson/LessonContent';
+import { getCourseBySlug } from '@/lib/actions/course.action';
+import { getHistory } from '@/lib/actions/history.action';
+import { countLessonsByCourseId } from '@/lib/actions/lesson.action';
 
 const page = async ({
   params,
   searchParams,
 }: {
-  params: { course: string }
-  searchParams: { slug: string }
+  params: { course: string };
+  searchParams: { slug: string };
 }) => {
-  const course = params.course
-  const slug = searchParams.slug
-  const findCourse = await getCourseBySlug({ slug: course })
-  if (!findCourse?._id) return <PageNotFound />
-  const courseId = findCourse?._id.toString()
-  const lectures = findCourse?.lectures || []
-  const histories = await getHistory({ course: courseId || '' })
-  const lessonsCount = await countLessonsByCourseId({ courseId })
+  const course = params.course;
+  const slug = searchParams.slug;
+  const findCourse = await getCourseBySlug({ slug: course });
+
+  if (!findCourse?._id) return <PageNotFound />;
+  const courseId = findCourse?._id.toString();
+  const lectures = findCourse?.lectures || [];
+  const histories = await getHistory({ course: courseId || '' });
+  const lessonsCount = await countLessonsByCourseId({ courseId });
   const completePercentage =
-    ((histories?.length || 0) / (lessonsCount || 1)) * 100
+    ((histories?.length || 0) / (lessonsCount || 1)) * 100;
 
   return (
     <div className="sticky right-0 top-5 max-h-[calc(100svh-100px)] overflow-y-auto">
@@ -40,7 +41,7 @@ const page = async ({
         slug={slug}
       />
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default page;

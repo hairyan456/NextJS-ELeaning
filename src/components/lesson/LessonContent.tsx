@@ -1,23 +1,24 @@
-import { IUpdateCourseLecture } from '@/types'
+import { IHistory } from '@/database/history.model';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/shared/components/ui/accordion'
-import LessonItem from './LessonItem'
-import { IHistory } from '@/database/history.model'
+} from '@/shared/components/ui/accordion';
+import { IUpdateCourseLecture } from '@/types';
+
+import LessonItem from './LessonItem';
 
 const LessonContent = ({
-  lectures,
   course,
-  slug,
   histories = [],
+  lectures,
+  slug,
 }: {
-  lectures: IUpdateCourseLecture[]
-  course: string
-  slug: string
-  histories?: IHistory[]
+  lectures: IUpdateCourseLecture[];
+  course: string;
+  slug: string;
+  histories?: IHistory[];
 }) => {
   return (
     <div className="flex flex-col gap-5">
@@ -54,7 +55,7 @@ const LessonContent = ({
         </Accordion>
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default LessonContent
+export default LessonContent;

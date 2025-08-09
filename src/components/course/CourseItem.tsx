@@ -1,33 +1,36 @@
-'use client'
+'use client';
 
-import Image from 'next/image'
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import { IconClock, IconEye, IconStar } from '../../shared/components/icons'
-import { IStudyCoursesProps } from '@/types'
-import { formatMinutesToHour, formatNumberToK } from '@/utils'
-import { getCourseLessonsInfo } from '@/lib/actions/course.action'
-import { commonClassName } from '@/shared/constants'
+import Image from 'next/image';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+
+import { getCourseLessonsInfo } from '@/lib/actions/course.action';
+import { commonClassName } from '@/shared/constants';
+import { IStudyCoursesProps } from '@/types';
+import { formatMinutesToHour, formatNumberToK } from '@/utils';
+
+import { IconClock, IconEye, IconStar } from '../../shared/components/icons';
 
 const CourseItem = ({
-  data,
   cta,
+  data,
   url = '',
 }: {
-  data?: IStudyCoursesProps
-  cta?: string
-  url?: string
+  data?: IStudyCoursesProps;
+  cta?: string;
+  url?: string;
 }) => {
-  const [duration, setDuration] = useState<number>(0)
+  const [duration, setDuration] = useState<number>(0);
 
   useEffect(() => {
     async function getDuration() {
-      const res = await getCourseLessonsInfo({ slug: data?.slug || '' })
-      setDuration(res?.duration || 0)
+      const res = await getCourseLessonsInfo({ slug: data?.slug || '' });
+
+      setDuration(res?.duration || 0);
     }
 
-    getDuration()
-  }, [data?.slug])
+    getDuration();
+  }, [data?.slug]);
 
   const courseInfo = [
     {
@@ -42,9 +45,10 @@ const CourseItem = ({
       title: formatMinutesToHour(duration),
       icon: (className?: string) => <IconClock className={className} />,
     },
-  ]
+  ];
 
-  const courseUrl = url ? url : `/course/${data?.slug}`
+  const courseUrl = url ? url : `/course/${data?.slug}`;
+
   return (
     <div className="flex flex-col rounded-2xl border border-gray-200 bg-white p-4 dark:border-opacity-10 dark:bg-grayDarker">
       <Link
@@ -94,7 +98,7 @@ const CourseItem = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CourseItem
+export default CourseItem;

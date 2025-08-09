@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import { ComponentProps } from 'react';
 
 const IconPlay = (props: ComponentProps<'svg'>) => {
   return (
@@ -22,7 +22,7 @@ const IconPlay = (props: ComponentProps<'svg'>) => {
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default IconPlay
+export default IconPlay;

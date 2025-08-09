@@ -9,7 +9,7 @@ const LoadingOutline = () => {
         <div className="skeleton h-14 w-full rounded-lg" />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default LoadingOutline
+export default LoadingOutline;

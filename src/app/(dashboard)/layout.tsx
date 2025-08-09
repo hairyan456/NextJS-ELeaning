@@ -1,5 +1,5 @@
-import { MenuItem, Sidebar } from '@/shared/components'
-import { menuItems } from '@/shared/constants'
+import { MenuItem, Sidebar } from '@/shared/components';
+import { menuItems } from '@/shared/constants';
 
 const layout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -19,7 +19,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
       <div className="hidden lg:block" />
       <main className="p-5">{children}</main>
     </div>
-  )
-}
+  );
+};
 
-export default layout
+export default layout;

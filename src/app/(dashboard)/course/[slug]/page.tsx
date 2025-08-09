@@ -1,43 +1,47 @@
-import PageNotFound from '@/app/not-found'
-import { IconCheck } from '@/shared/components/icons'
+import { auth } from '@clerk/nextjs/server';
+import Image from 'next/image';
+
+import PageNotFound from '@/app/not-found';
+import LessonContent from '@/components/lesson/LessonContent';
 import {
   getCourseBySlug,
   getCourseLessonsInfo,
   updateCourseView,
-} from '@/lib/actions/course.action'
-import { ECourseStatus } from '@/types/enums'
-import Image from 'next/image'
+} from '@/lib/actions/course.action';
+import { getUserInfo } from '@/lib/actions/user.actions';
+import { IconCheck } from '@/shared/components/icons';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/shared/components/ui/accordion'
-import LessonContent from '@/components/lesson/LessonContent'
-import { auth } from '@clerk/nextjs/server'
-import { getUserInfo } from '@/lib/actions/user.actions'
-import CourseWidget from './CourseWidget'
-import AlreadyEnroll from './AlreadyEnroll'
-import { formatMinutesToHour } from '@/utils'
-import { courseLevelTitle } from '@/shared/constants'
+} from '@/shared/components/ui/accordion';
+import { courseLevelTitle } from '@/shared/constants';
+import { ECourseStatus } from '@/types/enums';
+import { formatMinutesToHour } from '@/utils';
+
+import AlreadyEnroll from './AlreadyEnroll';
+import CourseWidget from './CourseWidget';
 
 const page = async ({ params }: { params: { slug: string } }) => {
-  await updateCourseView({ slug: params.slug }) // tăng 1 lượt xem khóa học mỗi khi truy cập
+  await updateCourseView({ slug: params.slug }); // tăng 1 lượt xem khóa học mỗi khi truy cập
 
-  const data = await getCourseBySlug({ slug: params.slug })
-  if (!data?._id) return null
-  if (data.status !== ECourseStatus.APPROVED) return <PageNotFound />
-  const videoId = data.intro_url?.split('v=')[1]
-  const lectures = data.lectures || []
+  const data = await getCourseBySlug({ slug: params.slug });
 
-  const { userId } = await auth()
-  const findUser = await getUserInfo({ userId: userId || '' })
-  const userCourses = findUser?.courses?.map((c) => c?.toString())
+  if (!data?._id) return null;
+  if (data.status !== ECourseStatus.APPROVED) return <PageNotFound />;
+  const videoId = data.intro_url?.split('v=')[1];
+  const lectures = data.lectures || [];
+
+  const { userId } = await auth();
+  const findUser = await getUserInfo({ userId: userId || '' });
+  const userCourses = findUser?.courses?.map((c) => c?.toString());
   const { duration, lessons }: any = await getCourseLessonsInfo({
     slug: data.slug,
-  })
+  });
 
-  const ratings = data.rating.map((r: any) => r?.content || '')
+  const ratings = data.rating.map((r: any) => r?.content || '');
+
   return (
     <div className="grid min-h-screen gap-10 lg:grid-cols-[2fr,1fr]">
       {/* Left */}
@@ -152,37 +156,37 @@ const page = async ({ params }: { params: { slug: string } }) => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
 function BoxSection({
-  title,
   children,
+  title,
 }: {
-  title: string
-  children: React.ReactNode
+  title: string;
+  children: React.ReactNode;
 }) {
   return (
     <>
       <h2 className="mb-5 text-xl font-bold">{title}</h2>
       <div className="mb-10">{children}</div>
     </>
-  )
+  );
 }
 
 function BoxInfo({
-  title,
   children,
+  title,
 }: {
-  title: string
-  children: React.ReactNode
+  title: string;
+  children: React.ReactNode;
 }) {
   return (
     <div className="rounded-lg bg-white p-5">
       <h4 className="text-sm font-normal text-slate-400">{title}</h4>
       <h3 className="font-bold">{children}</h3>
     </div>
-  )
+  );
 }
 
-export default page
+export default page;

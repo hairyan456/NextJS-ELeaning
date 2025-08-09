@@ -1,9 +1,17 @@
-'use client'
+'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { Button } from '@/shared/components/ui/button'
+import { zodResolver } from '@hookform/resolvers/zod';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import { useImmer } from 'use-immer';
+import { z } from 'zod';
+
+import { ICourse } from '@/database/course.model';
+import { updateCourse } from '@/lib/actions/course.action';
+import { Button } from '@/shared/components/ui/button';
 import {
   Form,
   FormControl,
@@ -11,28 +19,21 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/shared/components/ui/form'
-import { Input } from '@/shared/components/ui/input'
-import { vi } from 'zod/locales'
-import { useState } from 'react'
-import { toast } from 'react-toastify'
-import { useRouter } from 'next/navigation'
-import { ECourseLevel, ECourseStatus } from '@/types/enums'
-import { updateCourse } from '@/lib/actions/course.action'
-import { ICourse } from '@/database/course.model'
-import { useImmer } from 'use-immer'
-import { IconAdd } from '../../shared/components/icons'
+} from '@/shared/components/ui/form';
+import { Input } from '@/shared/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/shared/components/ui/select'
-import { courseLevel, courseStatus } from '@/shared/constants'
-import { UploadButton } from '@/utils/uploadthing'
-import Image from 'next/image'
-import { Textarea } from '@/shared/components/ui/textarea'
+} from '@/shared/components/ui/select';
+import { Textarea } from '@/shared/components/ui/textarea';
+import { courseLevel, courseStatus } from '@/shared/constants';
+import { ECourseLevel, ECourseStatus } from '@/types/enums';
+import { UploadButton } from '@/utils/uploadthing';
+
+import { IconAdd } from '../../shared/components/icons';
 
 const formSchema = z.object({
   title: z
@@ -67,16 +68,16 @@ const formSchema = z.object({
       .array(z.object({ question: z.string(), answer: z.string() }))
       .optional(),
   }),
-})
+});
 
 const CourseUpdateForm = ({ data }: { data: ICourse }) => {
-  const [isLoadingSubmit, setLoadingSubmit] = useState(false)
-  const router = useRouter()
+  const [isLoadingSubmit, setLoadingSubmit] = useState(false);
+  const router = useRouter();
   const [courseInfo, setCourseInfo] = useImmer({
     requirements: data.info?.requirements || [],
     benefits: data.info?.benefits || [],
     qa: data.info?.qa || [],
-  })
+  });
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -93,11 +94,11 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
       status: data.status,
       level: data.level,
     },
-  })
+  });
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    setLoadingSubmit(true)
+    setLoadingSubmit(true);
     try {
       const res = await updateCourse({
         slug: data.slug,
@@ -118,24 +119,27 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
           },
           image: values.image,
         },
-      })
+      });
+
       if (!res?.success) {
-        toast.error(res?.message || 'Cập nhật khóa học thất bại')
-        return
+        toast.error(res?.message || 'Cập nhật khóa học thất bại');
+
+        return;
       } else {
         if (values.slug !== data.slug)
-          router.replace(`/manage/course/update?slug=${values.slug}`)
+          router.replace(`/manage/course/update?slug=${values.slug}`);
 
-        toast.success(res?.message || 'Cập nhật khóa học thành công')
+        toast.success(res?.message || 'Cập nhật khóa học thành công');
       }
     } catch (error) {
-      console.error('Error update course:', error)
+      console.error('Error update course:', error);
     } finally {
-      setLoadingSubmit(false)
+      setLoadingSubmit(false);
     }
   }
 
-  const imageWatch = form.watch('image')
+  const imageWatch = form.watch('image');
+
   return (
     <Form {...form}>
       <form
@@ -242,11 +246,11 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                           endpoint="imageUploader"
                           onClientUploadComplete={(res) => {
                             // Do something with the response
-                            form.setValue('image', res[0]?.url) // Assuming the response contains an array of files
+                            form.setValue('image', res[0]?.url); // Assuming the response contains an array of files
                           }}
                           onUploadError={(error: Error) => {
                             // Do something with the error.
-                            console.log(`ERROR! ${error.message}`)
+                            console.log(`ERROR! ${error.message}`);
                           }}
                         />
                       ) : (
@@ -370,8 +374,8 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                     type="button"
                     onClick={() => {
                       setCourseInfo((draft) => {
-                        draft.requirements.push('')
-                      })
+                        draft.requirements.push('');
+                      });
                     }}
                   >
                     <IconAdd className="size-5" />
@@ -386,8 +390,8 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                         value={item}
                         onChange={(e) => {
                           setCourseInfo((draft) => {
-                            draft.requirements[index] = e.target.value
-                          })
+                            draft.requirements[index] = e.target.value;
+                          });
                         }}
                       />
                     ))}
@@ -409,8 +413,8 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                     type="button"
                     onClick={() => {
                       setCourseInfo((draft) => {
-                        draft.benefits.push('')
-                      })
+                        draft.benefits.push('');
+                      });
                     }}
                   >
                     <IconAdd className="size-5" />
@@ -425,8 +429,8 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                         value={item}
                         onChange={(e) => {
                           setCourseInfo((draft) => {
-                            draft.benefits[index] = e.target.value
-                          })
+                            draft.benefits[index] = e.target.value;
+                          });
                         }}
                       />
                     ))}
@@ -451,8 +455,8 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                         draft.qa.push({
                           question: '',
                           answer: '',
-                        })
-                      })
+                        });
+                      });
                     }}
                   >
                     <IconAdd className="size-5" />
@@ -471,8 +475,8 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                           value={item.question}
                           onChange={(e) => {
                             setCourseInfo((draft) => {
-                              draft.qa[index].question = e.target.value
-                            })
+                              draft.qa[index].question = e.target.value;
+                            });
                           }}
                         />
                         <Input
@@ -481,8 +485,8 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                           value={item.answer}
                           onChange={(e) => {
                             setCourseInfo((draft) => {
-                              draft.qa[index].answer = e.target.value
-                            })
+                              draft.qa[index].answer = e.target.value;
+                            });
                           }}
                         />
                       </div>
@@ -505,7 +509,7 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
         </Button>
       </form>
     </Form>
-  )
-}
+  );
+};
 
-export default CourseUpdateForm
+export default CourseUpdateForm;

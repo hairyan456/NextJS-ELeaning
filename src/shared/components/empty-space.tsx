@@ -1,4 +1,4 @@
-import { TableCell, TableRow } from '@/shared/components/ui/table'
+import { TableCell, TableRow } from '@/shared/components/ui/table';
 
 const EmptySpace = ({ text }: { text?: string }) => {
   return (
@@ -9,7 +9,7 @@ const EmptySpace = ({ text }: { text?: string }) => {
         </div>
       </TableCell>
     </TableRow>
-  )
-}
+  );
+};
 
-export default EmptySpace
+export default EmptySpace;

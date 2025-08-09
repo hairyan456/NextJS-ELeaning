@@ -1,12 +1,14 @@
-'use client'
-import Link from 'next/link'
-import { UserButton, useAuth } from '@clerk/nextjs'
-import { MenuItem, ModeToggle } from '@/shared/components'
-import { IconUsers } from '@/shared/components/icons'
-import { menuItems } from '@/shared/constants'
+'use client';
+import { useAuth, UserButton } from '@clerk/nextjs';
+import Link from 'next/link';
+
+import { MenuItem, ModeToggle } from '@/shared/components';
+import { IconUsers } from '@/shared/components/icons';
+import { menuItems } from '@/shared/constants';
 
 const Sidebar = () => {
-  const { userId } = useAuth()
+  const { userId } = useAuth();
+
   return (
     <div className="borderDarkMode bgDarkMode fixed inset-y-0 left-0 hidden h-screen w-[300px] flex-col border-r p-5 lg:flex">
       <Link
@@ -40,7 +42,7 @@ const Sidebar = () => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;

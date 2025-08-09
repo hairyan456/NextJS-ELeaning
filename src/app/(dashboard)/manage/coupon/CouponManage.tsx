@@ -1,14 +1,16 @@
-'use client'
-import { IconEdit } from '@/shared/components/icons'
-import { Input } from '@/shared/components/ui/input'
+'use client';
+import Link from 'next/link';
+
+import useQueryString from '@/hooks/useQueryString';
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/shared/components/ui/table'
+  BouncedLink,
+  Heading,
+  Pagination,
+  StatusBadge,
+  TableAction,
+} from '@/shared/components';
+import { IconEdit } from '@/shared/components/icons';
+import { Input } from '@/shared/components/ui/input';
 import {
   Select,
   SelectContent,
@@ -16,31 +18,31 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/shared/components/ui/select'
-import { allValue, commonClassName, couponStatus } from '@/shared/constants'
-import { ECouponType } from '@/types/enums'
-import Link from 'next/link'
-import ActionDeleteCoupon from './ActionDeleteCoupon'
-import { TCouponItem } from '@/types'
-import useQueryString from '@/hooks/useQueryString'
+} from '@/shared/components/ui/select';
 import {
-  BouncedLink,
-  StatusBadge,
-  TableAction,
-  Pagination,
-  Heading,
-} from '@/shared/components'
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/shared/components/ui/table';
+import { allValue, commonClassName, couponStatus } from '@/shared/constants';
+import { TCouponItem } from '@/types';
+import { ECouponType } from '@/types/enums';
+
+import ActionDeleteCoupon from './ActionDeleteCoupon';
 
 const CouponManage = ({
   coupons,
-  totalPages,
   total,
+  totalPages,
 }: {
-  coupons: TCouponItem[] | undefined
-  totalPages: number
-  total: number
+  coupons: TCouponItem[] | undefined;
+  totalPages: number;
+  total: number;
 }) => {
-  const { handleSearchData, handleChangeQS } = useQueryString()
+  const { handleChangeQS, handleSearchData } = useQueryString();
 
   return (
     <div>
@@ -89,7 +91,7 @@ const CouponManage = ({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {coupons &&
+          {!!coupons &&
             coupons.length > 0 &&
             coupons.map((coupon) => (
               <TableRow key={coupon.code}>
@@ -151,7 +153,7 @@ const CouponManage = ({
         totalPages={totalPages}
       />
     </div>
-  )
-}
+  );
+};
 
-export default CouponManage
+export default CouponManage;

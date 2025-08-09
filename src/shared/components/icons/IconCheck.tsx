@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import { ComponentProps } from 'react';
 
 const IconCheck = (props: ComponentProps<'svg'>) => {
   return (
@@ -17,7 +17,7 @@ const IconCheck = (props: ComponentProps<'svg'>) => {
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default IconCheck
+export default IconCheck;

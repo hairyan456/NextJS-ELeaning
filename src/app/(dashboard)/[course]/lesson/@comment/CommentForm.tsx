@@ -1,53 +1,54 @@
-'use client'
-import { Button } from '@/shared/components/ui/button'
-import { Textarea } from '@/shared/components/ui/textarea'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
+'use client';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { useTransition } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import { z } from 'zod';
+
+import { createNewComment } from '@/modules/comment/services/comment.action';
+import { Button } from '@/shared/components/ui/button';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from '@/shared/components/ui/form'
-import { useTransition } from 'react'
-import { toast } from 'react-toastify'
-import { ICommentItem } from '@/types'
-import { usePathname, useSearchParams } from 'next/navigation'
-import { createNewComment } from '@/modules/comment/services/comment.action'
+} from '@/shared/components/ui/form';
+import { Textarea } from '@/shared/components/ui/textarea';
+import { ICommentItem } from '@/types';
 
 const formSchema = z.object({
   content: z
     .string({ message: 'Vui lòng nhập bình luận' })
     .min(10, { message: 'Comment must be at least 10 characters long.' }),
-})
+});
 
 interface CommentFormProps {
-  lessonId: string
-  userId: string
-  comment?: ICommentItem
-  isReply?: boolean
-  closeReply?: () => void
+  lessonId: string;
+  userId: string;
+  comment?: ICommentItem;
+  isReply?: boolean;
+  closeReply?: () => void;
 }
 
 const CommentForm = ({
-  lessonId,
-  userId,
+  closeReply = () => {},
   comment,
   isReply,
-  closeReply = () => {},
+  lessonId,
+  userId,
 }: CommentFormProps) => {
-  const [isPending, startTransition] = useTransition()
-  const pathName = usePathname()
-  const slug = useSearchParams().get('slug')
-  const path = `${pathName}?slug=${slug}`
+  const [isPending, startTransition] = useTransition();
+  const pathName = usePathname();
+  const slug = useSearchParams().get('slug');
+  const path = `${pathName}?slug=${slug}`;
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {},
-  })
+  });
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -59,16 +60,18 @@ const CommentForm = ({
         level: comment && comment?.level >= 0 ? comment?.level + 1 : 0,
         parentId: comment?._id,
         path,
-      })
+      });
+
       if (!hasComment) {
-        toast.error('Đăng bình luận thất bại')
-        return
+        toast.error('Đăng bình luận thất bại');
+
+        return;
       } else {
-        toast.success('Đăng bình luận thành công')
-        form.setValue('content', '')
-        closeReply?.()
+        toast.success('Đăng bình luận thành công');
+        form.setValue('content', '');
+        closeReply?.();
       }
-    })
+    });
   }
 
   return (
@@ -106,7 +109,7 @@ const CommentForm = ({
         </form>
       </Form>
     </>
-  )
-}
+  );
+};
 
-export default CommentForm
+export default CommentForm;

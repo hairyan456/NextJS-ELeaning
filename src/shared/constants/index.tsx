@@ -1,22 +1,23 @@
+import { z } from 'zod';
+
 import {
-  IconExplore,
-  IconPlay,
   IconComment,
+  IconCoupon,
+  IconExplore,
   IconOrder,
+  IconPlay,
+  IconStar,
   IconStudy,
   IconUsers,
-  IconCoupon,
-  IconStar,
-} from '@/shared/components/icons'
-import { IMenuItems, TRatingIcon } from '@/types'
+} from '@/shared/components/icons';
+import { IMenuItems, TRatingIcon } from '@/types';
 import {
   ECouponType,
   ECourseLevel,
   ECourseStatus,
   EOrderStatus,
   ERatingStatus,
-} from '@/types/enums'
-import { z } from 'zod'
+} from '@/types/enums';
 
 export const menuItems: IMenuItems[] = [
   {
@@ -59,12 +60,12 @@ export const menuItems: IMenuItems[] = [
     title: 'Quản lí bình luận',
     icon: <IconComment className="size-5" />,
   },
-]
+];
 
 export const courseStatus: {
-  title: string
-  value: ECourseStatus
-  className?: string
+  title: string;
+  value: ECourseStatus;
+  className?: string;
 }[] = [
   {
     title: 'Đã duyệt',
@@ -81,7 +82,7 @@ export const courseStatus: {
     value: ECourseStatus.REJECTED,
     className: 'text-red-500 bg-red-500',
   },
-]
+];
 
 export const courseLevel: { title: string; value: ECourseLevel }[] = [
   {
@@ -96,13 +97,13 @@ export const courseLevel: { title: string; value: ECourseLevel }[] = [
     title: 'Khó',
     value: ECourseLevel.ADVANCED,
   },
-]
+];
 
 export const courseLevelTitle: Record<ECourseLevel, string> = {
   [ECourseLevel.BEGINNER]: 'Dễ',
   [ECourseLevel.INTERMEDIATE]: 'Trung bình',
   [ECourseLevel.ADVANCED]: 'Khó',
-}
+};
 
 export const commonClassName = {
   status:
@@ -114,7 +115,7 @@ export const commonClassName = {
     'size-8 rounded-md borderDarkMode bgDarkMode border flex items-center justify-center hover:border-primary hover:text-primary',
   btnPrimary: `flex items-center justify-center w-full mt-10 rounded-lg text-white font-semibold
     bg-primary h-12 button-primary`,
-}
+};
 
 export const editorOptions = (field: any, theme: any) => ({
   initialValue: '',
@@ -153,14 +154,14 @@ export const editorOptions = (field: any, theme: any) => ({
     content_style:
       "@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');body { font-family: Manrope,Helvetica,Arial,sans-serif; font-size:14px; line-height: 2; padding-bottom: 32px; } img { max-width: 100%; height: auto; display: block; margin: 0 auto; };",
   },
-})
+});
 
-export const lastLessonKey = 'lastLessons'
+export const lastLessonKey = 'lastLessons';
 
 export const orderStatus: {
-  title: string
-  value: EOrderStatus
-  className?: string
+  title: string;
+  value: EOrderStatus;
+  className?: string;
 }[] = [
   {
     title: 'Đã duyệt',
@@ -177,7 +178,7 @@ export const orderStatus: {
     value: EOrderStatus.CANCELED,
     className: 'text-red-500 bg-red-500',
   },
-]
+];
 
 export const couponTypes: { title: string; value: ECouponType }[] = [
   {
@@ -188,7 +189,7 @@ export const couponTypes: { title: string; value: ECouponType }[] = [
     title: 'Giá trị',
     value: ECouponType.AMOUNT,
   },
-]
+];
 
 export const couponFormSchema = z.object({
   title: z.string({ message: 'Tiêu đề không được để trống' }),
@@ -203,11 +204,11 @@ export const couponFormSchema = z.object({
   type: z.enum([ECouponType.AMOUNT, ECouponType.PERCENT]),
   course: z.array(z.string()).optional(),
   limit: z.number().optional(),
-})
+});
 
 export const ratingList: {
-  title: TRatingIcon
-  value: number
+  title: TRatingIcon;
+  value: number;
 }[] = [
   {
     title: 'awesome',
@@ -229,12 +230,12 @@ export const ratingList: {
     title: 'terrible',
     value: 1,
   },
-]
+];
 
 export const ratingStatus: {
-  title: string
-  value: ERatingStatus
-  className?: string
+  title: string;
+  value: ERatingStatus;
+  className?: string;
 }[] = [
   {
     title: 'Đã duyệt',
@@ -246,14 +247,14 @@ export const ratingStatus: {
     value: ERatingStatus.UNACTIVE,
     className: 'text-orange-500 bg-orange-500',
   },
-]
+];
 
-export const allValue = 'ALL'
-export const ITEMS_PER_PAGE = 5
+export const allValue = 'ALL';
+export const ITEMS_PER_PAGE = 5;
 
 export const couponStatus = [
   { title: 'Đang kích hoạt', value: 1 },
   { title: 'Chưa kích hoạt', value: 0 },
-]
+];
 
-export const MAX_COMMENT_LEVEL = 3
+export const MAX_COMMENT_LEVEL = 3;

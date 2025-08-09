@@ -1,27 +1,29 @@
-'use client'
-import Link from 'next/link'
-import { IconPlay } from '../../shared/components/icons'
-import { cn } from '@/lib/utils'
-import { createNewHistory } from '@/lib/actions/history.action'
-import { Checkbox } from '@/shared/components/ui/checkbox'
+'use client';
+import Link from 'next/link';
+
+import { createNewHistory } from '@/lib/actions/history.action';
+import { cn } from '@/lib/utils';
+import { Checkbox } from '@/shared/components/ui/checkbox';
+
+import { IconPlay } from '../../shared/components/icons';
 
 interface ILessonItem {
   lesson: {
-    title: string
-    duration: number
-    course: string
-    _id: string
-  }
-  url?: string
-  isActive?: boolean
-  isChecked?: boolean
+    title: string;
+    duration: number;
+    course: string;
+    _id: string;
+  };
+  url?: string;
+  isActive?: boolean;
+  isChecked?: boolean;
 }
 
 const LessonItem = ({
-  lesson,
-  url,
   isActive = false,
   isChecked = false,
+  lesson,
+  url,
 }: ILessonItem) => {
   const handleCompleteLesson = async (checked: boolean | string) => {
     try {
@@ -30,11 +32,11 @@ const LessonItem = ({
         lesson: lesson._id,
         checked,
         path: url,
-      })
+      });
     } catch (error) {
-      console.error('Error when checking lesson:', error)
+      console.error('Error when checking lesson:', error);
     }
-  }
+  };
 
   return (
     <div
@@ -43,7 +45,7 @@ const LessonItem = ({
         isActive ? 'font-bold' : '',
       )}
     >
-      {url && (
+      {!!url && (
         <Checkbox
           className="size-4 shrink-0"
           defaultChecked={isChecked}
@@ -65,7 +67,7 @@ const LessonItem = ({
         {lesson.duration} phút
       </span>
     </div>
-  )
-}
+  );
+};
 
-export default LessonItem
+export default LessonItem;

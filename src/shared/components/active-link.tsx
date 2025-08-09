@@ -1,15 +1,16 @@
-'use client'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+'use client';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 interface IActiveLinkProps {
-  url: string
-  children: React.ReactNode
+  url: string;
+  children: React.ReactNode;
 }
 
-const ActiveLink = ({ url, children }: IActiveLinkProps) => {
-  const pathName = usePathname()
-  const isActive: boolean = url === pathName
+const ActiveLink = ({ children, url }: IActiveLinkProps) => {
+  const pathName = usePathname();
+  const isActive: boolean = url === pathName;
+
   return (
     <Link
       href={url}
@@ -21,7 +22,7 @@ const ActiveLink = ({ url, children }: IActiveLinkProps) => {
     >
       {children}
     </Link>
-  )
-}
+  );
+};
 
-export default ActiveLink
+export default ActiveLink;

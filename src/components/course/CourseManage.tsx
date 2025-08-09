@@ -1,12 +1,15 @@
-'use client'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/shared/components/ui/table'
+'use client';
+import Image from 'next/image';
+import Link from 'next/link';
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
+
+import { ICourse } from '@/database/course.model';
+import useQueryString from '@/hooks/useQueryString';
+import { updateCourse } from '@/lib/actions/course.action';
+import { cn } from '@/lib/utils';
+import { BouncedLink, Heading } from '@/shared/components';
+import { Input } from '@/shared/components/ui/input';
 import {
   Select,
   SelectContent,
@@ -14,24 +17,23 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/shared/components/ui/select'
-import Image from 'next/image'
-import { allValue, commonClassName, courseStatus } from '@/shared/constants'
-import { cn } from '@/lib/utils'
-import IconEdit from '../../shared/components/icons/IconEdit'
-import { IconDelete, IconEye, IconStudy } from '../../shared/components/icons'
-import Link from 'next/link'
-import Swal from 'sweetalert2'
-import { ICourse } from '@/database/course.model'
-import { updateCourse } from '@/lib/actions/course.action'
-import { ECourseStatus } from '@/types/enums'
-import { toast } from 'react-toastify'
-import useQueryString from '@/hooks/useQueryString'
-import { Input } from '@/shared/components/ui/input'
-import { BouncedLink, Heading } from '@/shared/components'
+} from '@/shared/components/ui/select';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/shared/components/ui/table';
+import { allValue, commonClassName, courseStatus } from '@/shared/constants';
+import { ECourseStatus } from '@/types/enums';
+
+import { IconDelete, IconEye, IconStudy } from '../../shared/components/icons';
+import IconEdit from '../../shared/components/icons/IconEdit';
 
 const CourseManage = ({ courses }: { courses: ICourse[] }) => {
-  const { handleSearchData, handleSelectStatus } = useQueryString()
+  const { handleSearchData, handleSelectStatus } = useQueryString();
 
   const handleDeleteCourse = async (slug: string) => {
     Swal.fire({
@@ -51,11 +53,11 @@ const CourseManage = ({ courses }: { courses: ICourse[] }) => {
             _destroy: true,
           },
           path: '/manage/course',
-        })
-        toast.success('Xóa khóa học thành công')
+        });
+        toast.success('Xóa khóa học thành công');
       }
-    })
-  }
+    });
+  };
 
   const handleChangeStatus = async (slug: string, status: ECourseStatus) => {
     try {
@@ -77,15 +79,15 @@ const CourseManage = ({ courses }: { courses: ICourse[] }) => {
               _destroy: false,
             },
             path: '/manage/course',
-          })
-          toast.success('Cập nhật trạng thái thành công')
+          });
+          toast.success('Cập nhật trạng thái thành công');
           // router.push(`${pathname}?${createQueryString('status', "")}`);
         }
-      })
+      });
     } catch (error) {
-      console.error('Error changing course status:', error)
+      console.error('Error changing course status:', error);
     }
-  }
+  };
 
   // useEffect(() => {
   //     router.push(`${pathname}?${createQueryString('page', page.toString())}`);
@@ -222,7 +224,7 @@ const CourseManage = ({ courses }: { courses: ICourse[] }) => {
       </Table>
       {/* Paginate */}
     </>
-  )
-}
+  );
+};
 
-export default CourseManage
+export default CourseManage;

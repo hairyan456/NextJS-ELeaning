@@ -1,7 +1,16 @@
-'use client'
+'use client';
 
-import { IconStar } from '@/shared/components/icons'
-import { Button } from '@/shared/components/ui/button'
+import Image from 'next/image';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
+
+import {
+  createNewRating,
+  getRatingByUserId,
+} from '@/lib/actions/rating.action';
+import { cn } from '@/lib/utils';
+import { IconStar } from '@/shared/components/icons';
+import { Button } from '@/shared/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -9,59 +18,58 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/shared/components/ui/dialog'
-import { Textarea } from '@/shared/components/ui/textarea'
-import { ratingList } from '@/shared/constants'
-import { createNewRating, getRatingByUserId } from '@/lib/actions/rating.action'
-import { cn } from '@/lib/utils'
-import Image from 'next/image'
-import { useState } from 'react'
-import { toast } from 'react-toastify'
+} from '@/shared/components/ui/dialog';
+import { Textarea } from '@/shared/components/ui/textarea';
+import { ratingList } from '@/shared/constants';
 
 const RatingButton = ({
   courseId,
   userId,
 }: {
-  courseId: string
-  userId: string
+  courseId: string;
+  userId: string;
 }) => {
-  const [ratingValue, setRatingValue] = useState<number>(-1)
-  const [ratingContent, setRatingContent] = useState<string>('')
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [ratingValue, setRatingValue] = useState<number>(-1);
+  const [ratingContent, setRatingContent] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleRatingCourse = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       if (!ratingContent || ratingValue === -1) {
-        toast.warning('Vui lòng chọn mức độ và nhập nội dung đánh giá')
-        setIsLoading(false)
-        return
+        toast.warning('Vui lòng chọn mức độ và nhập nội dung đánh giá');
+        setIsLoading(false);
+
+        return;
       }
-      const isAlreadyRated = await getRatingByUserId(userId, courseId)
+      const isAlreadyRated = await getRatingByUserId(userId, courseId);
+
       if (isAlreadyRated) {
-        toast.warning('Bạn đã đánh giá khóa học này')
-        setIsLoading(false)
-        return
+        toast.warning('Bạn đã đánh giá khóa học này');
+        setIsLoading(false);
+
+        return;
       }
       const hasRating = await createNewRating({
         rate: ratingValue,
         content: ratingContent,
         user: userId,
         course: courseId,
-      })
+      });
+
       if (hasRating) {
-        toast.success('Viết đánh giá thành công')
-        setRatingContent('')
-        setRatingValue(-1)
+        toast.success('Viết đánh giá thành công');
+        setRatingContent('');
+        setRatingValue(-1);
       } else {
-        toast.error('Viết đánh giá thất bại')
+        toast.error('Viết đánh giá thất bại');
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <Dialog>
@@ -119,7 +127,7 @@ const RatingButton = ({
         </DialogHeader>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
 
-export default RatingButton
+export default RatingButton;

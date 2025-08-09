@@ -1,9 +1,9 @@
-import { create } from 'zustand'
-import { devtools, persist } from 'zustand/middleware'
+import { create } from 'zustand';
+import { devtools, persist } from 'zustand/middleware';
 
 interface GlobalState {
-  isExpandedPlayer: boolean
-  setIsExpandedPlayer: (expanded: boolean) => void
+  isExpandedPlayer: boolean;
+  setIsExpandedPlayer: (expanded: boolean) => void;
 }
 
 const useGlobalStore = create<GlobalState>()(
@@ -21,6 +21,6 @@ const useGlobalStore = create<GlobalState>()(
       },
     ),
   ),
-)
+);
 
-export default useGlobalStore
+export default useGlobalStore;

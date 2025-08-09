@@ -1,9 +1,17 @@
-'use client'
-import { ILesson } from '@/database/lesson.model'
-import { Button } from '@/shared/components/ui/button'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
+'use client';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Editor as ReactEditor } from '@tinymce/tinymce-react';
+import Link from 'next/link';
+import { useTheme } from 'next-themes';
+import { useEffect, useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import { Editor as TinyMCEEditor } from 'tinymce';
+import { z } from 'zod';
+
+import { ILesson } from '@/database/lesson.model';
+import { updateLesson } from '@/lib/actions/lesson.action';
+import { Button } from '@/shared/components/ui/button';
 import {
   Form,
   FormControl,
@@ -11,27 +19,20 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/shared/components/ui/form'
-import { Input } from '@/shared/components/ui/input'
-import { toast } from 'react-toastify'
-import Link from 'next/link'
-import { useEffect, useRef, useState } from 'react'
-import { updateLesson } from '@/lib/actions/lesson.action'
-import { Editor as ReactEditor } from '@tinymce/tinymce-react'
-import { Editor as TinyMCEEditor } from 'tinymce'
-import { useTheme } from 'next-themes'
-import { editorOptions } from '@/shared/constants'
+} from '@/shared/components/ui/form';
+import { Input } from '@/shared/components/ui/input';
+import { editorOptions } from '@/shared/constants';
 
 const formSchema = z.object({
   slug: z.string().optional(),
   duration: z.number().optional(),
   video_url: z.string().optional(),
   content: z.string().optional(),
-})
+});
 
 const LessonItemUpdate = ({ lesson }: { lesson: ILesson }) => {
-  const editorRef = useRef<any>(null)
-  const [isLoadingSubmit, setLoadingSubmit] = useState<boolean>(false)
+  const editorRef = useRef<any>(null);
+  const [isLoadingSubmit, setLoadingSubmit] = useState<boolean>(false);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -42,33 +43,35 @@ const LessonItemUpdate = ({ lesson }: { lesson: ILesson }) => {
       video_url: lesson.video_url,
       content: lesson.content || '',
     },
-  })
+  });
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    setLoadingSubmit(true)
+    setLoadingSubmit(true);
     try {
       const res = await updateLesson({
         lessonId: lesson._id,
         updateData: values,
-      })
+      });
+
       if (res?.success) {
-        toast.success('Cập nhật bài học thành công')
+        toast.success('Cập nhật bài học thành công');
       }
     } catch (error) {
-      console.error('Error update lesson', error)
+      console.error('Error update lesson', error);
     } finally {
-      setLoadingSubmit(false)
+      setLoadingSubmit(false);
     }
   }
 
   useEffect(() => {
     setTimeout(() => {
-      if (editorRef.current) editorRef.current.setContent(lesson.content || '')
-    }, 1000)
-  }, [lesson.content])
+      if (editorRef.current) editorRef.current.setContent(lesson.content || '');
+    }, 1000);
+  }, [lesson.content]);
 
-  const { theme } = useTheme()
+  const { theme } = useTheme();
+
   return (
     <>
       <Form {...form}>
@@ -139,9 +142,9 @@ const LessonItemUpdate = ({ lesson }: { lesson: ILesson }) => {
                     <ReactEditor
                       apiKey={process.env.NEXT_PUBLIC_TINY_MCE_API_KEY}
                       onInit={(_evt: unknown, editor: TinyMCEEditor) => {
-                        ;(editorRef.current = editor)?.setContent(
+                        (editorRef.current = editor)?.setContent(
                           lesson.content || '',
-                        )
+                        );
                       }}
                       {...editorOptions(field, theme)}
                     />
@@ -171,7 +174,7 @@ const LessonItemUpdate = ({ lesson }: { lesson: ILesson }) => {
         </form>
       </Form>
     </>
-  )
-}
+  );
+};
 
-export default LessonItemUpdate
+export default LessonItemUpdate;

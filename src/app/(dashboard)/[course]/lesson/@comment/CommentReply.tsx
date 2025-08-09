@@ -1,10 +1,12 @@
-'use client'
+'use client';
 
-import { ICommentItem } from '@/types'
-import { formatDateVN } from '@/utils'
-import { useState } from 'react'
-import CommentForm from './CommentForm'
-import { MAX_COMMENT_LEVEL } from '@/shared/constants'
+import { useState } from 'react';
+
+import { MAX_COMMENT_LEVEL } from '@/shared/constants';
+import { ICommentItem } from '@/types';
+import { formatDateVN } from '@/utils';
+
+import CommentForm from './CommentForm';
 
 interface CommentReplyProps {
   comment: ICommentItem;
@@ -13,7 +15,8 @@ interface CommentReplyProps {
 }
 
 const CommentReply = ({ comment, lessonId, userId }: CommentReplyProps) => {
-  const [isShowReply, setIsShowReply] = useState<boolean>(false)
+  const [isShowReply, setIsShowReply] = useState<boolean>(false);
+
   return (
     <>
       <div className="mb-3 flex items-center gap-5 text-sm font-medium text-gray-400">
@@ -31,7 +34,7 @@ const CommentReply = ({ comment, lessonId, userId }: CommentReplyProps) => {
           </>
         )}
       </div>
-      {isShowReply && (
+      {!!isShowReply && (
         <CommentForm
           isReply
           closeReply={() => setIsShowReply(false)}
@@ -41,7 +44,7 @@ const CommentReply = ({ comment, lessonId, userId }: CommentReplyProps) => {
         />
       )}
     </>
-  )
-}
+  );
+};
 
-export default CommentReply
+export default CommentReply;

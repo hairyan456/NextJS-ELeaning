@@ -1,12 +1,12 @@
-import { commonClassName } from '@/shared/constants'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
+import { commonClassName } from '@/shared/constants';
 
 interface StatusBadgeProps {
   item?: {
-    className?: string
-    title: string
-  }
-  onClick?: () => void
+    className?: string;
+    title: string;
+  };
+  onClick?: () => void;
 }
 
 const StatusBadge = ({ item, onClick }: StatusBadgeProps) => {
@@ -17,7 +17,7 @@ const StatusBadge = ({ item, onClick }: StatusBadgeProps) => {
     >
       {item?.title}
     </span>
-  )
-}
+  );
+};
 
-export default StatusBadge
+export default StatusBadge;

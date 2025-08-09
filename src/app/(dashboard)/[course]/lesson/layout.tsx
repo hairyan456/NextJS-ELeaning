@@ -1,25 +1,29 @@
-import PageNotFound from '@/app/not-found'
-import { getUserInfo } from '@/lib/actions/user.actions'
-import { auth } from '@clerk/nextjs/server'
-import { Suspense } from 'react'
-import LoadingPlayer from './@player/LoadingPlayer'
-import LoadingOutline from './@outline/LoadingOutline'
-import LessonWrapper from './LessonWrapper'
+import { auth } from '@clerk/nextjs/server';
+import { Suspense } from 'react';
+
+import PageNotFound from '@/app/not-found';
+import { getUserInfo } from '@/lib/actions/user.actions';
+
+import LoadingOutline from './@outline/LoadingOutline';
+import LoadingPlayer from './@player/LoadingPlayer';
+import LessonWrapper from './LessonWrapper';
 
 const Layout = async ({
-  player,
-  outline,
   comment,
+  outline,
+  player,
 }: {
-  player: React.ReactNode
-  outline: React.ReactNode
-  comment: React.ReactNode
+  player: React.ReactNode;
+  outline: React.ReactNode;
+  comment: React.ReactNode;
 }) => {
   // Authenticate user
-  const { userId } = await auth()
-  if (!userId) return <PageNotFound />
-  const findUser = await getUserInfo({ userId: userId || '' })
-  if (!findUser?._id) return <PageNotFound />
+  const { userId } = await auth();
+
+  if (!userId) return <PageNotFound />;
+  const findUser = await getUserInfo({ userId: userId || '' });
+
+  if (!findUser?._id) return <PageNotFound />;
 
   return (
     <LessonWrapper>
@@ -31,7 +35,7 @@ const Layout = async ({
       </Suspense>
       <Suspense fallback={<LoadingOutline />}>{outline}</Suspense>
     </LessonWrapper>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;

@@ -1,5 +1,19 @@
-'use client'
-import { Input } from '@/shared/components/ui/input'
+'use client';
+import Image from 'next/image';
+import Link from 'next/link';
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
+
+import useQueryString from '@/hooks/useQueryString';
+import { deleteRating, updateRating } from '@/lib/actions/rating.action';
+import {
+  Heading,
+  Pagination,
+  StatusBadge,
+  TableAction,
+  TableActionItem,
+} from '@/shared/components';
+import { Input } from '@/shared/components/ui/input';
 import {
   Select,
   SelectContent,
@@ -7,7 +21,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/shared/components/ui/select'
+} from '@/shared/components/ui/select';
 import {
   Table,
   TableBody,
@@ -15,42 +29,29 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/shared/components/ui/table'
-import { allValue, ratingList, ratingStatus } from '@/shared/constants'
-import useQueryString from '@/hooks/useQueryString'
-import { deleteRating, updateRating } from '@/lib/actions/rating.action'
-import { TRatingItem } from '@/types'
-import { ERatingStatus } from '@/types/enums'
-import Image from 'next/image'
-import Link from 'next/link'
-import { toast } from 'react-toastify'
-import Swal from 'sweetalert2'
-import {
-  Heading,
-  Pagination,
-  StatusBadge,
-  TableAction,
-  TableActionItem,
-} from '@/shared/components'
+} from '@/shared/components/ui/table';
+import { allValue, ratingList, ratingStatus } from '@/shared/constants';
+import { TRatingItem } from '@/types';
+import { ERatingStatus } from '@/types/enums';
 
 const RatingManage = ({
   ratings,
-  totalPages,
   total,
+  totalPages,
 }: {
-  ratings: TRatingItem[]
-  totalPages: number
-  total: number
+  ratings: TRatingItem[];
+  totalPages: number;
+  total: number;
 }) => {
-  const { handleSearchData, handleSelectStatus } = useQueryString()
+  const { handleSearchData, handleSelectStatus } = useQueryString();
 
   const handleUpdateRating = async (id: string) => {
     try {
-      await updateRating(id)
+      await updateRating(id);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const handleDeleteRating = async (id: string) => {
     Swal.fire({
@@ -62,11 +63,11 @@ const RatingManage = ({
       confirmButtonText: 'Yes, delete it!',
     }).then(async (result) => {
       if (result.isConfirmed) {
-        await deleteRating(id)
-        toast.success('Xóa đánh giá thành công')
+        await deleteRating(id);
+        toast.success('Xóa đánh giá thành công');
       }
-    })
-  }
+    });
+  };
 
   return (
     <>
@@ -119,10 +120,11 @@ const RatingManage = ({
             ratings.map((r: TRatingItem) => {
               const ratingStatusItem = ratingStatus.find(
                 (item) => item.value === r.status,
-              )
+              );
               const icon = ratingList.find(
                 (item) => item.value === r.rate,
-              )?.title
+              )?.title;
+
               return (
                 <TableRow key={r.rate}>
                   <TableCell>
@@ -171,7 +173,7 @@ const RatingManage = ({
                     </TableAction>
                   </TableCell>
                 </TableRow>
-              )
+              );
             })}
         </TableBody>
       </Table>
@@ -181,7 +183,7 @@ const RatingManage = ({
         totalPages={totalPages}
       />
     </>
-  )
-}
+  );
+};
 
-export default RatingManage
+export default RatingManage;

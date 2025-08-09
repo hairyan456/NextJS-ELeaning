@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import { ComponentProps } from 'react';
 
 const IconUsers = (props: ComponentProps<'svg'>) => {
   return (
@@ -17,7 +17,7 @@ const IconUsers = (props: ComponentProps<'svg'>) => {
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default IconUsers
+export default IconUsers;

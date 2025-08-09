@@ -1,19 +1,20 @@
-import { ECouponType } from '@/types/enums'
-import { Document, Schema, model, models } from 'mongoose'
+import { Document, model, models, Schema } from 'mongoose';
+
+import { ECouponType } from '@/types/enums';
 
 export interface ICoupon extends Document {
-  _id: string
-  title: string
-  code: string
-  active: boolean
-  start_date: Date
-  end_date: Date
-  used: number
-  limit: number
-  course: Schema.Types.ObjectId[]
-  type: ECouponType // Type of coupon (e.g., percentage, fixed amount)
-  value: number
-  created_at: Date
+  _id: string;
+  title: string;
+  code: string;
+  active: boolean;
+  start_date: Date;
+  end_date: Date;
+  used: number;
+  limit: number;
+  course: Schema.Types.ObjectId[];
+  type: ECouponType; // Type of coupon (e.g., percentage, fixed amount)
+  value: number;
+  created_at: Date;
 }
 
 const couponSchema = new Schema<ICoupon>({
@@ -61,7 +62,8 @@ const couponSchema = new Schema<ICoupon>({
     type: Date,
     default: Date.now,
   },
-})
+});
 
-const Coupon = models?.Coupon || model<ICoupon>('Coupon', couponSchema)
-export default Coupon
+const Coupon = models?.Coupon || model<ICoupon>('Coupon', couponSchema);
+
+export default Coupon;

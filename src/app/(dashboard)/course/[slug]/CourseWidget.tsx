@@ -1,20 +1,22 @@
-'use client'
-import { IconPlay, IconStudy, IconUsers } from '@/shared/components/icons'
-import ButtonEnroll from './ButtonEnroll'
-import CouponForm from './CouponForm'
-import { useState } from 'react'
+'use client';
+import { useState } from 'react';
+
+import { IconPlay, IconStudy, IconUsers } from '@/shared/components/icons';
+
+import ButtonEnroll from './ButtonEnroll';
+import CouponForm from './CouponForm';
 
 const CourseWidget = ({
   data,
-  findUser,
   duration,
+  findUser,
 }: {
-  data: any
-  findUser: any
-  duration: string
+  data: any;
+  findUser: any;
+  duration: string;
 }) => {
-  const [coupon, setCoupon] = useState<any>('')
-  const [price, setPrice] = useState<number>(data?.price ?? 0)
+  const [coupon, setCoupon] = useState<any>('');
+  const [price, setPrice] = useState<number>(data?.price ?? 0);
 
   return (
     <>
@@ -71,7 +73,7 @@ const CourseWidget = ({
         />
       </div>
     </>
-  )
-}
+  );
+};
 
-export default CourseWidget
+export default CourseWidget;

@@ -1,23 +1,24 @@
+import Link from 'next/link';
+
 import {
   IconCheck,
   IconDelete,
   IconEdit,
   IconEye,
   IconStudy,
-} from '@/shared/components/icons'
-import { commonClassName } from '@/shared/constants'
-import Link from 'next/link'
+} from '@/shared/components/icons';
+import { commonClassName } from '@/shared/constants';
 
-type TableActionIcon = 'edit' | 'delete' | 'view' | 'study' | 'approve'
+type TableActionIcon = 'edit' | 'delete' | 'view' | 'study' | 'approve';
 
 const TableActionItem = ({
   onClick,
   type,
   url,
 }: {
-  onClick?: () => void
-  type: TableActionIcon
-  url?: string
+  onClick?: () => void;
+  type: TableActionIcon;
+  url?: string;
 }) => {
   const icon: Record<TableActionIcon, React.JSX.Element> = {
     edit: <IconEdit />,
@@ -25,7 +26,8 @@ const TableActionItem = ({
     view: <IconEye />,
     study: <IconStudy />,
     approve: <IconCheck />,
-  }
+  };
+
   if (url)
     return (
       <Link
@@ -34,7 +36,8 @@ const TableActionItem = ({
       >
         {icon[type]}
       </Link>
-    )
+    );
+
   return (
     <button
       className={commonClassName.action}
@@ -42,7 +45,7 @@ const TableActionItem = ({
     >
       {icon[type]}
     </button>
-  )
-}
+  );
+};
 
-export default TableActionItem
+export default TableActionItem;

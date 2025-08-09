@@ -1,5 +1,6 @@
-import { IconPlus } from '@/shared/components/icons'
-import Link from 'next/link'
+import Link from 'next/link';
+
+import { IconPlus } from '@/shared/components/icons';
 
 const BouncedLink = ({ url }: { url: string }) => {
   return (
@@ -9,7 +10,7 @@ const BouncedLink = ({ url }: { url: string }) => {
     >
       <IconPlus></IconPlus>
     </Link>
-  )
-}
+  );
+};
 
-export default BouncedLink
+export default BouncedLink;

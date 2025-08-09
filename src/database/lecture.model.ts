@@ -1,13 +1,13 @@
-import { Document, Schema, model, models } from 'mongoose'
+import { Document, model, models, Schema } from 'mongoose';
 
 export interface ILecture extends Document {
-  _id: string
-  title: string
-  course: Schema.Types.ObjectId
-  lessons: Schema.Types.ObjectId[]
-  order: number
-  created_at: Date
-  _destroy: boolean
+  _id: string;
+  title: string;
+  course: Schema.Types.ObjectId;
+  lessons: Schema.Types.ObjectId[];
+  order: number;
+  created_at: Date;
+  _destroy: boolean;
 }
 
 const lectureSchema = new Schema({
@@ -37,7 +37,8 @@ const lectureSchema = new Schema({
     type: Number,
     default: 0,
   },
-})
+});
 
-const Lecture = models?.Lecture || model<ILecture>('Lecture', lectureSchema)
-export default Lecture
+const Lecture = models?.Lecture || model<ILecture>('Lecture', lectureSchema);
+
+export default Lecture;

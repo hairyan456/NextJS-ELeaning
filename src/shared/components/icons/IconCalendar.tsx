@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import { ComponentProps } from 'react';
 
 const IconCalendar = (props: ComponentProps<'svg'>) => {
   return (
@@ -17,7 +17,7 @@ const IconCalendar = (props: ComponentProps<'svg'>) => {
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default IconCalendar
+export default IconCalendar;

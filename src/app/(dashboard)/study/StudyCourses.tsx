@@ -1,32 +1,34 @@
-'use client'
+'use client';
 
-import CourseItem from '@/components/course/CourseItem'
-import { lastLessonKey } from '@/shared/constants'
-import { CourseGrid } from '@/shared/components'
-import { IStudyCoursesProps } from '@/types'
+import CourseItem from '@/components/course/CourseItem';
+import { CourseGrid } from '@/shared/components';
+import { lastLessonKey } from '@/shared/constants';
+import { IStudyCoursesProps } from '@/types';
 
 const StudyCourses = ({
   courses,
 }: {
-  courses: IStudyCoursesProps[] | null | undefined
+  courses: IStudyCoursesProps[] | null | undefined;
 }) => {
-  if (!courses || courses.length === 0) return null
-  let lastLesson: any[] = []
+  if (!courses || courses.length === 0) return null;
+  let lastLesson: any[] = [];
+
   if (typeof localStorage !== 'undefined') {
     lastLesson = localStorage
       ? JSON.parse(localStorage?.getItem(lastLessonKey) || '[]') || []
-      : []
+      : [];
   }
 
   return (
     <CourseGrid>
-      {courses &&
+      {!!courses &&
         courses?.length > 0 &&
         courses.map((item) => {
           const url =
             lastLesson?.find((el: any) => el?.course === item.slug)?.lesson ||
-            ''
-          const firstLessonUrl = item.lectures[0]?.lessons[0]?.slug
+            '';
+          const firstLessonUrl = item.lectures[0]?.lessons[0]?.slug;
+
           return (
             <CourseItem
               key={item.slug}
@@ -34,10 +36,10 @@ const StudyCourses = ({
               data={item}
               url={url || `${item.slug}/lesson?slug=${firstLessonUrl}`}
             />
-          )
+          );
         })}
     </CourseGrid>
-  )
-}
+  );
+};
 
-export default StudyCourses
+export default StudyCourses;

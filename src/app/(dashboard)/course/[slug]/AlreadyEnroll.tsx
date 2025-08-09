@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from 'next/link';
 
 const AlreadyEnroll = () => {
   return (
@@ -12,7 +12,7 @@ const AlreadyEnroll = () => {
         Khu vực học tập
       </Link>
     </div>
-  )
-}
+  );
+};
 
-export default AlreadyEnroll
+export default AlreadyEnroll;

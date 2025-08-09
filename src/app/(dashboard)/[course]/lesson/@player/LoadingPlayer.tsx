@@ -8,7 +8,7 @@ const LoadingPlayer = () => {
       </div>
       <div className="skeleton mb-10 h-9 w-full" />
     </div>
-  )
-}
+  );
+};
 
-export default LoadingPlayer
+export default LoadingPlayer;

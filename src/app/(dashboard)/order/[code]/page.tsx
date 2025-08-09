@@ -1,9 +1,11 @@
-import PageNotFound from '@/app/not-found'
-import { getOrderDetail } from '@/lib/actions/order.action'
+import PageNotFound from '@/app/not-found';
+import { getOrderDetail } from '@/lib/actions/order.action';
 
 const page = async ({ params }: { params: { code: string } }) => {
-  const orderDetail = await getOrderDetail({ code: params.code })
-  if (!orderDetail?._id) return <PageNotFound />
+  const orderDetail = await getOrderDetail({ code: params.code });
+
+  if (!orderDetail?._id) return <PageNotFound />;
+
   return (
     <div>
       <p className="tracking-wide">
@@ -19,7 +21,7 @@ const page = async ({ params }: { params: { code: string } }) => {
         <strong className="text-primary">{orderDetail?.code}</strong>
       </p>
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default page;

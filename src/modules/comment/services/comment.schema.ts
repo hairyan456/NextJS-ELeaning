@@ -1,15 +1,16 @@
-import { ECommentStatus } from '@/shared/types/enum'
-import { Document, Schema, model, models } from 'mongoose'
+import { Document, model, models, Schema } from 'mongoose';
+
+import { ECommentStatus } from '@/shared/types/enum';
 
 export interface IComment extends Document {
-  _id: string
-  content: string
-  status: ECommentStatus
-  lesson: Schema.Types.ObjectId
-  user: Schema.Types.ObjectId
-  level: number
-  parentId?: Schema.Types.ObjectId
-  created_at: Date
+  _id: string;
+  content: string;
+  status: ECommentStatus;
+  lesson: Schema.Types.ObjectId;
+  user: Schema.Types.ObjectId;
+  level: number;
+  parentId?: Schema.Types.ObjectId;
+  created_at: Date;
 }
 
 const commentSchema = new Schema<IComment>({
@@ -43,8 +44,9 @@ const commentSchema = new Schema<IComment>({
     type: Date,
     default: Date.now,
   },
-})
+});
 
 const CommentSchema =
-  models?.Comment || model<IComment>('Comment', commentSchema)
-export default CommentSchema
+  models?.Comment || model<IComment>('Comment', commentSchema);
+
+export default CommentSchema;

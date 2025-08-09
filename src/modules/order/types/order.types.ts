@@ -1,31 +1,31 @@
-import { EOrderStatus } from '@/shared/types/enum'
+import { EOrderStatus } from '@/shared/types/enum';
 
 export interface IOrderManageProps {
-  totalPages: number
-  total: number
+  totalPages: number;
+  total: number;
   orders: {
-    _id: string
-    code: string
-    total: number
-    amount: number
-    discount: number
-    status: EOrderStatus
+    _id: string;
+    code: string;
+    total: number;
+    amount: number;
+    discount: number;
+    status: EOrderStatus;
     coupon: {
-      code: string
-    }
+      code: string;
+    };
     course: {
-      title: string
-    }
+      title: string;
+    };
     user: {
-      name: string
-    }
-  }[]
+      name: string;
+    };
+  }[];
 }
 
 export interface OrderManagePageParams {
   searchParams: {
-    page: number
-    search: string
-    status: EOrderStatus
-  }
+    page: number;
+    search: string;
+    status: EOrderStatus;
+  };
 }

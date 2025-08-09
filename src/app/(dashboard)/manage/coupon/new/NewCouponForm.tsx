@@ -1,9 +1,20 @@
-'use client'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { Button } from '@/shared/components/ui/button'
-import { Calendar } from '@/shared/components/ui/calendar'
+'use client';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { format } from 'date-fns';
+import { debounce } from 'lodash';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import { z } from 'zod';
+
+import { ICourse } from '@/database/course.model';
+import { createNewCoupon } from '@/lib/actions/coupon.action';
+import { getAllCourses } from '@/lib/actions/course.action';
+import { IconCalendar, IconCancel } from '@/shared/components/icons';
+import { Button } from '@/shared/components/ui/button';
+import { Calendar } from '@/shared/components/ui/calendar';
+import { Checkbox } from '@/shared/components/ui/checkbox';
 import {
   Form,
   FormControl,
@@ -11,37 +22,27 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/shared/components/ui/form'
-import { Input } from '@/shared/components/ui/input'
-import { Label } from '@/shared/components/ui/label'
+} from '@/shared/components/ui/form';
+import { Input } from '@/shared/components/ui/input';
+import InputFormatCurrency from '@/shared/components/ui/input-format';
+import { Label } from '@/shared/components/ui/label';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/shared/components/ui/popover'
-import { RadioGroup, RadioGroupItem } from '@/shared/components/ui/radio-group'
-import { Switch } from '@/shared/components/ui/switch'
-import { IconCalendar, IconCancel } from '@/shared/components/icons'
-import { useState } from 'react'
-import { couponFormSchema, couponTypes } from '@/shared/constants'
-import { ECouponType } from '@/types/enums'
-import { format } from 'date-fns'
-import { createNewCoupon } from '@/lib/actions/coupon.action'
-import { toast } from 'react-toastify'
-import { useRouter } from 'next/navigation'
-import { debounce } from 'lodash'
-import { getAllCourses } from '@/lib/actions/course.action'
-import { ICourse } from '@/database/course.model'
-import { Checkbox } from '@/shared/components/ui/checkbox'
-import InputFormatCurrency from '@/shared/components/ui/input-format'
+} from '@/shared/components/ui/popover';
+import { RadioGroup, RadioGroupItem } from '@/shared/components/ui/radio-group';
+import { Switch } from '@/shared/components/ui/switch';
+import { couponFormSchema, couponTypes } from '@/shared/constants';
+import { ECouponType } from '@/types/enums';
 
 const NewCouponForm = () => {
-  const router = useRouter()
+  const router = useRouter();
 
-  const [startDate, setStartDate] = useState<Date>()
-  const [endDate, setEndDate] = useState<Date>()
-  const [findCourse, setFindCourse] = useState<ICourse[] | undefined>([])
-  const [selectedCourses, setSelectedCourses] = useState<ICourse[]>([])
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState<Date>();
+  const [findCourse, setFindCourse] = useState<ICourse[] | undefined>([]);
+  const [selectedCourses, setSelectedCourses] = useState<ICourse[]>([]);
 
   const form = useForm<z.infer<typeof couponFormSchema>>({
     resolver: zodResolver(couponFormSchema),
@@ -56,37 +57,39 @@ const NewCouponForm = () => {
       end_date: '',
       course: [],
     },
-  })
+  });
 
-  const couponTypeWatch = form.watch('type')
+  const couponTypeWatch = form.watch('type');
 
   const handleSearchCourse = debounce(
     async (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value
-      const listCourses = await getAllCourses({ search: value })
-      setFindCourse(listCourses)
-      if (!value) setFindCourse([])
+      const value = e.target.value;
+      const listCourses = await getAllCourses({ search: value });
+
+      setFindCourse(listCourses);
+      if (!value) setFindCourse([]);
     },
     250,
-  )
+  );
 
   const handleSelectCourse = (checked: boolean | string, course: any) => {
     if (checked) {
-      setSelectedCourses((prev) => [...prev, course])
+      setSelectedCourses((prev) => [...prev, course]);
     } else {
-      setSelectedCourses((prev) => prev.filter((c) => c._id !== course._id))
+      setSelectedCourses((prev) => prev.filter((c) => c._id !== course._id));
     }
-  }
+  };
 
   async function onSubmit(values: z.infer<typeof couponFormSchema>) {
     try {
-      const couponValue = Number(values.value?.replace(/,/g, ''))
+      const couponValue = Number(values.value?.replace(/,/g, ''));
+
       if (
         couponTypeWatch === ECouponType.PERCENT &&
         couponValue &&
         (couponValue > 100 || couponValue < 0)
       ) {
-        form.setError('value', { message: 'Giá trị không hợp lệ' })
+        form.setError('value', { message: 'Giá trị không hợp lệ' });
       }
       const newCoupon = await createNewCoupon({
         ...values,
@@ -95,18 +98,20 @@ const NewCouponForm = () => {
         end_date: endDate,
         type: couponTypeWatch,
         course: selectedCourses.map((c) => c._id),
-      })
+      });
+
       if (!newCoupon?.success) {
-        toast.warning(newCoupon?.message)
-        return
+        toast.warning(newCoupon?.message);
+
+        return;
       }
       if (newCoupon?._id) {
-        toast.success('Tạo mã giảm giá thành công!')
-        form.reset()
-        router.push('/manage/coupon')
+        toast.success('Tạo mã giảm giá thành công!');
+        form.reset();
+        router.push('/manage/coupon');
       }
     } catch (error) {
-      console.error('Error creating coupon:', error)
+      console.error('Error creating coupon:', error);
     }
   }
 
@@ -334,7 +339,7 @@ const NewCouponForm = () => {
                       placeholder="Tìm kiếm khóa học..."
                       onChange={handleSearchCourse}
                     />
-                    {findCourse && findCourse?.length > 0 && (
+                    {!!findCourse && findCourse?.length > 0 && (
                       <div className="!mt-5 flex flex-col gap-2">
                         {findCourse.map((course) => (
                           <Label
@@ -390,7 +395,7 @@ const NewCouponForm = () => {
         </Button>
       </form>
     </Form>
-  )
-}
+  );
+};
 
-export default NewCouponForm
+export default NewCouponForm;

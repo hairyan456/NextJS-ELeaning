@@ -1,5 +1,6 @@
-import { IconHome } from '@/shared/components/icons'
-import Link from 'next/link'
+import Link from 'next/link';
+
+import { IconHome } from '@/shared/components/icons';
 
 const PageNotFound = () => {
   return (
@@ -13,7 +14,7 @@ const PageNotFound = () => {
         <IconHome /> <span>Return homepage</span>
       </Link>
     </div>
-  )
-}
+  );
+};
 
-export default PageNotFound
+export default PageNotFound;

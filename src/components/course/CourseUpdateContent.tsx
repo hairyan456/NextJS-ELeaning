@@ -1,37 +1,39 @@
-'use client'
+'use client';
+import { MouseEvent, useState } from 'react';
+import { toast } from 'react-toastify';
+import slugify from 'slugify';
+import Swal from 'sweetalert2';
+
+import { ILesson } from '@/database/lesson.model';
+import { createNewLecture, updateLecture } from '@/lib/actions/lecture.action';
+import { createNewLesson, updateLesson } from '@/lib/actions/lesson.action';
+import { cn } from '@/lib/utils';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/shared/components/ui/accordion'
-import { commonClassName } from '@/shared/constants'
+} from '@/shared/components/ui/accordion';
+import { Button } from '@/shared/components/ui/button';
+import { Input } from '@/shared/components/ui/input';
+import { commonClassName } from '@/shared/constants';
+import { ICourseUpdateParams, IUpdateCourseLecture } from '@/types';
+
 import {
   IconCancel,
   IconCheck,
   IconDelete,
   IconEdit,
-} from '../../shared/components/icons'
-import { createNewLecture, updateLecture } from '@/lib/actions/lecture.action'
-import { toast } from 'react-toastify'
-import { MouseEvent, useState } from 'react'
-import Swal from 'sweetalert2'
-import { ICourseUpdateParams, IUpdateCourseLecture } from '@/types'
-import { cn } from '@/lib/utils'
-import { createNewLesson, updateLesson } from '@/lib/actions/lesson.action'
-import { ILesson } from '@/database/lesson.model'
-import slugify from 'slugify'
-import LessonItemUpdate from '../lesson/LessonItemUpdate'
-import { Input } from '@/shared/components/ui/input'
-import { Button } from '@/shared/components/ui/button'
+} from '../../shared/components/icons';
+import LessonItemUpdate from '../lesson/LessonItemUpdate';
 
 const CourseUpdateContent = ({ course }: { course: ICourseUpdateParams }) => {
-  const lectures = course?.lectures || []
+  const lectures = course?.lectures || [];
 
-  const [lectureEdit, setLectureEdit] = useState<string>('')
-  const [lectureIdEdit, setLectureIdEdit] = useState<string>('')
-  const [lessonEdit, setLessonEdit] = useState<string>('')
-  const [lessonIdEdit, setLessonIdEdit] = useState<string>('')
+  const [lectureEdit, setLectureEdit] = useState<string>('');
+  const [lectureIdEdit, setLectureIdEdit] = useState<string>('');
+  const [lessonEdit, setLessonEdit] = useState<string>('');
+  const [lessonIdEdit, setLessonIdEdit] = useState<string>('');
 
   const handleAddNewLecture = async () => {
     try {
@@ -40,20 +42,21 @@ const CourseUpdateContent = ({ course }: { course: ICourseUpdateParams }) => {
         course: course._id,
         order: lectures?.length + 1,
         path: `/manage/course/update-content?slug=${course.slug}`,
-      })
+      });
+
       if (res?.success) {
-        toast.success(res?.message || 'Thêm chương mới thành công!')
+        toast.success(res?.message || 'Thêm chương mới thành công!');
       }
     } catch (error) {
-      console.error('Error adding new lecture:', error)
+      console.error('Error adding new lecture:', error);
     }
-  }
+  };
 
   const handleDeleteLecture = async (
     e: MouseEvent<HTMLSpanElement>,
     lectureId: string,
   ) => {
-    e?.stopPropagation()
+    e?.stopPropagation();
     try {
       Swal.fire({
         title: 'Are you sure?',
@@ -71,22 +74,23 @@ const CourseUpdateContent = ({ course }: { course: ICourseUpdateParams }) => {
               _destroy: true,
               path: `/manage/course/update-content?slug=${course.slug}`,
             },
-          })
+          });
+
           if (res?.success) {
-            toast.success('Xóa chương thành công!')
+            toast.success('Xóa chương thành công!');
           }
         }
-      })
+      });
     } catch (error) {
-      console.error('Error deleting lecture:', error)
+      console.error('Error deleting lecture:', error);
     }
-  }
+  };
 
   const handleUpdateLecture = async (
     e: MouseEvent<HTMLSpanElement>,
     lectureId: string,
   ) => {
-    e?.stopPropagation()
+    e?.stopPropagation();
     try {
       const res = await updateLecture({
         lectureId,
@@ -94,16 +98,17 @@ const CourseUpdateContent = ({ course }: { course: ICourseUpdateParams }) => {
           title: lectureEdit,
           path: `/manage/course/update-content?slug=${course.slug}`,
         },
-      })
+      });
+
       if (res?.success) {
-        toast.success('Cập nhật chương thành công!')
-        setLectureEdit('')
-        setLectureIdEdit('')
+        toast.success('Cập nhật chương thành công!');
+        setLectureEdit('');
+        setLectureIdEdit('');
       }
     } catch (error) {
-      console.error('Error deleting lecture:', error)
+      console.error('Error deleting lecture:', error);
     }
-  }
+  };
 
   const handleAddNewLesson = async (lectureId: string, courseId: string) => {
     try {
@@ -113,21 +118,23 @@ const CourseUpdateContent = ({ course }: { course: ICourseUpdateParams }) => {
         course: courseId,
         title: 'Tiêu đề bài học mới',
         slug: `tieu-de-bai-hoc-moi-${new Date().getTime().toString().slice(-3)}`,
-      })
+      });
+
       if (res?.success) {
-        toast.success('Thêm bài học mới thành công!')
-        return
-      } else toast.error('Thêm bài học mới thất bại')
+        toast.success('Thêm bài học mới thành công!');
+
+        return;
+      } else toast.error('Thêm bài học mới thất bại');
     } catch (error) {
-      console.error('Error adding new lesson:', error)
+      console.error('Error adding new lesson:', error);
     }
-  }
+  };
 
   const handleUpdateLesson = async (
     e: MouseEvent<HTMLSpanElement>,
     lessonId: string,
   ) => {
-    e?.stopPropagation()
+    e?.stopPropagation();
     try {
       const res = await updateLesson({
         lessonId,
@@ -140,16 +147,17 @@ const CourseUpdateContent = ({ course }: { course: ICourseUpdateParams }) => {
             remove: /[*+~.()'"!:@]/g,
           }),
         },
-      })
+      });
+
       if (res?.success) {
-        toast.success('Cập nhật bài học thành công!')
-        setLessonEdit('')
-        setLessonIdEdit('')
+        toast.success('Cập nhật bài học thành công!');
+        setLessonEdit('');
+        setLessonIdEdit('');
       }
     } catch (error) {
-      console.error('Error updating lesson:', error)
+      console.error('Error updating lesson:', error);
     }
-  }
+  };
 
   return (
     <>
@@ -170,7 +178,7 @@ const CourseUpdateContent = ({ course }: { course: ICourseUpdateParams }) => {
                             defaultValue={lecture?.title}
                             placeholder="Tên chương..."
                             onChange={(e) => {
-                              setLectureEdit(e.target.value)
+                              setLectureEdit(e.target.value);
                             }}
                           />
                         </div>
@@ -192,8 +200,8 @@ const CourseUpdateContent = ({ course }: { course: ICourseUpdateParams }) => {
                               'text-red-500',
                             )}
                             onClick={(e) => {
-                              e.stopPropagation()
-                              setLectureIdEdit('')
+                              e.stopPropagation();
+                              setLectureIdEdit('');
                             }}
                           >
                             <IconCancel />
@@ -210,8 +218,8 @@ const CourseUpdateContent = ({ course }: { course: ICourseUpdateParams }) => {
                               'text-blue-500',
                             )}
                             onClick={(e) => {
-                              e.stopPropagation()
-                              setLectureIdEdit(lecture?._id)
+                              e.stopPropagation();
+                              setLectureIdEdit(lecture?._id);
                             }}
                           >
                             <IconEdit />
@@ -250,7 +258,7 @@ const CourseUpdateContent = ({ course }: { course: ICourseUpdateParams }) => {
                                       defaultValue={lesson?.title}
                                       placeholder="Tên bài học..."
                                       onChange={(e) => {
-                                        setLessonEdit(e.target.value)
+                                        setLessonEdit(e.target.value);
                                       }}
                                     />
                                   </div>
@@ -272,8 +280,8 @@ const CourseUpdateContent = ({ course }: { course: ICourseUpdateParams }) => {
                                         'text-red-500',
                                       )}
                                       onClick={(e) => {
-                                        e.stopPropagation()
-                                        setLessonIdEdit('')
+                                        e.stopPropagation();
+                                        setLessonIdEdit('');
                                       }}
                                     >
                                       <IconCancel />
@@ -290,8 +298,8 @@ const CourseUpdateContent = ({ course }: { course: ICourseUpdateParams }) => {
                                         'text-blue-500',
                                       )}
                                       onClick={(e) => {
-                                        e.stopPropagation()
-                                        setLessonIdEdit(lesson?._id)
+                                        e.stopPropagation();
+                                        setLessonIdEdit(lesson?._id);
                                       }}
                                     >
                                       <IconEdit />
@@ -340,7 +348,7 @@ const CourseUpdateContent = ({ course }: { course: ICourseUpdateParams }) => {
         Thêm chương mới
       </Button>
     </>
-  )
-}
+  );
+};
 
-export default CourseUpdateContent
+export default CourseUpdateContent;

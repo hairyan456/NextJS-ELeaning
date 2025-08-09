@@ -1,17 +1,19 @@
-'use client'
+'use client';
 
-import { IconArrowLeft, IconArrowRight } from '@/shared/components/icons'
-import { Button } from '@/shared/components/ui/button'
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
+
+import { IconArrowLeft, IconArrowRight } from '@/shared/components/icons';
+import { Button } from '@/shared/components/ui/button';
 
 const LessonNavigation = ({
   nextLesson,
   prevLesson,
 }: {
-  nextLesson: string
-  prevLesson: string
+  nextLesson: string;
+  prevLesson: string;
 }) => {
-  const router = useRouter()
+  const router = useRouter();
+
   return (
     <div className="flex gap-3">
       <Button
@@ -29,7 +31,7 @@ const LessonNavigation = ({
         <IconArrowRight />
       </Button>
     </div>
-  )
-}
+  );
+};
 
-export default LessonNavigation
+export default LessonNavigation;

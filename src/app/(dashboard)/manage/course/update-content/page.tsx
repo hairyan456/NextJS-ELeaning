@@ -1,10 +1,11 @@
-import CourseUpdateContent from '@/components/course/CourseUpdateContent'
-import { Heading } from '@/shared/components'
-import { getCourseBySlug } from '@/lib/actions/course.action'
+import CourseUpdateContent from '@/components/course/CourseUpdateContent';
+import { getCourseBySlug } from '@/lib/actions/course.action';
+import { Heading } from '@/shared/components';
 
 const page = async ({ searchParams }: { searchParams: { slug: string } }) => {
-  const findCourse = await getCourseBySlug({ slug: searchParams.slug })
-  if (!findCourse) return <>Không tìm thấy khóa học.</>
+  const findCourse = await getCourseBySlug({ slug: searchParams.slug });
+
+  if (!findCourse) return <>Không tìm thấy khóa học.</>;
 
   return (
     <>
@@ -15,7 +16,7 @@ const page = async ({ searchParams }: { searchParams: { slug: string } }) => {
         course={JSON.parse(JSON.stringify(findCourse))}
       ></CourseUpdateContent>
     </>
-  )
-}
+  );
+};
 
-export default page
+export default page;

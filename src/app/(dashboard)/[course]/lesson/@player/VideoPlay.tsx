@@ -1,35 +1,37 @@
-'use client'
-import { cn } from '@/lib/utils'
-import MuxPlayer from '@mux/mux-player-react'
-import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import LessonNavigation from '../LessonNavigation'
-import useGlobalStore from '@/store'
-import { Button } from '@/shared/components/ui/button'
-import RatingButton from './RatingButton'
+'use client';
+import MuxPlayer from '@mux/mux-player-react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+
+import { cn } from '@/lib/utils';
+import { Button } from '@/shared/components/ui/button';
+import useGlobalStore from '@/store';
+
+import LessonNavigation from '../LessonNavigation';
+import RatingButton from './RatingButton';
 
 const VideoPlay = ({
+  data,
   nextLesson,
   prevLesson,
-  data,
 }: {
-  nextLesson: string
-  prevLesson: string
-  data: { userId: string; courseId: string }
+  nextLesson: string;
+  prevLesson: string;
+  data: { userId: string; courseId: string };
 }) => {
-  const duration = 3000
-  const [isEnded, setIsEnded] = useState(false)
-  const router = useRouter()
-  const { isExpandedPlayer, setIsExpandedPlayer } = useGlobalStore()
+  const duration = 3000;
+  const [isEnded, setIsEnded] = useState(false);
+  const router = useRouter();
+  const { isExpandedPlayer, setIsExpandedPlayer } = useGlobalStore();
 
   useEffect(() => {
-    if (!isEnded) return
+    if (!isEnded) return;
     const timer = setTimeout(() => {
-      router.push(nextLesson)
-    }, duration)
+      router.push(nextLesson);
+    }, duration);
 
-    return () => clearTimeout(timer)
-  }, [isEnded, nextLesson, router])
+    return () => clearTimeout(timer);
+  }, [isEnded, nextLesson, router]);
 
   return (
     <>
@@ -72,7 +74,7 @@ const VideoPlay = ({
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default VideoPlay
+export default VideoPlay;

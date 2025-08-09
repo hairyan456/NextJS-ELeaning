@@ -2,7 +2,7 @@ import {
   InputAttributes,
   NumericFormat,
   NumericFormatProps,
-} from 'react-number-format'
+} from 'react-number-format';
 
 const InputFormatCurrency = (props: NumericFormatProps<InputAttributes>) => {
   return (
@@ -13,7 +13,7 @@ const InputFormatCurrency = (props: NumericFormatProps<InputAttributes>) => {
       {...props}
       thousandSeparator
     />
-  )
-}
+  );
+};
 
-export default InputFormatCurrency
+export default InputFormatCurrency;

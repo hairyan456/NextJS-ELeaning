@@ -1,28 +1,30 @@
-'use client'
+'use client';
 
-import { Button } from '@/shared/components/ui/button'
-import { IUser } from '@/database/user.model'
-import { createNewOrder } from '@/lib/actions/order.action'
-import { createOrderCode } from '@/utils'
-import { useRouter } from 'next/navigation'
-import { toast } from 'react-toastify'
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
+
+import { IUser } from '@/database/user.model';
+import { createNewOrder } from '@/lib/actions/order.action';
+import { Button } from '@/shared/components/ui/button';
+import { createOrderCode } from '@/utils';
 
 const ButtonEnroll = ({
-  user,
-  courseId,
   amount,
   coupon,
+  courseId,
+  user,
 }: {
-  user: IUser | null | undefined
-  courseId: string
-  amount: number
-  coupon: string
+  user: IUser | null | undefined;
+  courseId: string;
+  amount: number;
+  coupon: string;
 }) => {
-  const router = useRouter()
+  const router = useRouter();
   const handleEnrollCourse = async () => {
     if (!user?._id) {
-      toast.error('Vui lòng đăng nhập để mua khóa học')
-      return
+      toast.error('Vui lòng đăng nhập để mua khóa học');
+
+      return;
     }
     // handle when login
     // create new order with `DH-` + current time
@@ -33,12 +35,14 @@ const ButtonEnroll = ({
       total: amount,
       amount: amount,
       coupon,
-    })
+    });
+
     if (newOrder?._id) {
-      router.push(`/order/${newOrder?.code}`)
-      return
+      router.push(`/order/${newOrder?.code}`);
+
+      return;
     }
-  }
+  };
 
   return (
     <Button
@@ -48,7 +52,7 @@ const ButtonEnroll = ({
     >
       Mua khóa học
     </Button>
-  )
-}
+  );
+};
 
-export default ButtonEnroll
+export default ButtonEnroll;

@@ -1,27 +1,29 @@
-'use client'
+'use client';
 
-import Image from 'next/image'
-import CommentReply from './CommentReply'
-import { ICommentItem } from '@/types'
-import { getRepliesComment, timeAgo } from '@/utils'
-import { cn } from '@/lib/utils'
-import { ECommentStatus } from '@/shared/types/enum'
+import Image from 'next/image';
+
+import { cn } from '@/lib/utils';
+import { ECommentStatus } from '@/shared/types/enum';
+import { ICommentItem } from '@/types';
+import { getRepliesComment, timeAgo } from '@/utils';
+
+import CommentReply from './CommentReply';
 
 const CommentItem = ({
   comment,
+  comments = [],
   lessonId,
   userId,
-  comments = [],
 }: {
-  comment: ICommentItem
-  lessonId: string
-  userId: string
-  comments: ICommentItem[]
+  comment: ICommentItem;
+  lessonId: string;
+  userId: string;
+  comments: ICommentItem[];
 }) => {
-  if (!comment?._id) return null
-  const replies = getRepliesComment(comments, comment?._id)
-  const level = comment.level || 0
-  const isPending = comment.status === ECommentStatus.PENDING
+  if (!comment?._id) return null;
+  const replies = getRepliesComment(comments, comment?._id);
+  const level = comment.level || 0;
+  const isPending = comment.status === ECommentStatus.PENDING;
 
   return (
     <>
@@ -78,7 +80,7 @@ const CommentItem = ({
           />
         ))}
     </>
-  )
-}
+  );
+};
 
-export default CommentItem
+export default CommentItem;

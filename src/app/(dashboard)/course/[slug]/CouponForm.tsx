@@ -1,64 +1,67 @@
-'use client'
-import { Input } from '@/shared/components/ui/input'
-import { getValidateCoupon } from '@/lib/actions/coupon.action'
-import { ECouponType } from '@/types/enums'
-import { debounce } from 'lodash'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { toast } from 'react-toastify'
+'use client';
+import { debounce } from 'lodash';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+
+import { getValidateCoupon } from '@/lib/actions/coupon.action';
+import { Input } from '@/shared/components/ui/input';
+import { ECouponType } from '@/types/enums';
 
 const CouponForm = ({
-  setCouponId,
-  originalPrice,
-  setPrice,
   courseId,
+  originalPrice,
+  setCouponId,
+  setPrice,
 }: {
-  setCouponId: Dispatch<SetStateAction<any>>
-  originalPrice: number
-  setPrice: Dispatch<SetStateAction<number>>
-  courseId: string
+  setCouponId: Dispatch<SetStateAction<any>>;
+  originalPrice: number;
+  setPrice: Dispatch<SetStateAction<number>>;
+  courseId: string;
 }) => {
-  const [isAppliedCoupon, setIsAppliedCoupon] = useState<boolean>(false)
-  const [couponCode, setCouponCode] = useState<string>('')
+  const [isAppliedCoupon, setIsAppliedCoupon] = useState<boolean>(false);
+  const [couponCode, setCouponCode] = useState<string>('');
 
   useEffect(() => {
-    setIsAppliedCoupon(false)
-  }, [couponCode])
+    setIsAppliedCoupon(false);
+  }, [couponCode]);
 
   const handleChangeCoupon = debounce(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setCouponCode(e?.target?.value)
+      setCouponCode(e?.target?.value);
     },
     300,
-  )
+  );
 
   const handleApplyCoupon = async () => {
-    if (!couponCode || isAppliedCoupon) return
+    if (!couponCode || isAppliedCoupon) return;
     try {
       const res = await getValidateCoupon({
         code: couponCode.toUpperCase(),
         courseId,
-      })
+      });
+
       if (res?._id) {
-        const couponType = res.type
-        let finalPrice = originalPrice
+        const couponType = res.type;
+        let finalPrice = originalPrice;
+
         if (couponType === ECouponType.PERCENT) {
-          finalPrice = originalPrice - (originalPrice * res?.value) / 100
+          finalPrice = originalPrice - (originalPrice * res?.value) / 100;
         } else if (couponType === ECouponType.AMOUNT) {
-          finalPrice = originalPrice - res.value
+          finalPrice = originalPrice - res.value;
         }
-        setPrice(finalPrice)
-        setIsAppliedCoupon(true)
-        setCouponId(res._id)
-        toast.success('Áp dụng coupon thành công')
+        setPrice(finalPrice);
+        setIsAppliedCoupon(true);
+        setCouponId(res._id);
+        toast.success('Áp dụng coupon thành công');
       } else {
-        setCouponCode('')
-        setCouponId('')
-        toast.error('Áp coupon thất bại')
+        setCouponCode('');
+        setCouponId('');
+        toast.error('Áp coupon thất bại');
       }
     } catch (error) {
-      console.log('Error when apply coupon:', error)
+      console.log('Error when apply coupon:', error);
     }
-  }
+  };
 
   return (
     <div className="relative mt-5">
@@ -77,7 +80,7 @@ const CouponForm = ({
         Áp dụng
       </button>
     </div>
-  )
-}
+  );
+};
 
-export default CouponForm
+export default CouponForm;

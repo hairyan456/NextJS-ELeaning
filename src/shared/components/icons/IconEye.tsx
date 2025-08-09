@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import { ComponentProps } from 'react';
 
 const IconEye = (props: ComponentProps<'svg'>) => {
   return (
@@ -22,7 +22,7 @@ const IconEye = (props: ComponentProps<'svg'>) => {
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default IconEye
+export default IconEye;

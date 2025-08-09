@@ -1,29 +1,32 @@
-'use client'
-import useQueryString from '@/hooks/useQueryString'
-import { debounce } from 'lodash'
-import { ITEMS_PER_PAGE } from '@/shared/constants'
+'use client';
+import { debounce } from 'lodash';
+
+import useQueryString from '@/hooks/useQueryString';
 import {
   IconArrowLeft,
   IconArrowRight,
   IconDoubleLeftArrow,
   IconDoubleRightArrow,
-} from '@/shared/components/icons'
+} from '@/shared/components/icons';
+import { ITEMS_PER_PAGE } from '@/shared/constants';
 
 interface IPaginateProps {
-  totalPages: number
-  total: number
+  totalPages: number;
+  total: number;
 }
 
-const Pagination = ({ totalPages, total }: IPaginateProps) => {
-  const { handleChangePage, currentPage } = useQueryString()
+const Pagination = ({ total, totalPages }: IPaginateProps) => {
+  const { currentPage, handleChangePage } = useQueryString();
 
   const onInputChange = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Number(e.target.value)
-    if (value < 1) return
-    handleChangePage(value)
-  }, 250)
+    const value = Number(e.target.value);
 
-  if (total <= ITEMS_PER_PAGE) return null
+    if (value < 1) return;
+    handleChangePage(value);
+  }, 250);
+
+  if (total <= ITEMS_PER_PAGE) return null;
+
   return (
     <div className="mt-10 flex items-center justify-center gap-3">
       <PaginateButton
@@ -58,17 +61,17 @@ const Pagination = ({ totalPages, total }: IPaginateProps) => {
         <IconDoubleRightArrow />
       </PaginateButton>
     </div>
-  )
-}
+  );
+};
 
 interface IPaginateBtn {
-  onClick: () => void
-  disabled: boolean
-  children: React.ReactNode
+  onClick: () => void;
+  disabled: boolean;
+  children: React.ReactNode;
 }
-function PaginateButton({ onClick, disabled, children }: IPaginateBtn) {
+function PaginateButton({ children, disabled, onClick }: IPaginateBtn) {
   const paginateBtnClassName =
-    'size-10 rounded-full bg-white shadow-sm p-2 flex items-center justify-center disabled:bg-gray-200'
+    'size-10 rounded-full bg-white shadow-sm p-2 flex items-center justify-center disabled:bg-gray-200';
 
   return (
     <button
@@ -78,6 +81,6 @@ function PaginateButton({ onClick, disabled, children }: IPaginateBtn) {
     >
       {children}
     </button>
-  )
+  );
 }
-export default Pagination
+export default Pagination;

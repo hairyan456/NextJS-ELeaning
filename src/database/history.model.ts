@@ -1,11 +1,11 @@
-import { Document, Schema, model, models } from 'mongoose'
+import { Document, model, models, Schema } from 'mongoose';
 
 export interface IHistory extends Document {
-  _id: string
-  created_at: Date
-  course: Schema.Types.ObjectId
-  lesson: Schema.Types.ObjectId
-  user: Schema.Types.ObjectId
+  _id: string;
+  created_at: Date;
+  course: Schema.Types.ObjectId;
+  lesson: Schema.Types.ObjectId;
+  user: Schema.Types.ObjectId;
 }
 
 const historySchema = new Schema<IHistory>({
@@ -25,7 +25,8 @@ const historySchema = new Schema<IHistory>({
     type: Date,
     default: Date.now,
   },
-})
+});
 
-const History = models?.History || model<IHistory>('History', historySchema)
-export default History
+const History = models?.History || model<IHistory>('History', historySchema);
+
+export default History;

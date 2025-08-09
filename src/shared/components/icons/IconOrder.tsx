@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import { ComponentProps } from 'react';
 
 const IconOrder = (props: ComponentProps<'svg'>) => {
   return (
@@ -17,7 +17,7 @@ const IconOrder = (props: ComponentProps<'svg'>) => {
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default IconOrder
+export default IconOrder;

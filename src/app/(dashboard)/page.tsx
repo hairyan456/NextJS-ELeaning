@@ -1,9 +1,9 @@
-import CourseItem from '@/components/course/CourseItem'
-import { getAllCoursesPublic } from '@/lib/actions/course.action'
-import { CourseGrid, Heading } from '@/shared/components'
+import CourseItem from '@/components/course/CourseItem';
+import { getAllCoursesPublic } from '@/lib/actions/course.action';
+import { CourseGrid, Heading } from '@/shared/components';
 
 const page = async () => {
-  const courses = (await getAllCoursesPublic({})) || []
+  const courses = (await getAllCoursesPublic({})) || [];
 
   return (
     <div>
@@ -18,7 +18,7 @@ const page = async () => {
           ))}
       </CourseGrid>
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default page;

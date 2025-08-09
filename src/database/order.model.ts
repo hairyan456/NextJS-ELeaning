@@ -1,17 +1,18 @@
-import { EOrderStatus } from '@/types/enums'
-import { Document, Schema, model, models } from 'mongoose'
+import { Document, model, models, Schema } from 'mongoose';
+
+import { EOrderStatus } from '@/types/enums';
 
 export interface IOrder extends Document {
-  _id: string
-  code: string
-  course: Schema.Types.ObjectId
-  user: Schema.Types.ObjectId
-  status: EOrderStatus
-  created_at: Date
-  total: number
-  amount: number
-  discount: number
-  coupon: Schema.Types.ObjectId
+  _id: string;
+  code: string;
+  course: Schema.Types.ObjectId;
+  user: Schema.Types.ObjectId;
+  status: EOrderStatus;
+  created_at: Date;
+  total: number;
+  amount: number;
+  discount: number;
+  coupon: Schema.Types.ObjectId;
 }
 
 const orderSchema = new Schema<IOrder>({
@@ -51,7 +52,8 @@ const orderSchema = new Schema<IOrder>({
     enum: Object.values(EOrderStatus),
     default: EOrderStatus.PENDING,
   },
-})
+});
 
-const Order = models?.Order || model<IOrder>('Order', orderSchema)
-export default Order
+const Order = models?.Order || model<IOrder>('Order', orderSchema);
+
+export default Order;

@@ -14,7 +14,7 @@ const IconPlus = () => {
         strokeLinejoin="round"
       />
     </svg>
-  )
-}
+  );
+};
 
-export default IconPlus
+export default IconPlus;

@@ -1,5 +1,18 @@
-'use client'
-import { IconCancel, IconCheck } from '@/shared/components/icons'
+'use client';
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
+
+import useQueryString from '@/hooks/useQueryString';
+import { updateOrder } from '@/lib/actions/order.action';
+import { cn } from '@/lib/utils';
+import {
+  EmptySpace,
+  Heading,
+  Pagination,
+  StatusBadge,
+} from '@/shared/components';
+import { IconCancel, IconCheck } from '@/shared/components/icons';
+import { Input } from '@/shared/components/ui/input';
 import {
   Select,
   SelectContent,
@@ -7,7 +20,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/shared/components/ui/select'
+} from '@/shared/components/ui/select';
 import {
   Table,
   TableBody,
@@ -15,36 +28,25 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/shared/components/ui/table'
-import { allValue, commonClassName, orderStatus } from '@/shared/constants'
-import useQueryString from '@/hooks/useQueryString'
-import { updateOrder } from '@/lib/actions/order.action'
-import { cn } from '@/lib/utils'
-import { toast } from 'react-toastify'
-import Swal from 'sweetalert2'
-import { IOrderManageProps } from '../types/order.types'
-import {
-  EmptySpace,
-  Heading,
-  Pagination,
-  StatusBadge,
-} from '@/shared/components'
-import { Input } from '@/shared/components/ui/input'
-import { EOrderStatus } from '@/shared/types/enum'
+} from '@/shared/components/ui/table';
+import { allValue, commonClassName, orderStatus } from '@/shared/constants';
+import { EOrderStatus } from '@/shared/types/enum';
+
+import { IOrderManageProps } from '../types/order.types';
 
 const OrderManagePage = ({
   orders = [],
-  totalPages = 1,
   total,
+  totalPages = 1,
 }: IOrderManageProps) => {
-  const { handleSearchData, handleSelectStatus } = useQueryString()
+  const { handleSearchData, handleSelectStatus } = useQueryString();
 
   const handleUpdateOrder = async ({
     orderId,
     status,
   }: {
-    orderId: string
-    status: EOrderStatus
+    orderId: string;
+    status: EOrderStatus;
   }) => {
     if (status === EOrderStatus.CANCELED) {
       Swal.fire({
@@ -55,18 +57,20 @@ const OrderManagePage = ({
         cancelButtonText: 'Thoát',
       }).then(async (result) => {
         if (result.isConfirmed) {
-          await updateOrder({ orderId, status }) // Replace with actual order ID
+          await updateOrder({ orderId, status }); // Replace with actual order ID
         }
-      })
+      });
     }
     if (status === EOrderStatus.COMPLETED) {
-      const res = await updateOrder({ orderId, status })
+      const res = await updateOrder({ orderId, status });
+
       if (res?.success) {
-        toast.success('Cập nhật đơn hàng thành công')
-        return
+        toast.success('Cập nhật đơn hàng thành công');
+
+        return;
       }
     }
-  }
+  };
 
   return (
     <div>
@@ -120,7 +124,8 @@ const OrderManagePage = ({
             orders.map((order) => {
               const orderStatusItem = orderStatus.find(
                 (item) => item.value === order.status,
-              )
+              );
+
               return (
                 <TableRow key={order.code}>
                   <TableCell>
@@ -193,7 +198,7 @@ const OrderManagePage = ({
                     )}
                   </TableCell>
                 </TableRow>
-              )
+              );
             })}
         </TableBody>
       </Table>
@@ -202,7 +207,7 @@ const OrderManagePage = ({
         totalPages={totalPages}
       />
     </div>
-  )
-}
+  );
+};
 
-export default OrderManagePage
+export default OrderManagePage;
