@@ -19,7 +19,11 @@ const page = async ({
 
   return (
     <>
-      <CouponManage coupons={coupons} total={total} totalPages={totalPages} />
+      <CouponManage
+        coupons={coupons}
+        total={total}
+        totalPages={totalPages}
+      />
     </>
   )
 }

@@ -138,8 +138,11 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
   const imageWatch = form.watch('image')
   return (
     <Form {...form}>
-      <form autoComplete="off" onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="grid grid-cols-2 gap-8 my-10">
+      <form
+        autoComplete="off"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
+        <div className="my-10 grid grid-cols-2 gap-8">
           <FormField
             control={form.control}
             name="title"
@@ -147,7 +150,10 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
               <FormItem>
                 <FormLabel>Tên khóa học *</FormLabel>
                 <FormControl>
-                  <Input placeholder="Tên khóa học" {...field} />
+                  <Input
+                    placeholder="Tên khóa học"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -160,7 +166,10 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
               <FormItem>
                 <FormLabel>Đường dẫn khóa học</FormLabel>
                 <FormControl>
-                  <Input placeholder="khoa-hoc-lap-trinh" {...field} />
+                  <Input
+                    placeholder="khoa-hoc-lap-trinh"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -227,10 +236,7 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                 <FormLabel>Ảnh đại diện</FormLabel>
                 <FormControl>
                   <>
-                    <div
-                      className="h-[250px] bg-white dark:bg-grayDarker rounded-md border border-gray-200 dark:border-gray-500 flex items-center justify-center
-                                            relative"
-                    >
+                    <div className="relative flex h-[250px] items-center justify-center rounded-md border border-gray-200 bg-white dark:border-gray-500 dark:bg-grayDarker">
                       {!imageWatch ? (
                         <UploadButton
                           endpoint="imageUploader"
@@ -247,7 +253,7 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                         <Image
                           fill
                           alt="Course Image"
-                          className="w-full h-full object-cover rounded-md"
+                          className="size-full rounded-md object-cover"
                           src={imageWatch}
                         />
                       )}
@@ -265,7 +271,10 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
               <FormItem>
                 <FormLabel>Youtube URL</FormLabel>
                 <FormControl>
-                  <Input placeholder="https://youtube.com/xyz" {...field} />
+                  <Input
+                    placeholder="https://youtube.com/xyz"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -305,7 +314,10 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                     </SelectTrigger>
                     <SelectContent>
                       {courseStatus.map((status) => (
-                        <SelectItem key={status.value} value={status.value}>
+                        <SelectItem
+                          key={status.value}
+                          value={status.value}
+                        >
                           {status.title}
                         </SelectItem>
                       ))}
@@ -332,7 +344,10 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                     </SelectTrigger>
                     <SelectContent>
                       {courseLevel.map((level) => (
-                        <SelectItem key={level.value} value={level.value}>
+                        <SelectItem
+                          key={level.value}
+                          value={level.value}
+                        >
                           {level.title}
                         </SelectItem>
                       ))}
@@ -446,7 +461,10 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                 <FormControl>
                   <>
                     {courseInfo.qa.map((item, index) => (
-                      <div key={index} className="grid grid-cols-2 gap-5">
+                      <div
+                        key={index}
+                        className="grid grid-cols-2 gap-5"
+                      >
                         <Input
                           key={index}
                           placeholder={`Câu hỏi ${index + 1}`}

@@ -94,7 +94,7 @@ const CourseManage = ({ courses }: { courses: ICourse[] }) => {
   return (
     <>
       <BouncedLink url="/manage/course/new"></BouncedLink>
-      <div className="flex flex-col lg:flex-row lg:items-center gap-5 justify-between mb-10">
+      <div className="mb-10 flex flex-col justify-between gap-5 lg:flex-row lg:items-center">
         <Heading className="uppercase">Quản lý khóa học</Heading>
         <div className="flex gap-3">
           <div className="w-full lg:w-[300px]">
@@ -116,7 +116,10 @@ const CourseManage = ({ courses }: { courses: ICourse[] }) => {
               <SelectGroup>
                 <SelectItem value={allValue}>Tất cả</SelectItem>
                 {courseStatus.map((status) => (
-                  <SelectItem key={status.value} value={status.value}>
+                  <SelectItem
+                    key={status.value}
+                    value={status.value}
+                  >
                     {status.title}
                   </SelectItem>
                 ))}
@@ -142,16 +145,16 @@ const CourseManage = ({ courses }: { courses: ICourse[] }) => {
                   <div className="flex items-center gap-3">
                     <Image
                       alt=""
-                      className="flex-shrink-0 size-16 rounded-lg object-cover"
+                      className="size-16 shrink-0 rounded-lg object-cover"
                       height={100}
                       src={course.image}
                       width={100}
                     />
                     <div className="flex flex-col gap-1">
-                      <h3 className="font-bold text-sm lg:text-base whitespace-nowrap">
+                      <h3 className="whitespace-nowrap text-sm font-bold lg:text-base">
                         {course.title}
                       </h3>
-                      <h4 className="text-xs lg:text-sm text-slate-500">
+                      <h4 className="text-xs text-slate-500 lg:text-sm">
                         {new Date(course.created_at).toLocaleDateString(
                           'vi-VN',
                         )}
@@ -160,7 +163,7 @@ const CourseManage = ({ courses }: { courses: ICourse[] }) => {
                   </div>
                 </TableCell>
                 <TableCell>
-                  <span className="font-bold text-sm lg:text-base ">
+                  <span className="text-sm font-bold lg:text-base">
                     {course.price.toLocaleString()}đ
                   </span>
                 </TableCell>

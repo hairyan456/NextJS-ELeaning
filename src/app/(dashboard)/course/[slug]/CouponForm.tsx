@@ -56,20 +56,20 @@ const CouponForm = ({
         toast.error('Áp coupon thất bại')
       }
     } catch (error) {
-      console.log(`Error when apply coupon:`, error)
+      console.log('Error when apply coupon:', error)
     }
   }
 
   return (
-    <div className="mt-5 relative">
+    <div className="relative mt-5">
       <Input
-        className="pr-20 uppercase font-semibold text-sm placeholder:text-sm "
+        className="pr-20 text-sm font-semibold uppercase placeholder:text-sm"
         defaultValue={couponCode}
         placeholder="Nhập mã giảm giá..."
         onChange={handleChangeCoupon}
       />
       <button
-        className="absolute right-5 top-1/2 -translate-y-1/2 font-medium text-sm disabled:text-gray-400"
+        className="absolute right-5 top-1/2 -translate-y-1/2 text-sm font-medium disabled:text-gray-400"
         disabled={!couponCode || isAppliedCoupon}
         type="button"
         onClick={handleApplyCoupon}

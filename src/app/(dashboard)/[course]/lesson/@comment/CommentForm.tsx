@@ -96,7 +96,7 @@ const CommentForm = ({
             )}
           />
           <Button
-            className="w-[70px] ml-auto"
+            className="ml-auto w-[70px]"
             isLoading={isPending}
             type="submit"
             variant={'primary'}

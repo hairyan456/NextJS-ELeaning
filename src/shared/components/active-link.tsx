@@ -1,7 +1,6 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import React from 'react'
 
 interface IActiveLinkProps {
   url: string
@@ -14,14 +13,11 @@ const ActiveLink = ({ url, children }: IActiveLinkProps) => {
   return (
     <Link
       href={url}
-      className={`p-3 rounded-md flex items-center gap-3 dark:text-grayDark text-base font-medium
-                ${
-                  isActive
-                    ? '!text-primary font-semibold bg-primary bg-opacity-10 svg-animate'
-                    : `hover:!text-primary hover:!bg-primary hover:!bg-opacity-10
-                hover:transition-all `
-                }
-            `}
+      className={`flex items-center gap-3 rounded-md p-3 text-base font-medium dark:text-grayDark ${
+        isActive
+          ? 'svg-animate bg-primary bg-opacity-10 font-semibold !text-primary'
+          : 'hover:!bg-primary hover:!bg-opacity-10 hover:!text-primary hover:transition-all'
+      } `}
     >
       {children}
     </Link>

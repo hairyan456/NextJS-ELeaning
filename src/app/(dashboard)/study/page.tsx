@@ -1,6 +1,5 @@
 import { Heading } from '@/shared/components'
 import { getUserCourses } from '@/lib/actions/user.actions'
-import React from 'react'
 import StudyCourses from './StudyCourses'
 
 const page = async () => {

@@ -45,7 +45,7 @@ const CouponManage = ({
   return (
     <div>
       <BouncedLink url="/manage/coupon/new"></BouncedLink>
-      <div className="flex flex-col lg:flex-row lg:items-center gap-5 justify-between mb-10">
+      <div className="mb-10 flex flex-col justify-between gap-5 lg:flex-row lg:items-center">
         <Heading className="">Quản lý mã giảm giá</Heading>
         <div className="flex gap-3">
           <div className="w-full lg:w-[300px]">
@@ -65,7 +65,10 @@ const CouponManage = ({
               <SelectGroup>
                 <SelectItem value={allValue}>Tất cả</SelectItem>
                 {couponStatus.map((status) => (
-                  <SelectItem key={status.value} value={status.value + ''}>
+                  <SelectItem
+                    key={status.value}
+                    value={status.value + ''}
+                  >
                     {status.title}
                   </SelectItem>
                 ))}
@@ -143,7 +146,10 @@ const CouponManage = ({
             ))}
         </TableBody>
       </Table>
-      <Pagination total={total} totalPages={totalPages} />
+      <Pagination
+        total={total}
+        totalPages={totalPages}
+      />
     </div>
   )
 }

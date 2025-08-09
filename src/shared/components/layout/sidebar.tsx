@@ -8,8 +8,11 @@ import { menuItems } from '@/shared/constants'
 const Sidebar = () => {
   const { userId } = useAuth()
   return (
-    <div className="hidden p-5 border-r borderDarkMode bgDarkMode lg:flex flex-col fixed top-0 left-0 bottom-0 w-[300px] h-screen">
-      <Link className="logo font-bold text-3xl inline-block mb-5" href="/">
+    <div className="borderDarkMode bgDarkMode fixed inset-y-0 left-0 hidden h-screen w-[300px] flex-col border-r p-5 lg:flex">
+      <Link
+        className="logo mb-5 inline-block text-3xl font-bold"
+        href="/"
+      >
         <span className="text-primary">E</span>
         Academy
       </Link>
@@ -27,7 +30,7 @@ const Sidebar = () => {
         <ModeToggle />
         {!userId ? (
           <Link
-            className="size-10 rounded-lg bg-primary text-white flex items-center justify-center p-1"
+            className="flex size-10 items-center justify-center rounded-lg bg-primary p-1 text-white"
             href={'/sign-in'}
           >
             <IconUsers />

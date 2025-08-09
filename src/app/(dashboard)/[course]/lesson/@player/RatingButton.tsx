@@ -65,27 +65,27 @@ const RatingButton = ({
 
   return (
     <Dialog>
-      <DialogTrigger className="flex items-center gap-2 rounded-md h-10 bg-primary text-sm font-semibold px-5 text-white">
+      <DialogTrigger className="flex h-10 items-center gap-2 rounded-md bg-primary px-5 text-sm font-semibold text-white">
         <IconStar className="size-4" />
         <span> Đánh giá khóa học</span>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="tracking-tight font-bold mb-5 text-xl">
+          <DialogTitle className="mb-5 text-xl font-bold tracking-tight">
             Đánh giá
           </DialogTitle>
           <DialogDescription>
-            <div className="flex items-center justify-between gap-5 mb-5">
+            <div className="mb-5 flex items-center justify-between gap-5">
               {ratingList?.map((rating) => (
                 <button
                   key={rating.title}
-                  className="flex flex-col gap-3 text-center text-xs items-center"
+                  className="flex flex-col items-center gap-3 text-center text-xs"
                   type="button"
                   onClick={() => setRatingValue(rating.value)}
                 >
                   <span
                     className={cn(
-                      `flex items-center justify-center size-10 rounded-full bg-gray-200`,
+                      'flex size-10 items-center justify-center rounded-full bg-gray-200',
                       ratingValue === rating.value && 'bg-[#ffb86c]',
                     )}
                   >
@@ -101,13 +101,13 @@ const RatingButton = ({
               ))}
             </div>
             <Textarea
-              className="h-[200px] resize-none "
+              className="h-[200px] resize-none"
               placeholder="Nhập đánh giá của bạn..."
               value={ratingContent}
               onChange={(e) => setRatingContent(e.target.value)}
             />
             <Button
-              className="w-full mt-5"
+              className="mt-5 w-full"
               disabled={isLoading || ratingValue === -1 || !ratingContent}
               isLoading={isLoading}
               variant={'primary'}

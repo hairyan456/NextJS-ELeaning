@@ -32,7 +32,10 @@ const page = async ({
 
   return (
     <div className="mb-5">
-      <LessonSaveUrl course={course} url={`/${course}/lesson?slug=${slug}`} />
+      <LessonSaveUrl
+        course={course}
+        url={`/${course}/lesson?slug=${slug}`}
+      />
       {/* <iframe
                         className="w-full h-full object-cover"
                         src={`https://www.youtube.com/embed/${videoId}`}
@@ -51,7 +54,7 @@ const page = async ({
         }
       />
       <Heading className="mb-10">{lessonDetail.title}</Heading>
-      <div className="p-5 rounded-lg bgDarkMode borderDarkMode entry-content">
+      <div className="bgDarkMode borderDarkMode entry-content rounded-lg p-5">
         <div
           dangerouslySetInnerHTML={{ __html: lessonDetail?.content || '' }}
         />

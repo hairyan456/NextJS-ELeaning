@@ -1,5 +1,4 @@
 import { Heading } from '@/shared/components'
-import React from 'react'
 import UpdateCouponForm from './UpdateCouponForm'
 import PageNotFound from '@/app/not-found'
 import { getCouponByCode } from '@/lib/actions/coupon.action'

@@ -1,5 +1,4 @@
 import { cn } from '@/lib/utils'
-import React from 'react'
 
 interface IHeadingProps {
   children: React.ReactNode
@@ -8,7 +7,7 @@ interface IHeadingProps {
 
 const Heading = ({ children, className = '' }: IHeadingProps) => {
   return (
-    <h1 className={cn('text-2xl lg:text-3xl font-bold', className)}>
+    <h1 className={cn('text-2xl font-bold lg:text-3xl', className)}>
       {children}
     </h1>
   )

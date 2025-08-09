@@ -1,7 +1,6 @@
 import CourseUpdateForm from '@/components/course/CourseUpdateForm'
 import { Heading } from '@/shared/components'
 import { getCourseBySlug } from '@/lib/actions/course.action'
-import React from 'react'
 
 const page = async ({ searchParams }: { searchParams: { slug: string } }) => {
   const findCourse = await getCourseBySlug({ slug: searchParams.slug })

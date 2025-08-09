@@ -7,8 +7,9 @@ import {
 const InputFormatCurrency = (props: NumericFormatProps<InputAttributes>) => {
   return (
     <NumericFormat
-      className={`flex outline-none h-10 rounded-md px-3 w-full text-sm border border-gray-200 focus:!border-primary focus:!transition-all 
-        dark:border-opacity-10 dark:bg-grayDarker focus-primary`}
+      className={
+        'focus-primary flex h-10 w-full rounded-md border border-gray-200 px-3 text-sm outline-none focus:!border-primary focus:!transition-all dark:border-opacity-10 dark:bg-grayDarker'
+      }
       {...props}
       thousandSeparator
     />

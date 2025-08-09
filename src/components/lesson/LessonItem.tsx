@@ -39,18 +39,18 @@ const LessonItem = ({
   return (
     <div
       className={cn(
-        'flex items-center gap-3 bgDarkMode borderDarkMode rounded-lg p-4 text-sm font-medium',
+        'bgDarkMode borderDarkMode flex items-center gap-3 rounded-lg p-4 text-sm font-medium',
         isActive ? 'font-bold' : '',
       )}
     >
       {url && (
         <Checkbox
-          className="flex-shrink-0 size-4"
+          className="size-4 shrink-0"
           defaultChecked={isChecked}
           onCheckedChange={(checked) => handleCompleteLesson(checked)}
         />
       )}
-      <IconPlay className="size-5 flex-shrink-0" />
+      <IconPlay className="size-5 shrink-0" />
       {url ? (
         <Link
           className={cn('line-clamp-1', isActive && 'pointer-events-none')}
@@ -61,7 +61,7 @@ const LessonItem = ({
       ) : (
         <h4 className="line-clamp-1">{lesson.title || ''}</h4>
       )}
-      <span className="ml-auto text-xs font-semibold  flex-shrink-0">
+      <span className="ml-auto shrink-0 text-xs font-semibold">
         {lesson.duration} phút
       </span>
     </div>

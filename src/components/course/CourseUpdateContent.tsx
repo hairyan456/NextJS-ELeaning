@@ -156,10 +156,13 @@ const CourseUpdateContent = ({ course }: { course: ICourseUpdateParams }) => {
       <div className="flex flex-col gap-5">
         {lectures.map((lecture: IUpdateCourseLecture) => (
           <div key={lecture._id}>
-            <Accordion collapsible={!lectureIdEdit} type="single">
+            <Accordion
+              collapsible={!lectureIdEdit}
+              type="single"
+            >
               <AccordionItem value={lecture._id}>
                 <AccordionTrigger>
-                  <div className="flex items-center gap-3 justify-between w-full pr-5">
+                  <div className="flex w-full items-center justify-between gap-3 pr-5">
                     {lecture._id === lectureIdEdit ? (
                       <>
                         <div className="w-full">
@@ -239,7 +242,7 @@ const CourseUpdateContent = ({ course }: { course: ICourseUpdateParams }) => {
                       >
                         <AccordionItem value={lesson?._id}>
                           <AccordionTrigger>
-                            <div className="flex items-center gap-3 justify-between w-full pr-5">
+                            <div className="flex w-full items-center justify-between gap-3 pr-5">
                               {lesson._id === lessonIdEdit ? (
                                 <>
                                   <div className="w-full">
@@ -321,7 +324,7 @@ const CourseUpdateContent = ({ course }: { course: ICourseUpdateParams }) => {
             </Accordion>
 
             <Button
-              className="mt-5 text-white ml-auto w-fit block"
+              className="ml-auto mt-5 block w-fit text-white"
               onClick={() => handleAddNewLesson(lecture._id, course._id)}
             >
               Thêm bài học
@@ -331,7 +334,7 @@ const CourseUpdateContent = ({ course }: { course: ICourseUpdateParams }) => {
       </div>
 
       <Button
-        className="text-white mt-5 "
+        className="mt-5 text-white"
         onClick={() => handleAddNewLecture()}
       >
         Thêm chương mới

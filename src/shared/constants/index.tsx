@@ -110,7 +110,8 @@ export const commonClassName = {
   action: `size-8 rounded-md border flex items-center justify-center p-2
              bg-gray-100 dark:bg-transparent borderDarkMode text-gray-500 hover:bg-white 
              hover:transition-all dark:hover:border-opacity-20`,
-  paginationButton: `size-8 rounded-md borderDarkMode bgDarkMode border flex items-center justify-center hover:border-primary hover:text-primary`,
+  paginationButton:
+    'size-8 rounded-md borderDarkMode bgDarkMode border flex items-center justify-center hover:border-primary hover:text-primary',
   btnPrimary: `flex items-center justify-center w-full mt-10 rounded-lg text-white font-semibold
     bg-primary h-12 button-primary`,
 }

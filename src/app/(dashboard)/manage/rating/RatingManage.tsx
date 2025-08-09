@@ -70,7 +70,7 @@ const RatingManage = ({
 
   return (
     <>
-      <div className="flex flex-col lg:flex-row lg:items-center gap-5 justify-between mb-10">
+      <div className="mb-10 flex flex-col justify-between gap-5 lg:flex-row lg:items-center">
         <Heading className="">Quản lý đánh giá</Heading>
         <div className="flex gap-3">
           <div className="w-full lg:w-[300px]">
@@ -92,7 +92,10 @@ const RatingManage = ({
               <SelectGroup>
                 <SelectItem value={allValue}>Tất cả</SelectItem>
                 {ratingStatus.map((status) => (
-                  <SelectItem key={status.value} value={status.value}>
+                  <SelectItem
+                    key={status.value}
+                    value={status.value}
+                  >
                     {status.title}
                   </SelectItem>
                 ))}
@@ -173,7 +176,10 @@ const RatingManage = ({
         </TableBody>
       </Table>
       {/* Paginate */}
-      <Pagination total={total} totalPages={totalPages} />
+      <Pagination
+        total={total}
+        totalPages={totalPages}
+      />
     </>
   )
 }

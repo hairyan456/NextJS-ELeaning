@@ -1,6 +1,5 @@
 import PageNotFound from '@/app/not-found'
 import { getOrderDetail } from '@/lib/actions/order.action'
-import React from 'react'
 
 const page = async ({ params }: { params: { code: string } }) => {
   const orderDetail = await getOrderDetail({ code: params.code })

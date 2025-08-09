@@ -22,15 +22,19 @@ const LessonContent = ({
   return (
     <div className="flex flex-col gap-5">
       {lectures.map((lecture: IUpdateCourseLecture) => (
-        <Accordion key={lecture._id} collapsible type="single">
+        <Accordion
+          key={lecture._id}
+          collapsible
+          type="single"
+        >
           <AccordionItem value={lecture?._id?.toString()}>
             <AccordionTrigger>
-              <div className="flex font-bold items-center gap-3 justify-between w-full pr-5">
+              <div className="flex w-full items-center justify-between gap-3 pr-5 font-bold">
                 <div className="line-clamp-1">{lecture.title}</div>
               </div>
             </AccordionTrigger>
-            <AccordionContent className="!bg-transparent border-none p-0">
-              <div className="flex flex-col gap-3 mt-5">
+            <AccordionContent className="border-none !bg-transparent p-0">
+              <div className="mt-5 flex flex-col gap-3">
                 {lecture.lessons.map((lesson) => (
                   <LessonItem
                     key={lesson._id}

@@ -1,7 +1,6 @@
 import CourseManage from '@/components/course/CourseManage'
 import { getAllCourses } from '@/lib/actions/course.action'
 import { ECourseStatus } from '@/types/enums'
-import React from 'react'
 
 const page = async ({
   searchParams,

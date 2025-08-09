@@ -31,7 +31,10 @@ const ActionDeleteCoupon = ({
     }
   }
   return (
-    <button className={className} onClick={() => handleDeleteCoupon(code)}>
+    <button
+      className={className}
+      onClick={() => handleDeleteCoupon(code)}
+    >
       <IconDelete />
     </button>
   )

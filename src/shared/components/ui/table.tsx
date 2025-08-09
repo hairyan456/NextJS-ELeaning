@@ -6,7 +6,7 @@ const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>
 >(({ className, ...props }, ref) => (
-  <div className="relative w-full overflow-x-auto borderDarkMode bgDarkMode">
+  <div className="borderDarkMode bgDarkMode relative w-full overflow-x-auto">
     <table
       ref={ref}
       className={cn('w-full caption-bottom text-sm', className)}
@@ -20,7 +20,11 @@ const TableHeader = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
 >(({ className, ...props }, ref) => (
-  <thead ref={ref} className={cn('[&_tr]:border-b', className)} {...props} />
+  <thead
+    ref={ref}
+    className={cn('[&_tr]:border-b', className)}
+    {...props}
+  />
 ))
 TableHeader.displayName = 'TableHeader'
 
@@ -43,7 +47,7 @@ const TableFooter = React.forwardRef<
   <tfoot
     ref={ref}
     className={cn(
-      'border-t bg-muted/50 font-medium [&>tr]:last:border-b-0',
+      'bg-muted/50 border-t font-medium [&>tr]:last:border-b-0',
       className,
     )}
     {...props}
@@ -58,7 +62,7 @@ const TableRow = React.forwardRef<
   <tr
     ref={ref}
     className={cn(
-      'border-b borderDarkMode transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted',
+      'borderDarkMode hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors',
       className,
     )}
     {...props}
@@ -73,8 +77,7 @@ const TableHead = React.forwardRef<
   <th
     ref={ref}
     className={cn(
-      `h-12 px-4 text-left align-middle font-semibold text-muted-foreground [&:has([role=checkbox])]:pr-0 
-      whitespace-nowrap`,
+      'text-muted-foreground h-12 whitespace-nowrap px-4 text-left align-middle font-semibold [&:has([role=checkbox])]:pr-0',
       className,
     )}
     {...props}
@@ -100,7 +103,7 @@ const TableCaption = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <caption
     ref={ref}
-    className={cn('mt-4 text-sm text-muted-foreground', className)}
+    className={cn('text-muted-foreground mt-4 text-sm', className)}
     {...props}
   />
 ))

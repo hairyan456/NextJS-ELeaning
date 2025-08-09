@@ -114,8 +114,11 @@ const UpdateCouponForm = ({ data }: { data: TCouponParams }) => {
 
   return (
     <Form {...form}>
-      <form autoComplete="off" onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="grid grid-cols-2 gap-8 mt-10 mb-8">
+      <form
+        autoComplete="off"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
+        <div className="mb-8 mt-10 grid grid-cols-2 gap-8">
           <FormField
             control={form.control}
             name="title"
@@ -123,7 +126,10 @@ const UpdateCouponForm = ({ data }: { data: TCouponParams }) => {
               <FormItem>
                 <FormLabel>Tiêu đề</FormLabel>
                 <FormControl>
-                  <Input placeholder="Tiêu đề" {...field} />
+                  <Input
+                    placeholder="Tiêu đề"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -160,10 +166,10 @@ const UpdateCouponForm = ({ data }: { data: TCouponParams }) => {
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button
-                        className="w-full bgDarkMode border borderDarkMode"
+                        className="bgDarkMode borderDarkMode w-full border"
                         variant={'outline'}
                       >
-                        <IconCalendar className="mr-2 h-4 w-4" />
+                        <IconCalendar className="mr-2 size-4" />
                         {startDate ? (
                           format(startDate, 'dd/MM/yyyy')
                         ) : (
@@ -171,7 +177,10 @@ const UpdateCouponForm = ({ data }: { data: TCouponParams }) => {
                         )}
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent align="start" className="w-auto p-0">
+                    <PopoverContent
+                      align="start"
+                      className="w-auto p-0"
+                    >
                       <Calendar
                         mode="single"
                         selected={startDate}
@@ -194,10 +203,10 @@ const UpdateCouponForm = ({ data }: { data: TCouponParams }) => {
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button
-                        className="w-full bgDarkMode border borderDarkMode"
+                        className="bgDarkMode borderDarkMode w-full border"
                         variant={'outline'}
                       >
-                        <IconCalendar className="mr-2 h-4 w-4" />
+                        <IconCalendar className="mr-2 size-4" />
                         {endDate ? (
                           format(endDate, 'dd/MM/yyyy')
                         ) : (
@@ -205,7 +214,10 @@ const UpdateCouponForm = ({ data }: { data: TCouponParams }) => {
                         )}
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent align="start" className="w-auto p-0">
+                    <PopoverContent
+                      align="start"
+                      className="w-auto p-0"
+                    >
                       <Calendar
                         mode="single"
                         selected={endDate}
@@ -235,7 +247,10 @@ const UpdateCouponForm = ({ data }: { data: TCouponParams }) => {
                         key={type.value}
                         className="flex items-center space-x-2"
                       >
-                        <RadioGroupItem id={type.value} value={type.value} />
+                        <RadioGroupItem
+                          id={type.value}
+                          value={type.value}
+                        />
                         <Label htmlFor={type.value}>{type.title}</Label>
                       </div>
                     ))}
@@ -318,15 +333,15 @@ const UpdateCouponForm = ({ data }: { data: TCouponParams }) => {
                       onChange={handleSearchCourse}
                     />
                     {findCourse && findCourse?.length > 0 && (
-                      <div className="flex flex-col gap-2 !mt-5">
+                      <div className="!mt-5 flex flex-col gap-2">
                         {findCourse.map((course) => (
                           <Label
                             key={course.title}
-                            className="flex items-center gap-2 font-medium text-sm cursor-pointer"
+                            className="flex cursor-pointer items-center gap-2 text-sm font-medium"
                             htmlFor={course.title}
                           >
                             <Checkbox
-                              className="bgDarkMode border borderDarkMode"
+                              className="bgDarkMode borderDarkMode border"
                               id={course.title}
                               checked={selectedCourses.some(
                                 (c) => c._id === course._id,
@@ -341,18 +356,18 @@ const UpdateCouponForm = ({ data }: { data: TCouponParams }) => {
                       </div>
                     )}
                     {selectedCourses.length > 0 && (
-                      <div className="flex flex-wrap items-start gap-2 !mt-5">
+                      <div className="!mt-5 flex flex-wrap items-start gap-2">
                         {selectedCourses?.map((course) => (
                           <div
                             key={course.title}
-                            className="inline-flex items-center gap-2 font-semibold text-sm px-3 py-1 rounded-lg border borderDarkMode bgDarkMode"
+                            className="borderDarkMode bgDarkMode inline-flex items-center gap-2 rounded-lg border px-3 py-1 text-sm font-semibold"
                           >
                             <span>{course.title}</span>
                             <button
                               type="button"
                               onClick={() => handleSelectCourse(false, course)}
                             >
-                              <IconCancel className="size-4 text-red-500 font-bold hover:text-gray-600 hover:transition-all" />
+                              <IconCancel className="size-4 font-bold text-red-500 hover:text-gray-600 hover:transition-all" />
                             </button>
                           </div>
                         ))}
@@ -365,7 +380,10 @@ const UpdateCouponForm = ({ data }: { data: TCouponParams }) => {
             )}
           />
         </div>
-        <Button className="w-[150px] ml-auto flex" variant="primary">
+        <Button
+          className="ml-auto flex w-[150px]"
+          variant="primary"
+        >
           Cập nhật
         </Button>
       </form>

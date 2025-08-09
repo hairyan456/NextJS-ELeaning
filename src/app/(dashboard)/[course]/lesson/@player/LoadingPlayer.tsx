@@ -1,14 +1,12 @@
-import React from 'react'
-
 const LoadingPlayer = () => {
   return (
     <div>
-      <div className="aspect-video rounded-lg skeleton mb-5" />
-      <div className="flex gap-3 mb-5">
-        <div className="size-10 rounded-lg skeleton" />
-        <div className="size-10 rounded-lg skeleton" />
+      <div className="skeleton mb-5 aspect-video rounded-lg" />
+      <div className="mb-5 flex gap-3">
+        <div className="skeleton size-10 rounded-lg" />
+        <div className="skeleton size-10 rounded-lg" />
       </div>
-      <div className="w-full h-9 mb-10 skeleton" />
+      <div className="skeleton mb-10 h-9 w-full" />
     </div>
   )
 }

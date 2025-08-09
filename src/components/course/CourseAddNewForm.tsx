@@ -68,8 +68,11 @@ function CourseAddNewForm({ user }: { user: IUser }) {
   }
   return (
     <Form {...form}>
-      <form autoComplete="off" onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="grid grid-cols-2 gap-8 my-10">
+      <form
+        autoComplete="off"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
+        <div className="my-10 grid grid-cols-2 gap-8">
           <FormField
             control={form.control}
             name="title"
@@ -77,7 +80,10 @@ function CourseAddNewForm({ user }: { user: IUser }) {
               <FormItem>
                 <FormLabel>Tên khóa học *</FormLabel>
                 <FormControl>
-                  <Input placeholder="Tên khóa học" {...field} />
+                  <Input
+                    placeholder="Tên khóa học"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -90,7 +96,10 @@ function CourseAddNewForm({ user }: { user: IUser }) {
               <FormItem>
                 <FormLabel>Đường dẫn khóa học</FormLabel>
                 <FormControl>
-                  <Input placeholder="khoa-hoc-lap-trinh" {...field} />
+                  <Input
+                    placeholder="khoa-hoc-lap-trinh"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

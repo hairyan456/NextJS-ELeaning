@@ -70,7 +70,7 @@ const OrderManagePage = ({
 
   return (
     <div>
-      <div className="flex flex-col lg:flex-row lg:items-center gap-5 justify-between mb-10">
+      <div className="mb-10 flex flex-col justify-between gap-5 lg:flex-row lg:items-center">
         <Heading className="">Quản lý đơn hàng</Heading>
         <div className="flex gap-3">
           <div className="w-full lg:w-[300px]">
@@ -90,7 +90,10 @@ const OrderManagePage = ({
               <SelectGroup>
                 <SelectItem value={allValue}>Tất cả</SelectItem>
                 {orderStatus.map((status) => (
-                  <SelectItem key={status.value} value={status.value}>
+                  <SelectItem
+                    key={status.value}
+                    value={status.value}
+                  >
                     {status.title}
                   </SelectItem>
                 ))}
@@ -142,7 +145,7 @@ const OrderManagePage = ({
                     </div>
                   </TableCell>
                   <TableCell>
-                    <b className="text-primary font-bold">
+                    <b className="font-bold text-primary">
                       {order?.coupon?.code || ''}
                     </b>
                   </TableCell>
@@ -194,7 +197,10 @@ const OrderManagePage = ({
             })}
         </TableBody>
       </Table>
-      <Pagination total={total} totalPages={totalPages} />
+      <Pagination
+        total={total}
+        totalPages={totalPages}
+      />
     </div>
   )
 }

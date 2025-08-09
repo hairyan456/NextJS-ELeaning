@@ -1,7 +1,6 @@
 import CourseItem from '@/components/course/CourseItem'
 import { getAllCoursesPublic } from '@/lib/actions/course.action'
 import { CourseGrid, Heading } from '@/shared/components'
-import React from 'react'
 
 const page = async () => {
   const courses = (await getAllCoursesPublic({})) || []
@@ -11,7 +10,12 @@ const page = async () => {
       <Heading>Khám phá</Heading>
       <CourseGrid>
         {courses?.length > 0 &&
-          courses.map((item) => <CourseItem key={item.slug} data={item} />)}
+          courses.map((item) => (
+            <CourseItem
+              key={item.slug}
+              data={item}
+            />
+          ))}
       </CourseGrid>
     </div>
   )

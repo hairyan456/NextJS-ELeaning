@@ -39,16 +39,16 @@ const page = async ({ params }: { params: { slug: string } }) => {
 
   const ratings = data.rating.map((r: any) => r?.content || '')
   return (
-    <div className="grid lg:grid-cols-[2fr,1fr] gap-10 min-h-screen">
+    <div className="grid min-h-screen gap-10 lg:grid-cols-[2fr,1fr]">
       {/* Left */}
       <div>
-        <div className="relative aspect-video mb-5">
+        <div className="relative mb-5 aspect-video">
           {data.intro_url ? (
             <>
               <iframe
                 allowFullScreen
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                className="w-full h-full object-fill"
+                className="size-full object-fill"
                 height={514}
                 referrerPolicy="strict-origin-when-cross-origin"
                 src={`https://www.youtube.com/embed/${videoId}`}
@@ -60,23 +60,23 @@ const page = async ({ params }: { params: { slug: string } }) => {
             <Image
               fill
               alt="Course Image"
-              className="w-full h-full object-cover rounded-lg"
+              className="size-full rounded-lg object-cover"
               src={data.image}
             />
           )}
         </div>
-        <div className="flex flex-wrap gap-2 mb-5">{}</div>
-        <div className="flex flex-wrap gap-2 mb-5">
+        <div className="mb-5 flex flex-wrap gap-2">{}</div>
+        <div className="mb-5 flex flex-wrap gap-2">
           {ratings.map((r, index) => (
             <div
               key={index}
-              className="p-2 px-4 text-sm font-medium rounded-full text-white bg-gradient-to-tr from-primary to-secondary"
+              className="rounded-full bg-gradient-to-tr from-primary to-secondary p-2 px-4 text-sm font-medium text-white"
             >
               {r}
             </div>
           ))}
         </div>
-        <h1 className="font-semibold text-3xl mb-5">{data?.title}</h1>
+        <h1 className="mb-5 text-3xl font-semibold">{data?.title}</h1>
         <BoxSection title="Mô tả">
           <div className="leading-normal tracking-wider">
             {data?.description}
@@ -93,16 +93,20 @@ const page = async ({ params }: { params: { slug: string } }) => {
           </div>
         </BoxSection>
         <BoxSection title="Nội dung khóa học">
-          <LessonContent course="" lectures={lectures} slug="" />
+          <LessonContent
+            course=""
+            lectures={lectures}
+            slug=""
+          />
         </BoxSection>
         <BoxSection title="Yêu cầu">
           <div className="leading-normal tracking-wider">
             {data.info?.requirements?.map((item, index) => (
-              <div key={index} className="mb-3 flex items-center gap-2">
-                <span
-                  className="flex-shrink-0 size-4 bg-primary text-white rounded flex items-center
-                                 justify-center"
-                >
+              <div
+                key={index}
+                className="mb-3 flex items-center gap-2"
+              >
+                <span className="flex size-4 shrink-0 items-center justify-center rounded bg-primary text-white">
                   <IconCheck className="size-3 font-semibold" />
                 </span>
                 <span>{item}</span>
@@ -118,9 +122,13 @@ const page = async ({ params }: { params: { slug: string } }) => {
           </div>
         </BoxSection>
         <BoxSection title="Q.A">
-          <div className="leading-normal tracking-wider mb-10">
+          <div className="mb-10 leading-normal tracking-wider">
             {data.info?.qa?.map((item, index) => (
-              <Accordion key={index} collapsible type="single">
+              <Accordion
+                key={index}
+                collapsible
+                type="single"
+              >
                 <AccordionItem value={item.question}>
                   <AccordionTrigger>{item.question}</AccordionTrigger>
                   <AccordionContent>{item.answer}</AccordionContent>
@@ -156,7 +164,7 @@ function BoxSection({
 }) {
   return (
     <>
-      <h2 className="font-bold text-xl mb-5">{title}</h2>
+      <h2 className="mb-5 text-xl font-bold">{title}</h2>
       <div className="mb-10">{children}</div>
     </>
   )
@@ -170,8 +178,8 @@ function BoxInfo({
   children: React.ReactNode
 }) {
   return (
-    <div className="bg-white rounded-lg p-5">
-      <h4 className="text-sm text-slate-400 font-normal">{title}</h4>
+    <div className="rounded-lg bg-white p-5">
+      <h4 className="text-sm font-normal text-slate-400">{title}</h4>
       <h3 className="font-bold">{children}</h3>
     </div>
   )

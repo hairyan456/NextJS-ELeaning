@@ -36,8 +36,7 @@ const VideoPlay = ({
       <div className="relative mb-5 aspect-video">
         <div
           className={cn(
-            `h-1.5 bg-gradient-to-r from-primary to-secondary absolute top-0 right-0
-                z-10`,
+            'absolute right-0 top-0 z-10 h-1.5 bg-gradient-to-r from-primary to-secondary',
             isEnded ? 'animate-bar' : '',
           )}
         />
@@ -54,10 +53,16 @@ const VideoPlay = ({
         />
       </div>
 
-      <div className="flex items-center justify-between mb-5">
-        <LessonNavigation nextLesson={nextLesson} prevLesson={prevLesson} />
+      <div className="mb-5 flex items-center justify-between">
+        <LessonNavigation
+          nextLesson={nextLesson}
+          prevLesson={prevLesson}
+        />
         <div className="flex gap-5">
-          <RatingButton courseId={data.courseId} userId={data.userId} />
+          <RatingButton
+            courseId={data.courseId}
+            userId={data.userId}
+          />
           <Button
             className="text-white"
             onClick={() => setIsExpandedPlayer(!isExpandedPlayer)}

@@ -28,12 +28,18 @@ const TableActionItem = ({
   }
   if (url)
     return (
-      <Link className={commonClassName.action} href={url}>
+      <Link
+        className={commonClassName.action}
+        href={url}
+      >
         {icon[type]}
       </Link>
     )
   return (
-    <button className={commonClassName.action} onClick={onClick}>
+    <button
+      className={commonClassName.action}
+      onClick={onClick}
+    >
       {icon[type]}
     </button>
   )

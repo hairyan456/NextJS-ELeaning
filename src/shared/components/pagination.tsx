@@ -1,7 +1,6 @@
 'use client'
 import useQueryString from '@/hooks/useQueryString'
 import { debounce } from 'lodash'
-import React from 'react'
 import { ITEMS_PER_PAGE } from '@/shared/constants'
 import {
   IconArrowLeft,
@@ -26,7 +25,7 @@ const Pagination = ({ totalPages, total }: IPaginateProps) => {
 
   if (total <= ITEMS_PER_PAGE) return null
   return (
-    <div className="flex items-center justify-center mt-10 gap-3">
+    <div className="mt-10 flex items-center justify-center gap-3">
       <PaginateButton
         disabled={currentPage === 1}
         onClick={() => handleChangePage(1)}
@@ -40,7 +39,7 @@ const Pagination = ({ totalPages, total }: IPaginateProps) => {
         <IconArrowLeft className="size-4" />
       </PaginateButton>
       <input
-        className="w-20 h-10 rounded-full bg-white outline-none text-center px-2 font-medium"
+        className="h-10 w-20 rounded-full bg-white px-2 text-center font-medium outline-none"
         placeholder="1"
         type="number"
         value={currentPage}

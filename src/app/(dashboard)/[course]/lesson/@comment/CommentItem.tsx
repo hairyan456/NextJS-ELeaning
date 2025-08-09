@@ -27,9 +27,9 @@ const CommentItem = ({
     <>
       <div
         className={cn(
-          'flex items-start gap-3 p-3 rounded-xl bgDarkMode border dark:border-opacity-50 ml-auto',
+          'bgDarkMode ml-auto flex items-start gap-3 rounded-xl border p-3 dark:border-opacity-50',
           {
-            'opacity-50 pointer-events-none': isPending,
+            'pointer-events-none opacity-50': isPending,
             'mt-5 first:mt-0': level === 0,
           },
         )}
@@ -37,7 +37,7 @@ const CommentItem = ({
           width: `calc(100% - ${level * 65}px)`, // set width của các reply level càng ngắn dần
         }}
       >
-        <div className="size-10 border rounded-full borderDarkMode shadow-sm flex-shrink-0">
+        <div className="borderDarkMode size-10 shrink-0 rounded-full border shadow-sm">
           <Image
             alt="avatar user"
             className="rounded-full"
@@ -47,10 +47,10 @@ const CommentItem = ({
           />
         </div>
 
-        <div className="flex flex-col gap-1 w-full">
+        <div className="flex w-full flex-col gap-1">
           <div className="flex items-center gap-3">
             <h4 className="font-bold">{comment.user.name}</h4>
-            <span className="text-xs text-gray-400 font-medium">
+            <span className="text-xs font-medium text-gray-400">
               {timeAgo(comment.created_at.toString())}
             </span>
           </div>

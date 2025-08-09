@@ -72,7 +72,10 @@ const LessonItemUpdate = ({ lesson }: { lesson: ILesson }) => {
   return (
     <>
       <Form {...form}>
-        <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
+        <form
+          className="space-y-8"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
           <div className="grid grid-cols-2 gap-8">
             <FormField
               control={form.control}
@@ -81,7 +84,10 @@ const LessonItemUpdate = ({ lesson }: { lesson: ILesson }) => {
                 <FormItem>
                   <FormLabel>Đường dẫn</FormLabel>
                   <FormControl>
-                    <Input placeholder="bai-1-tong-quan" {...field} />
+                    <Input
+                      placeholder="bai-1-tong-quan"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -113,7 +119,10 @@ const LessonItemUpdate = ({ lesson }: { lesson: ILesson }) => {
                 <FormItem>
                   <FormLabel>Video URL</FormLabel>
                   <FormControl>
-                    <Input placeholder="https://youtube.com/abc" {...field} />
+                    <Input
+                      placeholder="https://youtube.com/abc"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -143,7 +152,7 @@ const LessonItemUpdate = ({ lesson }: { lesson: ILesson }) => {
             />
           </div>
 
-          <div className="flex justify-end gap-5 items-center mt-5">
+          <div className="mt-5 flex items-center justify-end gap-5">
             <Button
               className="text-white"
               disabled={isLoadingSubmit}
@@ -152,7 +161,10 @@ const LessonItemUpdate = ({ lesson }: { lesson: ILesson }) => {
             >
               Cập nhật
             </Button>
-            <Link className="text-sm text-slate-600" href={'/'}>
+            <Link
+              className="text-sm text-slate-600"
+              href={'/'}
+            >
               Xem trước
             </Link>
           </div>

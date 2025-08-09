@@ -42,13 +42,16 @@ const page = async ({
 
   return (
     <div>
-      <CommentForm lessonId={commentLessonId} userId={commentUserId} />
+      <CommentForm
+        lessonId={commentLessonId}
+        userId={commentUserId}
+      />
       {rootComments && rootComments?.length > 0 && (
-        <div className="flex flex-col gap-10 mt-10">
+        <div className="mt-10 flex flex-col gap-10">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold flex items-center gap-2">
+            <h2 className="flex items-center gap-2 text-xl font-bold">
               <span>Comments</span>
-              <span className="flex items-center justify-center bg-primary text-white text-sm font-semibold rounded-full py-0.5 px-4">
+              <span className="flex items-center justify-center rounded-full bg-primary px-4 py-0.5 text-sm font-semibold text-white">
                 {comments?.length}
               </span>
             </h2>

@@ -5,9 +5,11 @@ module.exports = {
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:react/jsx-runtime",
+    "plugin:tailwindcss/recommended",
     "plugin:prettier/recommended",
+    "prettier",
   ],
-  plugins: ["@typescript-eslint", "react", "prettier"],
+  plugins: ["@typescript-eslint", "react"],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: 2021,
@@ -41,11 +43,11 @@ module.exports = {
 
       // Enforce that interface, types, enums names do not begin with an I/T/E
       // {
-      //   "selector": ["typeLike","interface","enum"],
-      //   "format": ["PascalCase"],
-      //   "custom": {
-      //     "regex": "^[^TIE]",
-      //     "match": false
+      //   selector: ["typeLike","interface","enum"],
+      //   format: ["PascalCase"],
+      //   custom: {
+      //   regex: "^(?![TIE][A-Z])",
+      //   match: false
       //   }
       // },
 
@@ -60,6 +62,8 @@ module.exports = {
         format: ["camelCase", "PascalCase"]
       },
     ],
-    "prettier/prettier": ["error", { singleQuote: true, semi: false }], // yêu cầu dấu nháy đơn
+    quotes: ["error", "single"],
+    "prettier/prettier": 'error',
+    "@typescript-eslint/no-empty-object-type": "off",
   }
 }
