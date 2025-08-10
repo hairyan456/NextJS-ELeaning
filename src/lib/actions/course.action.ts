@@ -123,12 +123,7 @@ export async function updateCourse(params: IUpdateCourseParams) {
     connectToDatabase();
     const findCourse = await Course.findOne({ slug: params.slug });
 
-    if (!findCourse) {
-      return {
-        success: false,
-        message: 'Khóa học không tồn tại',
-      };
-    } else {
+    if (findCourse) {
       await Course.findOneAndUpdate({ slug: params.slug }, params.updateData, {
         new: true,
       });
@@ -137,6 +132,11 @@ export async function updateCourse(params: IUpdateCourseParams) {
       return {
         success: true,
         message: 'Cập nhật khóa học thành công',
+      };
+    } else {
+      return {
+        success: false,
+        message: 'Khóa học không tồn tại',
       };
     }
   } catch (error) {
@@ -179,9 +179,9 @@ export async function getCourseLessonsInfo({ slug }: { slug: string }): Promise<
           select: 'duration',
         },
       });
-    const lessons = course?.lectures.map((l: any) => l.lessons).flat();
+    const lessons = course?.lectures.flatMap((l: any) => l.lessons);
     const duration = lessons.reduce(
-      (acc: number, cur: any) => acc + cur.duration,
+      (accumulator: number, current: any) => accumulator + current.duration,
       0,
     );
 

@@ -1,7 +1,7 @@
 import { getAllCoupons } from '@/lib/actions/coupon.action';
 import { ITEMS_PER_PAGE } from '@/shared/constants';
 
-import CouponManage from './CouponManage';
+import CouponManage from './course-manage';
 
 const page = async ({
   searchParams,

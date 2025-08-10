@@ -22,12 +22,12 @@ export async function getAllCoupons(params: IFilterData): Promise<
 > {
   try {
     connectToDatabase();
-    const { active, limit = 10, page = 1, search = '' } = params;
+    const { active: isActive, limit = 10, page = 1, search = '' } = params;
     const skip = (page - 1) * limit;
     const query: FilterQuery<typeof Coupon> = {};
 
     if (search) query.$or = [{ code: { $regex: search, $options: 'i' } }];
-    if (active) query.active = Boolean(+active);
+    if (isActive) query.active = Boolean(+isActive);
     const total = await Coupon.countDocuments(query);
     const coupons = await Coupon.find(query)
       .skip(skip)
@@ -100,7 +100,7 @@ export async function createNewCoupon(params: TCreateCouponParams) {
     if (existingCoupon?._id) {
       return { success: false, message: 'Mã giảm giá đã tồn tại' };
     }
-    const couponRegex = /^[A-Z0-9]{3,10}$/;
+    const couponRegex = /^[\dA-Z]{3,10}$/;
 
     if (!couponRegex.test(params.code)) {
       return {

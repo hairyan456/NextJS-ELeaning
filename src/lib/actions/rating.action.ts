@@ -81,7 +81,7 @@ export async function createNewRating(
       await findCourse.save();
     }
 
-    return !newRating?._id ? false : true;
+    return newRating?._id ? true : false;
   } catch (error) {
     console.log(error);
   }

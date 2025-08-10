@@ -15,19 +15,17 @@ export async function createNewHistory(params: ICreateHistoryParams) {
     const findUser = await User.findOne({ clerkId: userId });
 
     if (!findUser?._id) return;
-    if (params.checked) {
-      await History.create({
-        course: params.course,
-        lesson: params.lesson,
-        user: findUser._id,
-      });
-    } else {
-      await History.findOneAndDelete({
-        course: params.course,
-        lesson: params.lesson,
-        user: findUser._id,
-      });
-    }
+    await (params.checked
+      ? History.create({
+          course: params.course,
+          lesson: params.lesson,
+          user: findUser._id,
+        })
+      : History.findOneAndDelete({
+          course: params.course,
+          lesson: params.lesson,
+          user: findUser._id,
+        }));
     revalidatePath(params.path || '/');
   } catch (error) {
     console.error('Error creating new history:', error);

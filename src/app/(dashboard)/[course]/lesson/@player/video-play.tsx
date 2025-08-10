@@ -7,18 +7,15 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/shared/components/ui/button';
 import useGlobalStore from '@/store';
 
-import LessonNavigation from '../LessonNavigation';
-import RatingButton from './RatingButton';
+import LessonNavigation from '../lesson-navigation';
+import RatingButton from './rating-button';
 
-const VideoPlay = ({
-  data,
-  nextLesson,
-  prevLesson,
-}: {
+interface IVideoPlayProps {
   nextLesson: string;
   prevLesson: string;
   data: { userId: string; courseId: string };
-}) => {
+}
+const VideoPlay = ({ data, nextLesson, prevLesson }: IVideoPlayProps) => {
   const duration = 3000;
   const [isEnded, setIsEnded] = useState(false);
   const router = useRouter();

@@ -1,7 +1,7 @@
 import { getUserCourses } from '@/lib/actions/user.actions';
 import { Heading } from '@/shared/components';
 
-import StudyCourses from './StudyCourses';
+import StudyCourses from './study-course';
 
 const page = async () => {
   const courses = await getUserCourses();

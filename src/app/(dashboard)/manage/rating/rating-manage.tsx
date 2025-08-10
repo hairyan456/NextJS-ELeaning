@@ -34,15 +34,13 @@ import { allValue, ratingList, ratingStatus } from '@/shared/constants';
 import { TRatingItem } from '@/types';
 import { ERatingStatus } from '@/types/enums';
 
-const RatingManage = ({
-  ratings,
-  total,
-  totalPages,
-}: {
+interface IRatingManageProps {
   ratings: TRatingItem[];
   totalPages: number;
   total: number;
-}) => {
+}
+
+const RatingManage = ({ ratings, total, totalPages }: IRatingManageProps) => {
   const { handleSearchData, handleSelectStatus } = useQueryString();
 
   const handleUpdateRating = async (id: string) => {

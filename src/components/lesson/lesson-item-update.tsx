@@ -49,12 +49,12 @@ const LessonItemUpdate = ({ lesson }: { lesson: ILesson }) => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoadingSubmit(true);
     try {
-      const res = await updateLesson({
+      const hasResult = await updateLesson({
         lessonId: lesson._id,
         updateData: values,
       });
 
-      if (res?.success) {
+      if (hasResult?.success) {
         toast.success('Cập nhật bài học thành công');
       }
     } catch (error) {
@@ -107,7 +107,9 @@ const LessonItemUpdate = ({ lesson }: { lesson: ILesson }) => {
                     <Input
                       placeholder="bai-1-tong-quan"
                       {...field}
-                      onChange={(e) => field.onChange(Number(e.target.value))}
+                      onChange={(event) =>
+                        field.onChange(Number(event.target.value))
+                      }
                     />
                   </FormControl>
                   <FormMessage />
@@ -141,7 +143,7 @@ const LessonItemUpdate = ({ lesson }: { lesson: ILesson }) => {
                   <FormControl>
                     <ReactEditor
                       apiKey={process.env.NEXT_PUBLIC_TINY_MCE_API_KEY}
-                      onInit={(_evt: unknown, editor: TinyMCEEditor) => {
+                      onInit={(_event: unknown, editor: TinyMCEEditor) => {
                         (editorRef.current = editor)?.setContent(
                           lesson.content || '',
                         );

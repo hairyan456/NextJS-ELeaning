@@ -7,17 +7,19 @@ import { getValidateCoupon } from '@/lib/actions/coupon.action';
 import { Input } from '@/shared/components/ui/input';
 import { ECouponType } from '@/types/enums';
 
+interface ICouponFormProps {
+  setCouponId: Dispatch<SetStateAction<string>>;
+  originalPrice: number;
+  setPrice: Dispatch<SetStateAction<number>>;
+  courseId: string;
+}
+
 const CouponForm = ({
   courseId,
   originalPrice,
   setCouponId,
   setPrice,
-}: {
-  setCouponId: Dispatch<SetStateAction<any>>;
-  originalPrice: number;
-  setPrice: Dispatch<SetStateAction<number>>;
-  courseId: string;
-}) => {
+}: ICouponFormProps) => {
   const [isAppliedCoupon, setIsAppliedCoupon] = useState<boolean>(false);
   const [couponCode, setCouponCode] = useState<string>('');
 
@@ -26,8 +28,8 @@ const CouponForm = ({
   }, [couponCode]);
 
   const handleChangeCoupon = debounce(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setCouponCode(e?.target?.value);
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setCouponCode(event?.target?.value);
     },
     300,
   );
@@ -35,23 +37,23 @@ const CouponForm = ({
   const handleApplyCoupon = async () => {
     if (!couponCode || isAppliedCoupon) return;
     try {
-      const res = await getValidateCoupon({
+      const hasResult = await getValidateCoupon({
         code: couponCode.toUpperCase(),
         courseId,
       });
 
-      if (res?._id) {
-        const couponType = res.type;
+      if (hasResult?._id) {
+        const couponType = hasResult.type;
         let finalPrice = originalPrice;
 
         if (couponType === ECouponType.PERCENT) {
-          finalPrice = originalPrice - (originalPrice * res?.value) / 100;
+          finalPrice = originalPrice - (originalPrice * hasResult?.value) / 100;
         } else if (couponType === ECouponType.AMOUNT) {
-          finalPrice = originalPrice - res.value;
+          finalPrice = originalPrice - hasResult.value;
         }
         setPrice(finalPrice);
         setIsAppliedCoupon(true);
-        setCouponId(res._id);
+        setCouponId(hasResult._id);
         toast.success('Áp dụng coupon thành công');
       } else {
         setCouponCode('');

@@ -1,4 +1,4 @@
-import CourseManage from '@/components/course/CourseManage';
+import CourseManage from '@/components/course/course-manage';
 import { getAllCourses } from '@/lib/actions/course.action';
 import { ECourseStatus } from '@/types/enums';
 

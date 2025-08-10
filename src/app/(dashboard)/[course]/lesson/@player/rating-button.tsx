@@ -22,13 +22,11 @@ import {
 import { Textarea } from '@/shared/components/ui/textarea';
 import { ratingList } from '@/shared/constants';
 
-const RatingButton = ({
-  courseId,
-  userId,
-}: {
+interface IRatingButtonProps {
   courseId: string;
   userId: string;
-}) => {
+}
+const RatingButton = ({ courseId, userId }: IRatingButtonProps) => {
   const [ratingValue, setRatingValue] = useState<number>(-1);
   const [ratingContent, setRatingContent] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -112,7 +110,7 @@ const RatingButton = ({
               className="h-[200px] resize-none"
               placeholder="Nhập đánh giá của bạn..."
               value={ratingContent}
-              onChange={(e) => setRatingContent(e.target.value)}
+              onChange={(event) => setRatingContent(event.target.value)}
             />
             <Button
               className="mt-5 w-full"

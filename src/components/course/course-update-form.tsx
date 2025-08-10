@@ -100,7 +100,7 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoadingSubmit(true);
     try {
-      const res = await updateCourse({
+      const hasResult = await updateCourse({
         slug: data.slug,
         updateData: {
           title: values.title,
@@ -121,13 +121,13 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
         },
       });
 
-      if (!res?.success) {
-        toast.error(res?.message || 'Cập nhật khóa học thất bại');
-      } else {
+      if (hasResult?.success) {
         if (values.slug !== data.slug)
           router.replace(`/manage/course/update?slug=${values.slug}`);
 
-        toast.success(res?.message || 'Cập nhật khóa học thành công');
+        toast.success(hasResult?.message || 'Cập nhật khóa học thành công');
+      } else {
+        toast.error(hasResult?.message || 'Cập nhật khóa học thất bại');
       }
     } catch (error) {
       console.error('Error update course:', error);
@@ -188,7 +188,9 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                     placeholder="199.000"
                     type="number"
                     {...field}
-                    onChange={(e) => field.onChange(Number(e.target.value))} // Convert to number
+                    onChange={(event) =>
+                      field.onChange(Number(event.target.value))
+                    } // Convert to number
                   />
                 </FormControl>
                 <FormMessage />
@@ -206,7 +208,9 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                     placeholder="499.000"
                     type="number"
                     {...field}
-                    onChange={(e) => field.onChange(Number(e.target.value))} // Convert to number
+                    onChange={(event) =>
+                      field.onChange(Number(event.target.value))
+                    } // Convert to number
                   />
                 </FormControl>
                 <FormMessage />
@@ -233,30 +237,30 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
           <FormField
             control={form.control}
             name="image"
-            render={({ _field }) => (
+            render={() => (
               <FormItem>
                 <FormLabel>Ảnh đại diện</FormLabel>
                 <FormControl>
                   <>
                     <div className="relative flex h-[250px] items-center justify-center rounded-md border border-gray-200 bg-white dark:border-gray-500 dark:bg-grayDarker">
-                      {!imageWatch ? (
-                        <UploadButton
-                          endpoint="imageUploader"
-                          onClientUploadComplete={(res) => {
-                            // Do something with the response
-                            form.setValue('image', res[0]?.url); // Assuming the response contains an array of files
-                          }}
-                          onUploadError={(error: Error) => {
-                            // Do something with the error.
-                            console.log(`ERROR! ${error.message}`);
-                          }}
-                        />
-                      ) : (
+                      {imageWatch ? (
                         <Image
                           fill
                           alt="Course Image"
                           className="size-full rounded-md object-cover"
                           src={imageWatch}
+                        />
+                      ) : (
+                        <UploadButton
+                          endpoint="imageUploader"
+                          onClientUploadComplete={(result) => {
+                            // Do something with the response
+                            form.setValue('image', result[0]?.url); // Assuming the response contains an array of files
+                          }}
+                          onUploadError={(error: Error) => {
+                            // Do something with the error.
+                            console.log(`ERROR! ${error.message}`);
+                          }}
                         />
                       )}
                     </div>
@@ -293,7 +297,9 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                     placeholder="100"
                     type="number"
                     {...field}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
+                    onChange={(event) =>
+                      field.onChange(Number(event.target.value))
+                    }
                   />
                 </FormControl>
                 <FormMessage />
@@ -363,7 +369,7 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
           <FormField
             control={form.control}
             name="info.requirements"
-            render={({ _field }) => (
+            render={() => (
               <FormItem>
                 <FormLabel className="flex items-center justify-between gap-5">
                   <span>Yêu cầu</span>
@@ -386,9 +392,9 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                         key={index}
                         placeholder={`Yêu cầu ${index + 1}`}
                         value={item}
-                        onChange={(e) => {
+                        onChange={(event) => {
                           setCourseInfo((draft) => {
-                            draft.requirements[index] = e.target.value;
+                            draft.requirements[index] = event.target.value;
                           });
                         }}
                       />
@@ -402,7 +408,7 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
           <FormField
             control={form.control}
             name="info.benefits"
-            render={({ _field }) => (
+            render={() => (
               <FormItem>
                 <FormLabel className="flex items-center justify-between gap-5">
                   <span>Lợi ích</span>
@@ -425,9 +431,9 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                         key={index}
                         placeholder={`Lợi ích ${index + 1}`}
                         value={item}
-                        onChange={(e) => {
+                        onChange={(event) => {
                           setCourseInfo((draft) => {
-                            draft.benefits[index] = e.target.value;
+                            draft.benefits[index] = event.target.value;
                           });
                         }}
                       />
@@ -441,7 +447,7 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
           <FormField
             control={form.control}
             name="info.qa"
-            render={({ _field }) => (
+            render={() => (
               <FormItem className="col-start-1 col-end-3">
                 <FormLabel className="flex items-center justify-between gap-5">
                   <span>Q&A</span>
@@ -471,9 +477,9 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                           key={index}
                           placeholder={`Câu hỏi ${index + 1}`}
                           value={item.question}
-                          onChange={(e) => {
+                          onChange={(event) => {
                             setCourseInfo((draft) => {
-                              draft.qa[index].question = e.target.value;
+                              draft.qa[index].question = event.target.value;
                             });
                           }}
                         />
@@ -481,9 +487,9 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
                           key={index}
                           placeholder={`Câu trả lời ${index + 1}`}
                           value={item.answer}
-                          onChange={(e) => {
+                          onChange={(event) => {
                             setCourseInfo((draft) => {
-                              draft.qa[index].answer = e.target.value;
+                              draft.qa[index].answer = event.target.value;
                             });
                           }}
                         />

@@ -2,13 +2,14 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { format } from 'date-fns';
 import { debounce } from 'lodash';
-import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { z } from 'zod';
 
 import { ICourse } from '@/database/course.model';
-import { updateCoupon } from '@/lib/actions/coupon.action';
+import { createNewCoupon } from '@/lib/actions/coupon.action';
 import { getAllCourses } from '@/lib/actions/course.action';
 import { IconCalendar, IconCancel } from '@/shared/components/icons';
 import { Button } from '@/shared/components/ui/button';
@@ -33,34 +34,36 @@ import {
 import { RadioGroup, RadioGroupItem } from '@/shared/components/ui/radio-group';
 import { Switch } from '@/shared/components/ui/switch';
 import { couponFormSchema, couponTypes } from '@/shared/constants';
-import { TCouponParams } from '@/types';
 import { ECouponType } from '@/types/enums';
 
-const UpdateCouponForm = ({ data }: { data: TCouponParams }) => {
-  const [startDate, setStartDate] = useState<Date>(
-    data?.start_date || new Date(),
-  );
-  const [endDate, setEndDate] = useState<Date>(data?.end_date || new Date());
+const NewCouponForm = () => {
+  const router = useRouter();
+
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState<Date>();
   const [findCourse, setFindCourse] = useState<ICourse[] | undefined>([]);
-  const [selectedCourses, setSelectedCourses] = useState<any[]>([]);
+  const [selectedCourses, setSelectedCourses] = useState<ICourse[]>([]);
 
   const form = useForm<z.infer<typeof couponFormSchema>>({
     resolver: zodResolver(couponFormSchema),
     defaultValues: {
-      title: data.title,
-      code: data.code,
-      active: data.active,
-      value: data.value.toString(),
-      limit: data.limit,
-      type: data.type,
+      type: ECouponType.PERCENT,
+      active: true,
+      value: '0',
+      limit: 0,
+      title: '',
+      code: '',
+      start_date: '',
+      end_date: '',
+      course: [],
     },
   });
 
   const couponTypeWatch = form.watch('type');
 
   const handleSearchCourse = debounce(
-    async (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value;
+    async (event: React.ChangeEvent<HTMLInputElement>) => {
+      const value = event.target.value;
       const listCourses = await getAllCourses({ search: value });
 
       setFindCourse(listCourses);
@@ -71,17 +74,13 @@ const UpdateCouponForm = ({ data }: { data: TCouponParams }) => {
 
   const handleSelectCourse = (checked: boolean | string, course: any) => {
     if (checked) {
-      setSelectedCourses((prev) => [...prev, course]);
+      setSelectedCourses((previous) => [...previous, course]);
     } else {
-      setSelectedCourses((prev) => prev.filter((c) => c._id !== course._id));
+      setSelectedCourses((previous) =>
+        previous.filter((c) => c._id !== course._id),
+      );
     }
   };
-
-  useEffect(() => {
-    if (data?.course) {
-      setSelectedCourses(data?.course);
-    }
-  }, [data.course]);
 
   async function onSubmit(values: z.infer<typeof couponFormSchema>) {
     try {
@@ -94,20 +93,24 @@ const UpdateCouponForm = ({ data }: { data: TCouponParams }) => {
       ) {
         form.setError('value', { message: 'Giá trị không hợp lệ' });
       }
-      const updatedCoupon = await updateCoupon({
-        _id: data._id,
-        updateData: {
-          ...values,
-          value: couponValue,
-          start_date: startDate,
-          end_date: endDate,
-          type: couponTypeWatch,
-          course: selectedCourses.map((c) => c._id),
-        },
+      const newCoupon = await createNewCoupon({
+        ...values,
+        value: couponValue,
+        start_date: startDate,
+        end_date: endDate,
+        type: couponTypeWatch,
+        course: selectedCourses.map((c) => c._id),
       });
 
-      if (updatedCoupon?._id) {
-        toast.success('Cập nhật coupon thành công');
+      if (!newCoupon?.success) {
+        toast.warning(newCoupon?.message);
+
+        return;
+      }
+      if (newCoupon?._id) {
+        toast.success('Tạo mã giảm giá thành công!');
+        form.reset();
+        router.push('/manage/coupon');
       }
     } catch (error) {
       console.error('Error creating coupon:', error);
@@ -147,10 +150,9 @@ const UpdateCouponForm = ({ data }: { data: TCouponParams }) => {
                   <Input
                     placeholder="Mã giảm giá"
                     {...field}
-                    disabled
-                    className="font-bold uppercase"
-                    onChange={(e) =>
-                      field.onChange(e.target.value.toUpperCase())
+                    className="font-bold"
+                    onChange={(event) =>
+                      field.onChange(event.target.value.toUpperCase())
                     }
                   />
                 </FormControl>
@@ -161,7 +163,7 @@ const UpdateCouponForm = ({ data }: { data: TCouponParams }) => {
           <FormField
             control={form.control}
             name="start_date"
-            render={({ field }) => (
+            render={() => (
               <FormItem>
                 <FormLabel>Ngày bắt đầu</FormLabel>
                 <FormControl>
@@ -186,7 +188,7 @@ const UpdateCouponForm = ({ data }: { data: TCouponParams }) => {
                       <Calendar
                         mode="single"
                         selected={startDate}
-                        onSelect={setStartDate as any}
+                        onSelect={setStartDate}
                       />
                     </PopoverContent>
                   </Popover>
@@ -198,7 +200,7 @@ const UpdateCouponForm = ({ data }: { data: TCouponParams }) => {
           <FormField
             control={form.control}
             name="end_date"
-            render={({ field }) => (
+            render={() => (
               <FormItem>
                 <FormLabel>Ngày kết thúc</FormLabel>
                 <FormControl>
@@ -223,7 +225,7 @@ const UpdateCouponForm = ({ data }: { data: TCouponParams }) => {
                       <Calendar
                         mode="single"
                         selected={endDate}
-                        onSelect={setEndDate as any}
+                        onSelect={setEndDate}
                       />
                     </PopoverContent>
                   </Popover>
@@ -241,7 +243,7 @@ const UpdateCouponForm = ({ data }: { data: TCouponParams }) => {
                 <FormControl className="h-12">
                   <RadioGroup
                     className="flex gap-5"
-                    defaultValue={data.type || ECouponType.PERCENT}
+                    defaultValue={ECouponType.PERCENT}
                     onValueChange={field.onChange}
                   >
                     {couponTypes.map((type) => (
@@ -253,7 +255,12 @@ const UpdateCouponForm = ({ data }: { data: TCouponParams }) => {
                           id={type.value}
                           value={type.value}
                         />
-                        <Label htmlFor={type.value}>{type.title}</Label>
+                        <Label
+                          className="cursor-pointer"
+                          htmlFor={type.value}
+                        >
+                          {type.title}
+                        </Label>
                       </div>
                     ))}
                   </RadioGroup>
@@ -273,12 +280,12 @@ const UpdateCouponForm = ({ data }: { data: TCouponParams }) => {
                     <Input
                       placeholder="100"
                       {...field}
-                      onChange={(e) => field.onChange(e.target.value)}
+                      onChange={(event) => field.onChange(event.target.value)}
                     />
                   ) : (
                     <InputFormatCurrency
                       {...field}
-                      onChange={(e) => field.onChange(e.target.value)}
+                      onChange={(event) => field.onChange(event.target.value)}
                     />
                   )}
                 </FormControl>
@@ -315,7 +322,9 @@ const UpdateCouponForm = ({ data }: { data: TCouponParams }) => {
                     placeholder="100"
                     type="number"
                     {...field}
-                    onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                    onChange={(event) =>
+                      field.onChange(event.target.valueAsNumber)
+                    }
                   />
                 </FormControl>
                 <FormMessage />
@@ -325,7 +334,7 @@ const UpdateCouponForm = ({ data }: { data: TCouponParams }) => {
           <FormField
             control={form.control}
             name="course"
-            render={({ field }) => (
+            render={() => (
               <FormItem>
                 <FormLabel>Khóa học</FormLabel>
                 <FormControl>
@@ -386,11 +395,11 @@ const UpdateCouponForm = ({ data }: { data: TCouponParams }) => {
           className="ml-auto flex w-[150px]"
           variant="primary"
         >
-          Cập nhật
+          Tạo mã
         </Button>
       </form>
     </Form>
   );
 };
 
-export default UpdateCouponForm;
+export default NewCouponForm;

@@ -6,17 +6,15 @@ import { getUserInfo } from '@/lib/actions/user.actions';
 
 import LoadingOutline from './@outline/LoadingOutline';
 import LoadingPlayer from './@player/LoadingPlayer';
-import LessonWrapper from './LessonWrapper';
+import LessonWrapper from './lesson-wrapper';
 
-const Layout = async ({
-  comment,
-  outline,
-  player,
-}: {
+interface ILayoutProps {
   player: React.ReactNode;
   outline: React.ReactNode;
   comment: React.ReactNode;
-}) => {
+}
+
+const Layout = async ({ comment, outline, player }: ILayoutProps) => {
   // Authenticate user
   const { userId } = await auth();
 

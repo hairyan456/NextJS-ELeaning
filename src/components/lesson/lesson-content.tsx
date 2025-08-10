@@ -7,19 +7,21 @@ import {
 } from '@/shared/components/ui/accordion';
 import { IUpdateCourseLecture } from '@/types';
 
-import LessonItem from './LessonItem';
+import LessonItem from './lesson-item';
+
+interface ILessonContentProps {
+  lectures: IUpdateCourseLecture[];
+  course: string;
+  slug: string;
+  histories?: IHistory[];
+}
 
 const LessonContent = ({
   course,
   histories = [],
   lectures,
   slug,
-}: {
-  lectures: IUpdateCourseLecture[];
-  course: string;
-  slug: string;
-  histories?: IHistory[];
-}) => {
+}: ILessonContentProps) => {
   return (
     <div className="flex flex-col gap-5">
       {lectures.map((lecture: IUpdateCourseLecture) => (
@@ -39,12 +41,13 @@ const LessonContent = ({
                 {lecture.lessons.map((lesson) => (
                   <LessonItem
                     key={lesson._id}
-                    isActive={!slug ? false : lesson.slug === slug}
+                    isActive={slug ? lesson.slug === slug : false}
                     lesson={lesson ? JSON.parse(JSON.stringify(lesson)) : {}}
-                    url={!course ? '' : `/${course}/lesson?slug=${lesson.slug}`}
+                    url={course ? `/${course}/lesson?slug=${lesson.slug}` : ''}
                     isChecked={
                       histories.some(
-                        (el) => el.lesson.toString() === lesson._id.toString(),
+                        (element) =>
+                          element.lesson.toString() === lesson._id.toString(),
                       ) || false
                     }
                   />

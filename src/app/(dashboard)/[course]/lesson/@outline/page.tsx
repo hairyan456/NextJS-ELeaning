@@ -1,5 +1,5 @@
 import PageNotFound from '@/app/not-found';
-import LessonContent from '@/components/lesson/LessonContent';
+import LessonContent from '@/components/lesson/lesson-content';
 import { getCourseBySlug } from '@/lib/actions/course.action';
 import { getHistory } from '@/lib/actions/history.action';
 import { countLessonsByCourseId } from '@/lib/actions/lesson.action';

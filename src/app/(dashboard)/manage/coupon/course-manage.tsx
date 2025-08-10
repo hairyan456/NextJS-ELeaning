@@ -31,7 +31,7 @@ import { allValue, commonClassName, couponStatus } from '@/shared/constants';
 import { TCouponItem } from '@/types';
 import { ECouponType } from '@/types/enums';
 
-import ActionDeleteCoupon from './ActionDeleteCoupon';
+import ActionDeleteCoupon from './action-delete-coupon';
 
 const CouponManage = ({
   coupons,

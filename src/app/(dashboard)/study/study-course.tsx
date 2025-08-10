@@ -1,6 +1,6 @@
 'use client';
 
-import CourseItem from '@/components/course/CourseItem';
+import CourseItem from '@/components/course/course-item';
 import { CourseGrid } from '@/shared/components';
 import { lastLessonKey } from '@/shared/constants';
 import { IStudyCoursesProps } from '@/types';
@@ -25,8 +25,8 @@ const StudyCourses = ({
         courses?.length > 0 &&
         courses.map((item) => {
           const url =
-            lastLesson?.find((el: any) => el?.course === item.slug)?.lesson ||
-            '';
+            lastLesson?.find((element: any) => element?.course === item.slug)
+              ?.lesson || '';
           const firstLessonUrl = item.lectures[0]?.lessons[0]?.slug;
 
           return (

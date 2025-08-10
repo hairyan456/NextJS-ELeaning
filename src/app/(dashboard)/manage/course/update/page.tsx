@@ -1,4 +1,4 @@
-import CourseUpdateForm from '@/components/course/CourseUpdateForm';
+import CourseUpdateForm from '@/components/course/course-update-form';
 import { getCourseBySlug } from '@/lib/actions/course.action';
 import { Heading } from '@/shared/components';
 

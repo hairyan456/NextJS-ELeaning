@@ -53,15 +53,17 @@ function CourseAddNewForm({ user }: { user: IUser }) {
           values.slug || slugify(values.title, { lower: true, locale: 'vi' }),
         author: user?._id || '',
       };
-      const res = await createNewCourse(data);
+      const hasResult = await createNewCourse(data);
 
-      if (!res?.success) {
-        toast.error(res?.message);
+      if (hasResult?.success) {
+        toast.success(hasResult?.message);
+      } else {
+        toast.error(hasResult?.message);
 
         return;
-      } else toast.success(res?.message);
-      if (res?.data) {
-        router.push(`/manage/course/update?slug=${res?.data?.slug}`);
+      }
+      if (hasResult?.data) {
+        router.push(`/manage/course/update?slug=${hasResult?.data?.slug}`);
       }
     } catch (error) {
       console.error('Error submitting form:', error);

@@ -1,6 +1,6 @@
 import { auth } from '@clerk/nextjs/server';
 
-import CourseAddNewForm from '@/components/course/CourseAddNewForm';
+import CourseAddNewForm from '@/components/course/course-add-new-form';
 import { getUserInfo } from '@/lib/actions/user.actions';
 import { Heading } from '@/shared/components';
 

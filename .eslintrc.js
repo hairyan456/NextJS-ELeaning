@@ -49,7 +49,7 @@ module.exports = {
     quotes: ['error', 'single', { avoidEscape: true }],
     'prettier/prettier': ['error', { singleQuote: true }],
     '@typescript-eslint/no-empty-object-type': 'off',
-    // '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-unused-vars': [
       'error',
       {
@@ -61,7 +61,9 @@ module.exports = {
       'error',
       {
         selector: 'variableLike',
-        format: ['camelCase', 'UPPER_CASE'],
+        format: ['camelCase', 'UPPER_CASE', 'PascalCase'],
+        leadingUnderscore: 'allow',
+        trailingUnderscore: 'allow',
       },
       // Enforce that boolean variables are prefixed with an allowed verb
       {
@@ -72,13 +74,13 @@ module.exports = {
       },
 
       // Enforce that interface, types, enums names do not begin with an I/T/E
-      // {
-      //   selector: ["typeLike","interface","enum"],
-      //   format: ["PascalCase"],
+      //  {
+      //   selector: ['typeLike', 'interface', 'enum'],
+      //   format: ['PascalCase'],
       //   custom: {
-      //   regex: "^(?![TIE][A-Z])",
-      //   match: false
-      //   }
+      //     regex: '^(?![TIE][A-Z])',
+      //     match: true,
+      //   },
       // },
 
       // Enforce that function names are either in camelCase or PascalCase
@@ -145,5 +147,8 @@ module.exports = {
     ],
     'unicorn/no-null': 'off',
     'unicorn/prefer-structured-clone': 'off',
+    'unicorn/consistent-function-scoping': 'off',
+    'unicorn/no-array-callback-reference': 'warn',
+    // 'import/named':'off',
   },
 };

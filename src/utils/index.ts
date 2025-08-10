@@ -3,7 +3,7 @@ import { ObjectId } from 'mongoose';
 import { ICommentItem } from '@/types';
 
 export const createOrderCode = () => {
-  return `DH-${new Date().getTime().toString().slice(-6)}`;
+  return `DH-${Date.now().toString().slice(-6)}`;
 };
 
 export const formatNumberToK = (views: number) => {

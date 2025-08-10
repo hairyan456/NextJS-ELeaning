@@ -6,8 +6,8 @@ import { findAllLessons } from '@/lib/actions/lesson.action';
 import { getUserInfo } from '@/lib/actions/user.actions';
 import { Heading } from '@/shared/components';
 
-import LessonSaveUrl from '../LessonSaveUrl';
-import VideoPlay from './VideoPlay';
+import LessonSaveUrl from '../lesson-save-url';
+import VideoPlay from './video-play';
 
 const page = async ({
   params,
@@ -29,11 +29,10 @@ const page = async ({
   const lessonDetail = listLessons?.find((l) => l.slug === slug);
 
   if (!lessonDetail?._id) return <PageNotFound />;
-  // const videoId = lessonDetail.video_url?.split('v=').at(-1);
   const currentLessonIndex =
     listLessons?.findIndex((l) => l.slug === slug) || 0;
   const nextLesson = listLessons?.[currentLessonIndex + 1];
-  const prevLesson = listLessons?.[currentLessonIndex - 1];
+  const previousLesson = listLessons?.[currentLessonIndex - 1];
 
   return (
     <div className="mb-5">
@@ -52,10 +51,10 @@ const page = async ({
           courseId,
         }}
         nextLesson={
-          !nextLesson ? '' : `/${course}/lesson?slug=${nextLesson?.slug}`
+          nextLesson ? `/${course}/lesson?slug=${nextLesson?.slug}` : ''
         }
         prevLesson={
-          !prevLesson ? '' : `/${course}/lesson?slug=${prevLesson?.slug}`
+          previousLesson ? `/${course}/lesson?slug=${previousLesson?.slug}` : ''
         }
       />
       <Heading className="mb-10">{lessonDetail.title}</Heading>

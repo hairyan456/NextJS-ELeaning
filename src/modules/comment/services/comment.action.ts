@@ -39,7 +39,7 @@ export async function createNewComment(
 
     revalidatePath(params?.path || '/');
 
-    return !newComment?._id ? false : true;
+    return newComment?._id ? true : false;
   } catch (error) {
     console.log('Error create new comment:', error);
   }

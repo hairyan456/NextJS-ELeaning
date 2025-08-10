@@ -83,14 +83,14 @@ export async function createNewLesson(params: ICreateLessonParams) {
 export async function updateLesson(params: IUpdateLessonParams) {
   try {
     connectToDatabase();
-    const res = await Lesson.findByIdAndUpdate(
+    const response = await Lesson.findByIdAndUpdate(
       params.lessonId,
       params.updateData,
       { new: true },
     );
 
     revalidatePath(params?.path || '/');
-    if (!res) return;
+    if (!response) return;
 
     return {
       success: true,

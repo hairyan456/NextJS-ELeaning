@@ -11,22 +11,20 @@ import { formatMinutesToHour, formatNumberToK } from '@/utils';
 
 import { IconClock, IconEye, IconStar } from '../../shared/components/icons';
 
-const CourseItem = ({
-  cta,
-  data,
-  url = '',
-}: {
+interface ICourseItemProps {
   data?: IStudyCoursesProps;
   cta?: string;
   url?: string;
-}) => {
+}
+
+const CourseItem = ({ cta, data, url = '' }: ICourseItemProps) => {
   const [duration, setDuration] = useState<number>(0);
 
   useEffect(() => {
     async function getDuration() {
-      const res = await getCourseLessonsInfo({ slug: data?.slug || '' });
+      const hasResult = await getCourseLessonsInfo({ slug: data?.slug || '' });
 
-      setDuration(res?.duration || 0);
+      setDuration(hasResult?.duration || 0);
     }
 
     getDuration();
@@ -47,10 +45,11 @@ const CourseItem = ({
     },
   ];
 
-  const courseUrl = url ? url : `/course/${data?.slug}`;
+  // const courseUrl = url ? url : `/course/${data?.slug}`;
+  const courseUrl = url || `/course/${data?.slug}`;
 
   return (
-    <div className="flex flex-col rounded-2xl border border-gray-200 bg-white p-4 dark:border-opacity-10 dark:bg-grayDarker">
+    <div className="dark:border-opacity/10 flex flex-col rounded-2xl border border-gray-200 bg-white p-4 dark:bg-grayDarker">
       <Link
         className="relative block h-[180px]"
         href={courseUrl}

@@ -64,18 +64,18 @@ const Pagination = ({ total, totalPages }: IPaginateProps) => {
   );
 };
 
-interface IPaginateBtn {
+interface IPaginateButton {
   onClick: () => void;
   disabled: boolean;
   children: React.ReactNode;
 }
-function PaginateButton({ children, disabled, onClick }: IPaginateBtn) {
-  const paginateBtnClassName =
+function PaginateButton({ children, disabled, onClick }: IPaginateButton) {
+  const paginateButtonClassName =
     'size-10 rounded-full bg-white shadow-sm p-2 flex items-center justify-center disabled:bg-gray-200';
 
   return (
     <button
-      className={paginateBtnClassName}
+      className={paginateButtonClassName}
       disabled={disabled}
       onClick={onClick}
     >
