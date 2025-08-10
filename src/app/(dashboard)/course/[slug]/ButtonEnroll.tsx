@@ -39,8 +39,6 @@ const ButtonEnroll = ({
 
     if (newOrder?._id) {
       router.push(`/order/${newOrder?.code}`);
-
-      return;
     }
   };
 

@@ -62,14 +62,12 @@ const CommentForm = ({
         path,
       });
 
-      if (!hasComment) {
-        toast.error('Đăng bình luận thất bại');
-
-        return;
-      } else {
+      if (hasComment) {
         toast.success('Đăng bình luận thành công');
         form.setValue('content', '');
         closeReply?.();
+      } else {
+        toast.error('Đăng bình luận thất bại');
       }
     });
   }

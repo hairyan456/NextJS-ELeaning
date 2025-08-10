@@ -32,7 +32,7 @@ const CommentSorting = () => {
           strokeLinejoin="round"
         />
       </svg>
-      <span>{sortValue !== 'recent' ? 'Oldest' : 'Most recent'}</span>
+      <span>{sortValue === 'recent' ? 'Most recent' : 'Oldest'}</span>
     </button>
   );
 };

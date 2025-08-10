@@ -108,8 +108,6 @@ const UpdateCouponForm = ({ data }: { data: TCouponParams }) => {
 
       if (updatedCoupon?._id) {
         toast.success('Cập nhật coupon thành công');
-
-        return;
       }
     } catch (error) {
       console.error('Error creating coupon:', error);

@@ -123,8 +123,6 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
 
       if (!res?.success) {
         toast.error(res?.message || 'Cập nhật khóa học thất bại');
-
-        return;
       } else {
         if (values.slug !== data.slug)
           router.replace(`/manage/course/update?slug=${values.slug}`);
@@ -235,7 +233,7 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
           <FormField
             control={form.control}
             name="image"
-            render={({ field }) => (
+            render={({ _field }) => (
               <FormItem>
                 <FormLabel>Ảnh đại diện</FormLabel>
                 <FormControl>
@@ -365,7 +363,7 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
           <FormField
             control={form.control}
             name="info.requirements"
-            render={({ field }) => (
+            render={({ _field }) => (
               <FormItem>
                 <FormLabel className="flex items-center justify-between gap-5">
                   <span>Yêu cầu</span>
@@ -404,7 +402,7 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
           <FormField
             control={form.control}
             name="info.benefits"
-            render={({ field }) => (
+            render={({ _field }) => (
               <FormItem>
                 <FormLabel className="flex items-center justify-between gap-5">
                   <span>Lợi ích</span>
@@ -443,7 +441,7 @@ const CourseUpdateForm = ({ data }: { data: ICourse }) => {
           <FormField
             control={form.control}
             name="info.qa"
-            render={({ field }) => (
+            render={({ _field }) => (
               <FormItem className="col-start-1 col-end-3">
                 <FormLabel className="flex items-center justify-between gap-5">
                   <span>Q&A</span>

@@ -66,8 +66,6 @@ const OrderManagePage = ({
 
       if (res?.success) {
         toast.success('Cập nhật đơn hàng thành công');
-
-        return;
       }
     }
   };
@@ -155,7 +153,7 @@ const OrderManagePage = ({
                     </b>
                   </TableCell>
                   <TableCell>
-                    <StatusBadge item={orderStatusItem}></StatusBadge>
+                    <StatusBadge item={orderStatusItem} />
                   </TableCell>
                   <TableCell>
                     {order.status !== EOrderStatus.CANCELED && (

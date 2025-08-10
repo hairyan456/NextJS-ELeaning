@@ -12,9 +12,7 @@ const page = async ({ searchParams }: { searchParams: { slug: string } }) => {
       <Heading className="mb-10">
         Nội dung: <strong className="text-primary">{findCourse.title}</strong>
       </Heading>
-      <CourseUpdateContent
-        course={JSON.parse(JSON.stringify(findCourse))}
-      ></CourseUpdateContent>
+      <CourseUpdateContent course={JSON.parse(JSON.stringify(findCourse))} />
     </>
   );
 };

@@ -5,6 +5,7 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react/jsx-runtime',
+    'plugin:unicorn/recommended',
     'plugin:tailwindcss/recommended',
     'plugin:import/recommended',
     'plugin:prettier/recommended',
@@ -16,6 +17,7 @@ module.exports = {
     'import',
     'simple-import-sort',
     'sort-destructure-keys',
+    'unicorn',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -25,7 +27,13 @@ module.exports = {
   },
   ignorePatterns: ['.eslintrc.js'],
   rules: {
-    'no-unused-vars': 'error',
+    'no-useless-return': 'warn', // function có keyword return nhưng ko trả về giá trị nào.
+    'prefer-const': 'warn', // ưu tiên dùng const nếu biến ko thay đổi giá trị
+    'react/self-closing-comp': 'error', // khi component ko có children => viết dạng </> thay vì <> </>
+    'array-bracket-newline': ['error', 'consistent'],
+    'array-element-newline': ['error', 'consistent'],
+    'no-mixed-spaces-and-tabs': ['error', 'smart-tabs'], // vừa sử dụng space & tab cùng lúc thì báo lỗi
+
     // sort Props
     'react/jsx-sort-props': [
       'error',
@@ -38,8 +46,23 @@ module.exports = {
         reservedFirst: true,
       },
     ],
+    quotes: ['error', 'single', { avoidEscape: true }],
+    'prettier/prettier': ['error', { singleQuote: true }],
+    '@typescript-eslint/no-empty-object-type': 'off',
+    // '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        varsIgnorePattern: '^_',
+        argsIgnorePattern: '^_',
+      },
+    ],
     '@typescript-eslint/naming-convention': [
       'error',
+      {
+        selector: 'variableLike',
+        format: ['camelCase', 'UPPER_CASE'],
+      },
       // Enforce that boolean variables are prefixed with an allowed verb
       {
         selector: 'variable',
@@ -69,10 +92,6 @@ module.exports = {
         format: ['camelCase', 'PascalCase'],
       },
     ],
-    quotes: ['error', 'single', { avoidEscape: true }],
-    'prettier/prettier': ['error', { singleQuote: true }],
-    '@typescript-eslint/no-empty-object-type': 'off',
-    // '@typescript-eslint/no-explicit-any': 'off',
     'tailwindcss/no-custom-classname': 'off',
     'import/first': 'error',
     'import/newline-after-import': 'error',
@@ -83,12 +102,12 @@ module.exports = {
     'import/order': 'off',
     'react/no-multi-comp': 'off',
     'react/prop-types': 'off',
+    'simple-import-sort/imports': 'error',
+    'simple-import-sort/exports': 'error',
     'react/jsx-no-leaked-render': [
       'error',
       { validStrategies: ['coerce', 'ternary'] },
     ],
-    'simple-import-sort/imports': 'error',
-    'simple-import-sort/exports': 'error',
     'padding-line-between-statements': [
       'warn',
       { blankLine: 'always', prev: '*', next: 'return' },
@@ -99,9 +118,32 @@ module.exports = {
         next: ['const', 'let', 'var'],
       },
     ],
+    // sort Props destructuring
     'sort-destructure-keys/sort-destructure-keys': [
       'error',
       { caseSensitive: true },
     ],
+    // unicorn: check tên interface và tên file
+    'unicorn/prevent-abbreviations': [
+      'error',
+      {
+        allowList: {
+          props: true,
+          Props: true,
+          ref: true,
+          Ref: true,
+          params: true,
+          Params: true,
+        },
+      },
+    ],
+    'unicorn/filename-case': [
+      'error',
+      {
+        case: 'kebabCase',
+      },
+    ],
+    'unicorn/no-null': 'off',
+    'unicorn/prefer-structured-clone': 'off',
   },
 };

@@ -46,7 +46,7 @@ const CouponManage = ({
 
   return (
     <div>
-      <BouncedLink url="/manage/coupon/new"></BouncedLink>
+      <BouncedLink url="/manage/coupon/new" />
       <div className="mb-10 flex flex-col justify-between gap-5 lg:flex-row lg:items-center">
         <Heading className="">Quản lý mã giảm giá</Heading>
         <div className="flex gap-3">

@@ -122,8 +122,6 @@ const CourseUpdateContent = ({ course }: { course: ICourseUpdateParams }) => {
 
       if (res?.success) {
         toast.success('Thêm bài học mới thành công!');
-
-        return;
       } else toast.error('Thêm bài học mới thất bại');
     } catch (error) {
       console.error('Error adding new lesson:', error);
@@ -319,9 +317,7 @@ const CourseUpdateContent = ({ course }: { course: ICourseUpdateParams }) => {
                             </div>
                           </AccordionTrigger>
                           <AccordionContent>
-                            <LessonItemUpdate
-                              lesson={lesson}
-                            ></LessonItemUpdate>
+                            <LessonItemUpdate lesson={lesson} />
                           </AccordionContent>
                         </AccordionItem>
                       </Accordion>

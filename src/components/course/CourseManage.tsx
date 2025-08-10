@@ -95,7 +95,7 @@ const CourseManage = ({ courses }: { courses: ICourse[] }) => {
 
   return (
     <>
-      <BouncedLink url="/manage/course/new"></BouncedLink>
+      <BouncedLink url="/manage/course/new" />
       <div className="mb-10 flex flex-col justify-between gap-5 lg:flex-row lg:items-center">
         <Heading className="uppercase">Quản lý khóa học</Heading>
         <div className="flex gap-3">
