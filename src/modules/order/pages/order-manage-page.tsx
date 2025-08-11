@@ -2,7 +2,7 @@
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 
-import useQueryString from '@/hooks/useQueryString';
+import useQueryString from '@/hooks/use-query-string';
 import { updateOrder } from '@/lib/actions/order.action';
 import { cn } from '@/lib/utils';
 import {
@@ -62,9 +62,9 @@ const OrderManagePage = ({
       });
     }
     if (status === EOrderStatus.COMPLETED) {
-      const res = await updateOrder({ orderId, status });
+      const response = await updateOrder({ orderId, status });
 
-      if (res?.success) {
+      if (response?.success) {
         toast.success('Cập nhật đơn hàng thành công');
       }
     }
@@ -78,7 +78,7 @@ const OrderManagePage = ({
           <div className="w-full lg:w-[300px]">
             <Input
               placeholder="Tìm kiếm đơn hàng..."
-              onChange={(e) => handleSearchData(e)}
+              onChange={(event) => handleSearchData(event)}
             />
           </div>
           <Select

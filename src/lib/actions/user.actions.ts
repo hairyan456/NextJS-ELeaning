@@ -8,8 +8,8 @@ import Lecture from '@/database/lecture.model';
 import Lesson from '@/database/lesson.model';
 import User, { IUser } from '@/database/user.model';
 import { connectToDatabase } from '@/shared/lib/mongoose';
-import { ICreateUserParams } from '@/types';
-import { ECourseStatus } from '@/types/enums';
+import { ICreateUserParams } from '@/shared/types';
+import { ECourseStatus } from '@/shared/types/enums';
 
 export async function createNewUser(params: ICreateUserParams) {
   try {

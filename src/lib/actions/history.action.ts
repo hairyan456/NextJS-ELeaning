@@ -6,7 +6,7 @@ import { revalidatePath } from 'next/cache';
 import History, { IHistory } from '@/database/history.model';
 import User from '@/database/user.model';
 import { connectToDatabase } from '@/shared/lib/mongoose';
-import { ICreateHistoryParams } from '@/types';
+import { ICreateHistoryParams } from '@/shared/types';
 
 export async function createNewHistory(params: ICreateHistoryParams) {
   try {

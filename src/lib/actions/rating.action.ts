@@ -6,8 +6,8 @@ import { revalidatePath } from 'next/cache';
 import Course from '@/database/course.model';
 import Rating from '@/database/rating.model';
 import { connectToDatabase } from '@/shared/lib/mongoose';
-import { ICreateRatingParams, IFilterData, TRatingItem } from '@/types';
-import { ERatingStatus } from '@/types/enums';
+import { ICreateRatingParams, IFilterData, TRatingItem } from '@/shared/types';
+import { ERatingStatus } from '@/shared/types/enums';
 
 export async function getAllRatings(params: IFilterData): Promise<
   | {

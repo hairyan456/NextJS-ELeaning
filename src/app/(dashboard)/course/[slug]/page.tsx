@@ -17,7 +17,7 @@ import {
   AccordionTrigger,
 } from '@/shared/components/ui/accordion';
 import { courseLevelTitle } from '@/shared/constants';
-import { ECourseStatus } from '@/types/enums';
+import { ECourseStatus } from '@/shared/types/enums';
 import { formatMinutesToHour } from '@/utils';
 
 import AlreadyEnroll from './already-enroll';

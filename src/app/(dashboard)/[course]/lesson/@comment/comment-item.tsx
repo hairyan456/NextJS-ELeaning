@@ -3,11 +3,11 @@
 import Image from 'next/image';
 
 import { cn } from '@/lib/utils';
-import { ECommentStatus } from '@/shared/types/enum';
-import { ICommentItem } from '@/types';
+import { ICommentItem } from '@/shared/types';
+import { ECommentStatus } from '@/shared/types/enums';
 import { getRepliesComment, timeAgo } from '@/utils';
 
-import CommentReply from './CommentReply';
+import CommentReply from './comment-reply';
 
 const CommentItem = ({
   comment,

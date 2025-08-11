@@ -17,7 +17,7 @@ import {
 import { Button } from '@/shared/components/ui/button';
 import { Input } from '@/shared/components/ui/input';
 import { commonClassName } from '@/shared/constants';
-import { ICourseUpdateParams, IUpdateCourseLecture } from '@/types';
+import { ICourseUpdateParams, IUpdateCourseLecture } from '@/shared/types';
 
 import {
   IconCancel,

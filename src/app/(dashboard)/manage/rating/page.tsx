@@ -1,6 +1,6 @@
 import { getAllRatings } from '@/lib/actions/rating.action';
 import { ITEMS_PER_PAGE } from '@/shared/constants';
-import { ERatingStatus } from '@/types/enums';
+import { ERatingStatus } from '@/shared/types/enums';
 
 import RatingManage from './rating-manage';
 

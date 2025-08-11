@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 import { getValidateCoupon } from '@/lib/actions/coupon.action';
 import { Input } from '@/shared/components/ui/input';
-import { ECouponType } from '@/types/enums';
+import { ECouponType } from '@/shared/types/enums';
 
 interface ICouponFormProps {
   setCouponId: Dispatch<SetStateAction<string>>;

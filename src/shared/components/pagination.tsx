@@ -1,7 +1,7 @@
 'use client';
 import { debounce } from 'lodash';
 
-import useQueryString from '@/hooks/useQueryString';
+import useQueryString from '@/hooks/use-query-string';
 import {
   IconArrowLeft,
   IconArrowRight,
@@ -18,12 +18,15 @@ interface IPaginateProps {
 const Pagination = ({ total, totalPages }: IPaginateProps) => {
   const { currentPage, handleChangePage } = useQueryString();
 
-  const onInputChange = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Number(e.target.value);
+  const onInputChange = debounce(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const value = Number(event.target.value);
 
-    if (value < 1) return;
-    handleChangePage(value);
-  }, 250);
+      if (value < 1) return;
+      handleChangePage(value);
+    },
+    250,
+  );
 
   if (total <= ITEMS_PER_PAGE) return null;
 

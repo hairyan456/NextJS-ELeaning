@@ -30,7 +30,7 @@ import {
 } from '@/shared/components/ui/select';
 import { Textarea } from '@/shared/components/ui/textarea';
 import { courseLevel, courseStatus } from '@/shared/constants';
-import { ECourseLevel, ECourseStatus } from '@/types/enums';
+import { ECourseLevel, ECourseStatus } from '@/shared/types/enums';
 import { UploadButton } from '@/utils/uploadthing';
 
 import { IconAdd } from '../../shared/components/icons';

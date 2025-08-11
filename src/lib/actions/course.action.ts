@@ -14,8 +14,8 @@ import {
   IGetAllCourseParams,
   IStudyCoursesProps,
   IUpdateCourseParams,
-} from '@/types';
-import { ECourseStatus, ERatingStatus } from '@/types/enums';
+} from '@/shared/types';
+import { ECourseStatus, ERatingStatus } from '@/shared/types/enums';
 
 export async function getAllCoursesPublic(
   params: IGetAllCourseParams,

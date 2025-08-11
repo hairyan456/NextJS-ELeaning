@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 import Course from '@/database/course.model';
 import Lecture from '@/database/lecture.model';
 import { connectToDatabase } from '@/shared/lib/mongoose';
-import { ICreateLectureParams, IUpdateLectureParams } from '@/types';
+import { ICreateLectureParams, IUpdateLectureParams } from '@/shared/types';
 
 export async function createNewLecture(params: ICreateLectureParams) {
   try {
@@ -31,14 +31,14 @@ export async function createNewLecture(params: ICreateLectureParams) {
 export async function updateLecture(params: IUpdateLectureParams) {
   try {
     connectToDatabase();
-    const res = await Lecture.findByIdAndUpdate(
+    const response = await Lecture.findByIdAndUpdate(
       params.lectureId,
       params.updateData,
       { new: true },
     );
 
     revalidatePath(params?.updateData?.path || '/');
-    if (!res) return;
+    if (!response) return;
 
     return {
       success: true,

@@ -10,14 +10,14 @@ import {
   IconStudy,
   IconUsers,
 } from '@/shared/components/icons';
-import { IMenuItems, TRatingIcon } from '@/types';
+import { IMenuItems, TRatingIcon } from '@/shared/types';
 import {
   ECouponType,
   ECourseLevel,
   ECourseStatus,
   EOrderStatus,
   ERatingStatus,
-} from '@/types/enums';
+} from '@/shared/types/enums';
 
 export const menuItems: IMenuItems[] = [
   {

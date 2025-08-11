@@ -6,9 +6,9 @@ import { getLessonBySlug } from '@/lib/actions/lesson.action';
 import { getUserInfo } from '@/lib/actions/user.actions';
 import { getCommentsByLesson } from '@/modules/comment/services/comment.action';
 
-import CommentForm from './CommentForm';
-import CommentItem from './CommentItem';
-import CommentSorting from './CommentSorting';
+import CommentForm from './comment-form';
+import CommentItem from './comment-item';
+import CommentSorting from './comment-sorting';
 
 const page = async ({
   params,

@@ -8,8 +8,8 @@ import Course from '@/database/course.model';
 import Order from '@/database/order.model';
 import User from '@/database/user.model';
 import { connectToDatabase } from '@/shared/lib/mongoose';
-import { ICreateOrderParams } from '@/types';
-import { EOrderStatus } from '@/types/enums';
+import { ICreateOrderParams } from '@/shared/types';
+import { EOrderStatus } from '@/shared/types/enums';
 
 export async function fetchOrders(params: any) {
   try {

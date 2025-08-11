@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 
 import { ICourse } from '@/database/course.model';
-import useQueryString from '@/hooks/useQueryString';
+import useQueryString from '@/hooks/use-query-string';
 import { updateCourse } from '@/lib/actions/course.action';
 import { cn } from '@/lib/utils';
 import { BouncedLink, Heading } from '@/shared/components';
@@ -27,10 +27,10 @@ import {
   TableRow,
 } from '@/shared/components/ui/table';
 import { allValue, commonClassName, courseStatus } from '@/shared/constants';
-import { ECourseStatus } from '@/types/enums';
+import { ECourseStatus } from '@/shared/types/enums';
 
 import { IconDelete, IconEye, IconStudy } from '../../shared/components/icons';
-import IconEdit from '../../shared/components/icons/IconEdit';
+import IconEdit from '../../shared/components/icons/icon-edit';
 
 const CourseManage = ({ courses }: { courses: ICourse[] }) => {
   const { handleSearchData, handleSelectStatus } = useQueryString();

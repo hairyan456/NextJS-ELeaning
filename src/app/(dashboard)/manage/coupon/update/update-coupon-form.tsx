@@ -33,8 +33,8 @@ import {
 import { RadioGroup, RadioGroupItem } from '@/shared/components/ui/radio-group';
 import { Switch } from '@/shared/components/ui/switch';
 import { couponFormSchema, couponTypes } from '@/shared/constants';
-import { TCouponParams } from '@/types';
-import { ECouponType } from '@/types/enums';
+import { TCouponParams } from '@/shared/types';
+import { ECouponType } from '@/shared/types/enums';
 
 const UpdateCouponForm = ({ data }: { data: TCouponParams }) => {
   const [startDate, setStartDate] = useState<Date>(

@@ -11,7 +11,7 @@ import {
   TCouponParams,
   TCreateCouponParams,
   TUpdateCouponParams,
-} from '@/types';
+} from '@/shared/types';
 
 export async function getAllCoupons(params: IFilterData): Promise<
   | {

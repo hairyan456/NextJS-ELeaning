@@ -3,7 +3,7 @@ import { revalidatePath } from 'next/cache';
 
 import User from '@/database/user.model';
 import { connectToDatabase } from '@/shared/lib/mongoose';
-import { ICommentItem, ICreateCommentParams } from '@/types';
+import { ICommentItem, ICreateCommentParams } from '@/shared/types';
 
 import CommentSchema from './comment.schema';
 

@@ -1,6 +1,6 @@
 import { Document, model, models, Schema } from 'mongoose';
 
-import { ECouponType } from '@/types/enums';
+import { ECouponType } from '@/shared/types/enums';
 
 export interface ICoupon extends Document {
   _id: string;

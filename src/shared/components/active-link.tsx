@@ -16,8 +16,8 @@ const ActiveLink = ({ children, url }: IActiveLinkProps) => {
       href={url}
       className={`flex items-center gap-3 rounded-md p-3 text-base font-medium dark:text-grayDark ${
         isActive
-          ? 'svg-animate bg-primary bg-opacity-10 font-semibold !text-primary'
-          : 'hover:!bg-primary hover:!bg-opacity-10 hover:!text-primary hover:transition-all'
+          ? 'svg-animate bg-primary/10 font-semibold !text-primary'
+          : 'hover:!bg-primary/10 hover:!text-primary hover:transition-all'
       } `}
     >
       {children}

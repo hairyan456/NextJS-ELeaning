@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from '@/shared/components/ui/form';
 import { Textarea } from '@/shared/components/ui/textarea';
-import { ICommentItem } from '@/types';
+import { ICommentItem } from '@/shared/types';
 
 const formSchema = z.object({
   content: z

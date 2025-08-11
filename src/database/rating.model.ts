@@ -1,6 +1,6 @@
 import { Document, model, models, Schema } from 'mongoose';
 
-import { ERatingStatus } from '@/types/enums';
+import { ERatingStatus } from '@/shared/types/enums';
 
 export interface IRating extends Document {
   _id: string;

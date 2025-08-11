@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongoose';
 
-import { ICommentItem } from '@/types';
+import { ICommentItem } from '@/shared/types';
 
 export const createOrderCode = () => {
   return `DH-${Date.now().toString().slice(-6)}`;

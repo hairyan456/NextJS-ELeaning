@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation';
 
 import PageNotFound from '@/app/not-found';
 import { getUserInfo } from '@/lib/actions/user.actions';
-import { EUserRole } from '@/types/enums';
+import { EUserRole } from '@/shared/types/enums';
 
 const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
   const { userId }: { userId: string | null } = await auth();

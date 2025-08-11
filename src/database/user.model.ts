@@ -1,6 +1,6 @@
 import { Document, model, models, Schema } from 'mongoose';
 
-import { EUserRole, EUserStatus } from '@/types/enums';
+import { EUserRole, EUserStatus } from '@/shared/types/enums';
 
 export interface IUser extends Document {
   _id: string;

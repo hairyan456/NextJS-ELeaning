@@ -3,7 +3,7 @@
 import CourseItem from '@/components/course/course-item';
 import { CourseGrid } from '@/shared/components';
 import { lastLessonKey } from '@/shared/constants';
-import { IStudyCoursesProps } from '@/types';
+import { IStudyCoursesProps } from '@/shared/types';
 
 const StudyCourses = ({
   courses,

@@ -4,8 +4,8 @@ import { Suspense } from 'react';
 import PageNotFound from '@/app/not-found';
 import { getUserInfo } from '@/lib/actions/user.actions';
 
-import LoadingOutline from './@outline/LoadingOutline';
-import LoadingPlayer from './@player/LoadingPlayer';
+import LoadingOutline from './@outline/loading-outline';
+import LoadingPlayer from './@player/loading-player';
 import LessonWrapper from './lesson-wrapper';
 
 interface ILayoutProps {

@@ -34,7 +34,7 @@ import {
 import { RadioGroup, RadioGroupItem } from '@/shared/components/ui/radio-group';
 import { Switch } from '@/shared/components/ui/switch';
 import { couponFormSchema, couponTypes } from '@/shared/constants';
-import { ECouponType } from '@/types/enums';
+import { ECouponType } from '@/shared/types/enums';
 
 const NewCouponForm = () => {
   const router = useRouter();

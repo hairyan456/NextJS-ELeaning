@@ -3,10 +3,10 @@
 import { useState } from 'react';
 
 import { MAX_COMMENT_LEVEL } from '@/shared/constants';
-import { ICommentItem } from '@/types';
+import { ICommentItem } from '@/shared/types';
 import { formatDateVN } from '@/utils';
 
-import CommentForm from './CommentForm';
+import CommentForm from './comment-form';
 
 interface CommentReplyProps {
   comment: ICommentItem;

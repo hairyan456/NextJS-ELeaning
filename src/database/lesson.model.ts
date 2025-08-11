@@ -1,6 +1,6 @@
 import { Document, model, models, Schema } from 'mongoose';
 
-import { ELessonType } from '@/types/enums';
+import { ELessonType } from '@/shared/types/enums';
 
 export interface ILesson extends Document {
   _id: string;

@@ -5,7 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/shared/components/ui/accordion';
-import { IUpdateCourseLecture } from '@/types';
+import { IUpdateCourseLecture } from '@/shared/types';
 
 import LessonItem from './lesson-item';
 

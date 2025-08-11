@@ -1,6 +1,6 @@
 import CourseManage from '@/components/course/course-manage';
 import { getAllCourses } from '@/lib/actions/course.action';
-import { ECourseStatus } from '@/types/enums';
+import { ECourseStatus } from '@/shared/types/enums';
 
 const page = async ({
   searchParams,

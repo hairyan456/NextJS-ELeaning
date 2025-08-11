@@ -49,7 +49,7 @@ module.exports = {
     quotes: ['error', 'single', { avoidEscape: true }],
     'prettier/prettier': ['error', { singleQuote: true }],
     '@typescript-eslint/no-empty-object-type': 'off',
-    '@typescript-eslint/no-explicit-any': 'off',
+    // '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-unused-vars': [
       'error',
       {
@@ -149,6 +149,7 @@ module.exports = {
     'unicorn/prefer-structured-clone': 'off',
     'unicorn/consistent-function-scoping': 'off',
     'unicorn/no-array-callback-reference': 'warn',
-    // 'import/named':'off',
+    'import/named': 'off',
+    'import/no-unresolved': 'off', // ko cho cảnh báo khi import từ types/enums.ts
   },
 };

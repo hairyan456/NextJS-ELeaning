@@ -1,6 +1,6 @@
 import { Document, model, models, Schema } from 'mongoose';
 
-import { EOrderStatus } from '@/types/enums';
+import { EOrderStatus } from '@/shared/types/enums';
 
 export interface IOrder extends Document {
   _id: string;

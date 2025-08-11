@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 
 import { getCourseLessonsInfo } from '@/lib/actions/course.action';
 import { commonClassName } from '@/shared/constants';
-import { IStudyCoursesProps } from '@/types';
+import { IStudyCoursesProps } from '@/shared/types';
 import { formatMinutesToHour, formatNumberToK } from '@/utils';
 
 import { IconClock, IconEye, IconStar } from '../../shared/components/icons';
@@ -22,9 +22,9 @@ const CourseItem = ({ cta, data, url = '' }: ICourseItemProps) => {
 
   useEffect(() => {
     async function getDuration() {
-      const hasResult = await getCourseLessonsInfo({ slug: data?.slug || '' });
+      const response = await getCourseLessonsInfo({ slug: data?.slug || '' });
 
-      setDuration(hasResult?.duration || 0);
+      setDuration(response?.duration || 0);
     }
 
     getDuration();

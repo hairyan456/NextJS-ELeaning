@@ -1,6 +1,6 @@
 import { Document, model, models, Schema } from 'mongoose';
 
-import { ECourseLevel, ECourseStatus } from '@/types/enums';
+import { ECourseLevel, ECourseStatus } from '@/shared/types/enums';
 
 export interface ICourse extends Document {
   _id: string;
