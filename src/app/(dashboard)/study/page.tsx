@@ -1,19 +1,13 @@
-import { getUserCourses } from '@/lib/actions/user.actions';
+import { StudyPageContainer } from '@/modules/course/pages';
 import { Heading } from '@/shared/components';
 
-import StudyCourses from './study-course';
-
-const page = async () => {
-  const courses = await getUserCourses();
-
+const StudyPageRoot = () => {
   return (
     <>
       <Heading>Khu vực học tập</Heading>
-      <StudyCourses
-        courses={courses ? JSON.parse(JSON.stringify(courses)) : []}
-      />
+      <StudyPageContainer />
     </>
   );
 };
 
-export default page;
+export default StudyPageRoot;

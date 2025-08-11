@@ -29,8 +29,12 @@ import {
 import { allValue, commonClassName, courseStatus } from '@/shared/constants';
 import { ECourseStatus } from '@/shared/types/enums';
 
-import { IconDelete, IconEye, IconStudy } from '../../shared/components/icons';
-import IconEdit from '../../shared/components/icons/icon-edit';
+import {
+  IconDelete,
+  IconEye,
+  IconStudy,
+} from '../../../../../shared/components/icons';
+import IconEdit from '../../../../../shared/components/icons/icon-edit';
 
 const CourseManage = ({ courses }: { courses: ICourse[] }) => {
   const { handleSearchData, handleSelectStatus } = useQueryString();

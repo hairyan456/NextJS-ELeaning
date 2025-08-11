@@ -1,4 +1,4 @@
-import { EOrderStatus } from '@/shared/types/enum';
+import { EOrderStatus } from '@/shared/types/enums';
 
 export interface IOrderManageProps {
   totalPages: number;

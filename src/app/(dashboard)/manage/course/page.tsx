@@ -1,26 +1,16 @@
-import CourseManage from '@/components/course/course-manage';
-import { getAllCourses } from '@/lib/actions/course.action';
+import { CourseManagePageContainer } from '@/modules/course/pages';
 import { ECourseStatus } from '@/shared/types/enums';
 
-const page = async ({
-  searchParams,
-}: {
+export interface ICourseManagePageRootProps {
   searchParams: { page: number; search: string; status: ECourseStatus };
-}) => {
-  const courses = await getAllCourses({
-    page: searchParams.page || 1,
-    limit: 10,
-    search: searchParams.search,
-    status: searchParams.status,
-  });
+}
 
+const CourseManagePageRoot = ({ searchParams }: ICourseManagePageRootProps) => {
   return (
     <>
-      <CourseManage
-        courses={courses ? JSON.parse(JSON.stringify(courses)) : []}
-      />
+      <CourseManagePageContainer searchParams={searchParams} />
     </>
   );
 };
 
-export default page;
+export default CourseManagePageRoot;
