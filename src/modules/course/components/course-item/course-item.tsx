@@ -2,51 +2,32 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 
-import { getCourseLessonsInfo } from '@/lib/actions/course.action';
-import { commonClassName } from '@/shared/constants';
-import { IStudyCoursesProps } from '@/shared/types';
-import { formatMinutesToHour, formatNumberToK } from '@/utils';
+import { formatNumberToK } from '@/utils';
 
-import { IconClock, IconEye, IconStar } from '../../shared/components/icons';
+import { IconEye, IconStar } from '../../../../shared/components/icons';
+import { ICourseProps } from '../../types';
+import CourseItemDuration from './course-item-duration';
 
 interface ICourseItemProps {
-  data?: IStudyCoursesProps;
+  data?: ICourseProps;
   cta?: string;
   url?: string;
 }
 
 const CourseItem = ({ cta, data, url = '' }: ICourseItemProps) => {
-  const [duration, setDuration] = useState<number>(0);
-
-  useEffect(() => {
-    async function getDuration() {
-      const response = await getCourseLessonsInfo({ slug: data?.slug || '' });
-
-      setDuration(response?.duration || 0);
-    }
-
-    getDuration();
-  }, [data?.slug]);
+  const courseUrl = url || `/course/${data?.slug}`;
 
   const courseInfo = [
     {
       title: formatNumberToK(data?.views ?? 0),
-      icon: (className?: string) => <IconEye className={className} />,
+      icon: <IconEye className={'size-4'} />,
     },
     {
       title: 5,
-      icon: (className?: string) => <IconStar className={className} />,
-    },
-    {
-      title: formatMinutesToHour(duration),
-      icon: (className?: string) => <IconClock className={className} />,
+      icon: <IconStar className={'size-4'} />,
     },
   ];
-
-  // const courseUrl = url ? url : `/course/${data?.slug}`;
-  const courseUrl = url || `/course/${data?.slug}`;
 
   return (
     <div className="dark:border-opacity/10 flex flex-col rounded-2xl border border-gray-200 bg-white p-4 dark:bg-grayDarker">
@@ -75,21 +56,22 @@ const CourseItem = ({ cta, data, url = '' }: ICourseItemProps) => {
         <h3 className="mb-5 text-lg font-bold">{data?.title}</h3>
         <div className="mt-auto">
           <div className="mb-5 flex items-center gap-3 text-xs text-gray-500 dark:text-grayDark">
-            {courseInfo?.map((item, index) => (
+            {courseInfo?.map((item) => (
               <div
-                key={index}
+                key={item.title}
                 className="flex items-center gap-2"
               >
-                {item?.icon('size-4')}
+                {item.icon}
                 <span>{item?.title}</span>
               </div>
             ))}
+            <CourseItemDuration slug={data?.slug || ''} />
             <span className="ml-auto text-base font-bold text-primary">
               {data?.price?.toLocaleString()}đ
             </span>
           </div>
           <Link
-            className={commonClassName.btnPrimary}
+            className="button-primary mt-10 flex h-12 w-full items-center justify-center rounded-lg bg-primary font-semibold text-white"
             href={courseUrl}
           >
             {cta || 'Xem chi tiết'}

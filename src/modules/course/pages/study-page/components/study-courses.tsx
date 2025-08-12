@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import CourseItem from '@/components/course/course-item';
+import CourseItem from '@/modules/course/components/course-item';
 import { CourseGrid } from '@/shared/components';
 import { lastLessonKey } from '@/shared/constants';
 

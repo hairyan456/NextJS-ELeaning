@@ -1,13 +1,13 @@
-import HomePageContainer from '@/modules/course/pages/home-page-container';
+import { CourseDashboardPage } from '@/modules/course/pages';
 import { Heading } from '@/shared/components';
 
-const HomePageRoot = () => {
+const CourseDashboardRoot = () => {
   return (
     <>
       <Heading>Khám phá</Heading>
-      <HomePageContainer />
+      <CourseDashboardPage />
     </>
   );
 };
 
-export default HomePageRoot;
+export default CourseDashboardRoot;
