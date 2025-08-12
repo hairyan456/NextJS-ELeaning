@@ -30,7 +30,7 @@ import {
   TableRow,
 } from '@/shared/components/ui/table';
 import { allValue, commonClassName, orderStatus } from '@/shared/constants';
-import { EOrderStatus } from '@/shared/types/enum';
+import { EOrderStatus } from '@/shared/types/enums';
 
 import { IOrderManageProps } from '../types/order.types';
 

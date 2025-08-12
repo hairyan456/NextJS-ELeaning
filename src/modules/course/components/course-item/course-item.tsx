@@ -6,16 +6,20 @@ import Link from 'next/link';
 import { formatNumberToK } from '@/utils';
 
 import { IconEye, IconStar } from '../../../../shared/components/icons';
-import { ICourseProps } from '../../types';
+import { ICourseItemData } from '../../types';
 import CourseItemDuration from './course-item-duration';
 
 interface ICourseItemProps {
-  data?: ICourseProps;
+  data?: ICourseItemData;
   cta?: string;
   url?: string;
 }
 
-const CourseItem = ({ cta, data, url = '' }: ICourseItemProps) => {
+const CourseItem = ({
+  cta = 'Xem chi tiết',
+  data,
+  url = '',
+}: ICourseItemProps) => {
   const courseUrl = url || `/course/${data?.slug}`;
 
   const courseInfo = [
@@ -74,7 +78,7 @@ const CourseItem = ({ cta, data, url = '' }: ICourseItemProps) => {
             className="button-primary mt-10 flex h-12 w-full items-center justify-center rounded-lg bg-primary font-semibold text-white"
             href={courseUrl}
           >
-            {cta || 'Xem chi tiết'}
+            {cta}
           </Link>
         </div>
       </div>

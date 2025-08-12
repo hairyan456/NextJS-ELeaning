@@ -201,12 +201,6 @@ interface ICommentItem extends Omit<IComment, 'user'> {
   };
 }
 
-interface IQueryFilter {
-  limit?: number;
-  page?: number;
-  search?: string;
-}
-
 export {
   IActiveLinkProps,
   ICommentItem,
@@ -222,7 +216,6 @@ export {
   IFilterData,
   IGetAllCourseParams,
   IMenuItems,
-  IQueryFilter,
   IStudyCoursesProps,
   IUpdateCourseLecture,
   IUpdateCourseParams,

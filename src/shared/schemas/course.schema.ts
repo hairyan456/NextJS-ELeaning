@@ -1,33 +1,7 @@
-import { Document, model, models, Schema } from 'mongoose';
+import { model, models, Schema } from 'mongoose';
 
-import { ECourseLevel, ECourseStatus } from '@/shared/types/enums';
-
-export interface ICourse extends Document {
-  _id: string;
-  title: string;
-  image: string;
-  intro_url: string;
-  description: string;
-  price: number;
-  sale_price: number;
-  slug: string;
-  status: ECourseStatus;
-  created_at: Date;
-  author: Schema.Types.ObjectId;
-  level: ECourseLevel;
-  views: number;
-  rating: Schema.Types.ObjectId[];
-  info: {
-    requirements: string[];
-    benefits: string[];
-    qa: {
-      question: string;
-      answer: string;
-    }[];
-  };
-  lectures: Schema.Types.ObjectId[];
-  _destroy: boolean;
-}
+import { ICourse } from '../types';
+import { ECourseLevel, ECourseStatus } from '../types/enums';
 
 const courseSchema = new Schema<ICourse>({
   title: {
@@ -114,6 +88,5 @@ const courseSchema = new Schema<ICourse>({
   },
 });
 
-const CourseModel = models?.Course || model<ICourse>('Course', courseSchema);
-
-export default CourseModel;
+export const CourseModel =
+  models?.Course || model<ICourse>('Course', courseSchema);

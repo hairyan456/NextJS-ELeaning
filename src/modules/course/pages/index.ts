@@ -1,2 +1,3 @@
 export * from './course-dashboard';
-export * from './study-page';
+export * from './course-manage-page';
+export * from './study';

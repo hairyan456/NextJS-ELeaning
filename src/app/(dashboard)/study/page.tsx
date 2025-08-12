@@ -1,11 +1,11 @@
-import { StudyPageContainer } from '@/modules/course/pages';
+import { StudyPage } from '@/modules/course/pages/study';
 import { Heading } from '@/shared/components';
 
 const StudyPageRoot = () => {
   return (
     <>
       <Heading>Khu vực học tập</Heading>
-      <StudyPageContainer />
+      <StudyPage />
     </>
   );
 };

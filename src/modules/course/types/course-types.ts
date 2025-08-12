@@ -1,3 +1,14 @@
-import { ICourse } from '../models';
+import { ICourse } from '@/shared/types';
 
-export interface ICourseProps extends ICourse {}
+export interface ICourseItemData extends Omit<ICourse, 'lectures'> {
+  lectures: {
+    lessons: {
+      slug: string;
+    }[];
+  }[];
+}
+
+export interface ILastLessonData {
+  course: string;
+  lesson: string;
+}

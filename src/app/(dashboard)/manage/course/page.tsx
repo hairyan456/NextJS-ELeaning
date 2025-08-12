@@ -1,4 +1,4 @@
-import { CourseManagePageContainer } from '@/modules/course/pages';
+import { CourseManageContainer } from '@/modules/course/pages';
 import { ECourseStatus } from '@/shared/types/enums';
 
 export interface ICourseManagePageRootProps {
@@ -8,7 +8,7 @@ export interface ICourseManagePageRootProps {
 const CourseManagePageRoot = ({ searchParams }: ICourseManagePageRootProps) => {
   return (
     <>
-      <CourseManagePageContainer searchParams={searchParams} />
+      <CourseManageContainer searchParams={searchParams} />
     </>
   );
 };

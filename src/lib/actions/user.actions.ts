@@ -1,15 +1,9 @@
 // Actions for "User" model
 'use server';
 
-import { auth } from '@clerk/nextjs/server';
-
-import Course, { ICourse } from '@/database/course.model';
-import Lecture from '@/database/lecture.model';
-import Lesson from '@/database/lesson.model';
 import User, { IUser } from '@/database/user.model';
 import { connectToDatabase } from '@/shared/lib/mongoose';
 import { ICreateUserParams } from '@/shared/types';
-import { ECourseStatus } from '@/shared/types/enums';
 
 export async function createNewUser(params: ICreateUserParams) {
   try {
@@ -35,35 +29,5 @@ export async function getUserInfo({
   } catch (error) {
     console.error('Error fetching user info:', error);
     throw error;
-  }
-}
-
-export async function getUserCourses(): Promise<ICourse[] | null | undefined> {
-  try {
-    connectToDatabase();
-    const { userId } = await auth();
-    const findUser = await User.findOne({ clerkId: userId }).populate({
-      path: 'courses',
-      model: Course,
-      match: { status: ECourseStatus.APPROVED, _destroy: false },
-      populate: {
-        path: 'lectures',
-        model: Lecture,
-        select: 'lessons',
-        populate: {
-          path: 'lessons',
-          model: Lesson,
-          select: 'slug',
-        },
-      },
-    });
-
-    if (!findUser) return null;
-
-    return findUser.courses
-      ? JSON.parse(JSON.stringify(findUser.courses))
-      : null;
-  } catch (error) {
-    console.error('Error fetching user courses:', error);
   }
 }
