@@ -1,20 +1,29 @@
 'use client';
 import { useState } from 'react';
 
+import { ICourseItemData } from '@/modules/course/types';
 import { IconPlay, IconStudy, IconUsers } from '@/shared/components/icons';
+import { useUserContext } from '@/shared/contexts';
 
+import AlreadyEnroll from './already-enroll';
 import ButtonEnroll from './button-enroll';
 import CouponForm from './coupon-form';
 
 interface ICoursseWidgetProps {
-  data: any;
-  findUser: any;
+  data: ICourseItemData;
   duration: string;
 }
 
-const CourseWidget = ({ data, duration, findUser }: ICoursseWidgetProps) => {
-  const [coupon, setCoupon] = useState<any>('');
+const CourseWidget = ({ data, duration }: ICoursseWidgetProps) => {
   const [price, setPrice] = useState<number>(data?.price ?? 0);
+  const [coupon, setCoupon] = useState('');
+  const { userInfo } = useUserContext();
+
+  const isAlreadyEnrolled = userInfo?.courses
+    ? JSON.parse(JSON.stringify(userInfo.courses))?.includes(data._id)
+    : false;
+
+  if (isAlreadyEnrolled) return <AlreadyEnroll />;
 
   return (
     <>
@@ -28,7 +37,7 @@ const CourseWidget = ({ data, duration, findUser }: ICoursseWidgetProps) => {
           </span>
           <span
             className={
-              'bg-opacity/10 ml-auto inline-block rounded-lg bg-primary px-3 py-1 text-sm font-semibold text-primary'
+              'ml-auto inline-block rounded-lg bg-primary/10 px-3 py-1 text-sm font-semibold text-primary'
             }
           >
             {Math.floor((price / data.sale_price) * 100)} %
@@ -60,8 +69,7 @@ const CourseWidget = ({ data, duration, findUser }: ICoursseWidgetProps) => {
         <ButtonEnroll
           amount={price}
           coupon={coupon}
-          courseId={data ? JSON.parse(JSON.stringify(data._id)) : null}
-          user={findUser}
+          courseId={data._id.toString()}
         />
         <CouponForm
           courseId={data ? JSON.parse(JSON.stringify(data?._id)) : null}

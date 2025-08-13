@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 
-import useQueryString from '@/hooks/use-query-string';
 import { deleteRating, updateRating } from '@/lib/actions/rating.action';
 import {
   Heading,
@@ -31,6 +30,7 @@ import {
   TableRow,
 } from '@/shared/components/ui/table';
 import { allValue, ratingList, ratingStatus } from '@/shared/constants';
+import useQueryString from '@/shared/hooks/use-query-string';
 import { TRatingItem } from '@/shared/types';
 import { ERatingStatus } from '@/shared/types/enums';
 

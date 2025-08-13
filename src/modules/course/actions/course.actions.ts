@@ -5,12 +5,11 @@ import { FilterQuery } from 'mongoose';
 
 import Course from '@/database/course.model';
 import Lecture from '@/database/lecture.model';
-import Lesson from '@/database/lesson.model';
 import User from '@/database/user.model';
 import { connectToDatabase } from '@/shared/lib/mongoose';
-import { CourseModel } from '@/shared/schemas';
+import { CourseModel, LessonModel, RatingModel } from '@/shared/schemas';
 import { ICourse, IQueryFilter } from '@/shared/types';
-import { ECourseStatus } from '@/shared/types/enums';
+import { ECourseStatus, ERatingStatus } from '@/shared/types/enums';
 
 import { ICourseItemData } from '../types';
 
@@ -52,7 +51,7 @@ export async function fetchCoursesOfUser(): Promise<
         select: 'lessons',
         populate: {
           path: 'lessons',
-          model: Lesson,
+          model: LessonModel,
           select: 'slug',
         },
       },
@@ -65,5 +64,40 @@ export async function fetchCoursesOfUser(): Promise<
       : null;
   } catch (error) {
     console.error('Error fetching user courses:', error);
+  }
+}
+
+export async function fetchCourseBySlug({
+  slug,
+}: {
+  slug: string;
+}): Promise<ICourseItemData | undefined> {
+  try {
+    connectToDatabase();
+    const findCourse = await Course.findOne({ slug })
+      .populate({
+        path: 'lectures',
+        model: Lecture,
+        select: '_id title',
+        match: { _destroy: false },
+        populate: {
+          path: 'lessons',
+          model: LessonModel,
+          match: { _destroy: false },
+        },
+      })
+      .populate({
+        path: 'rating',
+        model: RatingModel,
+        match: {
+          status: ERatingStatus.ACTIVE,
+        },
+      });
+
+    return findCourse
+      ? (JSON.parse(JSON.stringify(findCourse)) as ICourseItemData)
+      : undefined;
+  } catch (error) {
+    console.error('Error fetching course by slug:', error);
   }
 }

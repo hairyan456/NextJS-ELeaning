@@ -1,10 +1,10 @@
 import { auth } from '@clerk/nextjs/server';
 
 import PageNotFound from '@/app/not-found';
-import { getCourseBySlug } from '@/lib/actions/course.action';
 import { getLessonBySlug } from '@/lib/actions/lesson.action';
 import { getUserInfo } from '@/lib/actions/user.actions';
 import { getCommentsByLesson } from '@/modules/comment/services/comment.action';
+import { fetchCourseBySlug } from '@/modules/course/actions';
 
 import CommentForm from './comment-form';
 import CommentItem from './comment-item';
@@ -26,7 +26,7 @@ const page = async ({
 
   const course = params.course;
   const slug = searchParams.slug;
-  const findCourse = await getCourseBySlug({ slug: course });
+  const findCourse = await fetchCourseBySlug({ slug: course });
 
   if (!findCourse) return <PageNotFound />;
   const lesson = await getLessonBySlug({

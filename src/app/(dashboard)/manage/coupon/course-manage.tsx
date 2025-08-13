@@ -1,7 +1,6 @@
 'use client';
 import Link from 'next/link';
 
-import useQueryString from '@/hooks/use-query-string';
 import {
   BouncedLink,
   Heading,
@@ -28,6 +27,7 @@ import {
   TableRow,
 } from '@/shared/components/ui/table';
 import { allValue, commonClassName, couponStatus } from '@/shared/constants';
+import useQueryString from '@/shared/hooks/use-query-string';
 import { TCouponItem } from '@/shared/types';
 import { ECouponType } from '@/shared/types/enums';
 

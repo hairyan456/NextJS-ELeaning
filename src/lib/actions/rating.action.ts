@@ -4,8 +4,8 @@ import { FilterQuery } from 'mongoose';
 import { revalidatePath } from 'next/cache';
 
 import Course from '@/database/course.model';
-import Rating from '@/database/rating.model';
 import { connectToDatabase } from '@/shared/lib/mongoose';
+import { RatingModel } from '@/shared/schemas';
 import { ICreateRatingParams, IFilterData, TRatingItem } from '@/shared/types';
 import { ERatingStatus } from '@/shared/types/enums';
 
@@ -20,12 +20,12 @@ export async function getAllRatings(params: IFilterData): Promise<
     connectToDatabase();
     const { limit = 10, page = 1, search = '', status } = params;
     const skip = (page - 1) * limit;
-    const query: FilterQuery<typeof Rating> = {};
+    const query: FilterQuery<typeof RatingModel> = {};
 
     if (search) query.$or = [{ content: { $regex: search, $options: 'i' } }];
     if (status) query.status = status;
-    const total = await Rating.countDocuments(query);
-    const ratings = await Rating.find(query)
+    const total = await RatingModel.countDocuments(query);
+    const ratings = await RatingModel.find(query)
       .populate({
         path: 'course',
         select: 'title slug',
@@ -54,7 +54,7 @@ export async function getRatingByUserId(
   if (!userId) return;
   try {
     connectToDatabase();
-    const findRating = await Rating.findOne({
+    const findRating = await RatingModel.findOne({
       user: userId,
       course: courseId,
     });
@@ -70,10 +70,10 @@ export async function createNewRating(
 ): Promise<boolean | undefined> {
   try {
     connectToDatabase();
-    const newRating = await Rating.create(params);
+    const newRating = await RatingModel.create(params);
     const findCourse = await Course.findOne({ _id: params.course }).populate({
       path: 'rating',
-      model: Rating,
+      model: RatingModel,
     });
 
     if (findCourse?._id && findCourse?.rating) {
@@ -90,7 +90,7 @@ export async function createNewRating(
 export async function updateRating(id: string): Promise<boolean | undefined> {
   try {
     connectToDatabase();
-    await Rating.findByIdAndUpdate(id, { status: ERatingStatus.ACTIVE });
+    await RatingModel.findByIdAndUpdate(id, { status: ERatingStatus.ACTIVE });
     revalidatePath('/manage/rating');
 
     return true;
@@ -102,7 +102,7 @@ export async function updateRating(id: string): Promise<boolean | undefined> {
 export async function deleteRating(id: string): Promise<boolean | undefined> {
   try {
     connectToDatabase();
-    await Rating.findByIdAndDelete(id);
+    await RatingModel.findByIdAndDelete(id);
     revalidatePath('/manage/rating');
 
     return true;

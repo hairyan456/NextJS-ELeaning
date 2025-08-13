@@ -1,9 +1,9 @@
 import { auth } from '@clerk/nextjs/server';
 
 import PageNotFound from '@/app/not-found';
-import { getCourseBySlug } from '@/lib/actions/course.action';
 import { findAllLessons } from '@/lib/actions/lesson.action';
 import { getUserInfo } from '@/lib/actions/user.actions';
+import { fetchCourseBySlug } from '@/modules/course/actions';
 import { Heading } from '@/shared/components';
 
 import LessonSaveUrl from '../lesson-save-url';
@@ -21,7 +21,7 @@ const page = async ({
 
   const course = params.course;
   const slug = searchParams.slug;
-  const findCourse = await getCourseBySlug({ slug: course });
+  const findCourse = await fetchCourseBySlug({ slug: course });
 
   if (!findCourse?._id) return <PageNotFound />;
   const courseId = findCourse?._id.toString();

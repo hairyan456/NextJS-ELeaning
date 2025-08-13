@@ -3,36 +3,32 @@
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 
-import { IUser } from '@/database/user.model';
 import { createNewOrder } from '@/lib/actions/order.action';
 import { Button } from '@/shared/components/ui/button';
+import { useUserContext } from '@/shared/contexts';
 import { createOrderCode } from '@/utils';
 
 interface IButtonEnrollProps {
-  user: IUser | null | undefined;
   courseId: string;
   amount: number;
   coupon: string;
 }
 
-const ButtonEnroll = ({
-  amount,
-  coupon,
-  courseId,
-  user,
-}: IButtonEnrollProps) => {
+const ButtonEnroll = ({ amount, coupon, courseId }: IButtonEnrollProps) => {
+  const { userInfo } = useUserContext();
+
   const router = useRouter();
   const handleEnrollCourse = async () => {
-    if (!user?._id) {
+    if (!userInfo?._id) {
       toast.error('Vui lòng đăng nhập để mua khóa học');
 
       return;
     }
+
     // handle when login
-    // create new order with `DH-` + current time
     const newOrder = await createNewOrder({
-      code: createOrderCode(),
-      user: user._id,
+      code: createOrderCode(), // create new order with `DH-` + current time
+      user: userInfo._id,
       course: courseId,
       total: amount,
       amount: amount,

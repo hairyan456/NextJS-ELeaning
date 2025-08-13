@@ -1,14 +1,10 @@
-import { ICoupon } from '@/database/coupon.model';
-import { ICourse } from '@/database/course.model';
-import { ILesson } from '@/database/lesson.model';
-import { IComment } from '@/modules/comment/services/comment.schema';
+// Update the import path below to the correct relative path if needed
+import { ICoupon } from '../../database/coupon.model';
+import { ICourse } from '../../database/course.model';
+import { IComment } from '../../modules/comment/services/comment.schema';
 
-import { ECouponType } from './enums';
-
-interface IActiveLinkProps {
-  url: string;
-  children: React.ReactNode;
-}
+import { ECouponType, ERatingStatus } from './enums';
+import { ILesson } from './models/lesson.model';
 
 interface IMenuItems {
   url: string;
@@ -174,15 +170,6 @@ type TRatingItem = {
 
 type TCouponItem = Omit<ICoupon, '_id' | 'course'>;
 
-// filter, paginate
-interface IFilterData {
-  page?: number;
-  limit?: number;
-  search?: string;
-  status?: string;
-  active?: boolean;
-}
-
 // COMMENT
 
 interface ICreateCommentParams {
@@ -202,7 +189,6 @@ interface ICommentItem extends Omit<IComment, 'user'> {
 }
 
 export {
-  IActiveLinkProps,
   ICommentItem,
   ICourseUpdateParams,
   ICreateCommentParams,
@@ -213,7 +199,6 @@ export {
   ICreateOrderParams,
   ICreateRatingParams,
   ICreateUserParams,
-  IFilterData,
   IGetAllCourseParams,
   IMenuItems,
   IStudyCoursesProps,

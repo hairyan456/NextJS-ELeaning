@@ -2,7 +2,6 @@
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 
-import useQueryString from '@/hooks/use-query-string';
 import { updateOrder } from '@/lib/actions/order.action';
 import { cn } from '@/lib/utils';
 import {
@@ -30,6 +29,7 @@ import {
   TableRow,
 } from '@/shared/components/ui/table';
 import { allValue, commonClassName, orderStatus } from '@/shared/constants';
+import useQueryString from '@/shared/hooks/use-query-string';
 import { EOrderStatus } from '@/shared/types/enums';
 
 import { IOrderManageProps } from '../types/order.types';

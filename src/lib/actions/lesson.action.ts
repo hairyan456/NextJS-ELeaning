@@ -3,9 +3,13 @@ import { revalidatePath } from 'next/cache';
 
 import Course from '@/database/course.model';
 import Lecture from '@/database/lecture.model';
-import Lesson, { ILesson } from '@/database/lesson.model';
 import { connectToDatabase } from '@/shared/lib/mongoose';
-import { ICreateLessonParams, IUpdateLessonParams } from '@/shared/types';
+import { LessonModel } from '@/shared/schemas';
+import {
+  ICreateLessonParams,
+  ILesson,
+  IUpdateLessonParams,
+} from '@/shared/types';
 
 export async function getLessonBySlug({
   course,
@@ -16,7 +20,7 @@ export async function getLessonBySlug({
 }): Promise<ILesson | undefined> {
   try {
     connectToDatabase();
-    const findLesson = await Lesson.findOne({ slug, course }).select(
+    const findLesson = await LessonModel.findOne({ slug, course }).select(
       'title video_url content',
     );
 
@@ -33,7 +37,7 @@ export async function findAllLessons({
 }): Promise<ILesson[] | undefined> {
   try {
     connectToDatabase();
-    const lessons = await Lesson.find({ course }).select(
+    const lessons = await LessonModel.find({ course }).select(
       'title slug video_url content',
     );
 
@@ -50,7 +54,7 @@ export async function countLessonsByCourseId({
 }): Promise<number | undefined> {
   try {
     connectToDatabase();
-    const count = await Lesson.countDocuments({ course: courseId });
+    const count = await LessonModel.countDocuments({ course: courseId });
 
     return count || 0;
   } catch (error) {
@@ -67,7 +71,7 @@ export async function createNewLesson(params: ICreateLessonParams) {
     const findLecture = await Lecture.findById(params.lecture);
 
     if (!findLecture) return;
-    const newLesson = await Lesson.create(params);
+    const newLesson = await LessonModel.create(params);
 
     findLecture.lessons.push(newLesson._id);
     await findLecture.save();
@@ -83,7 +87,7 @@ export async function createNewLesson(params: ICreateLessonParams) {
 export async function updateLesson(params: IUpdateLessonParams) {
   try {
     connectToDatabase();
-    const response = await Lesson.findByIdAndUpdate(
+    const response = await LessonModel.findByIdAndUpdate(
       params.lessonId,
       params.updateData,
       { new: true },

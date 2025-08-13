@@ -4,7 +4,6 @@ import { toast } from 'react-toastify';
 import slugify from 'slugify';
 import Swal from 'sweetalert2';
 
-import { ILesson } from '@/database/lesson.model';
 import { createNewLecture, updateLecture } from '@/lib/actions/lecture.action';
 import { createNewLesson, updateLesson } from '@/lib/actions/lesson.action';
 import { cn } from '@/lib/utils';
@@ -18,6 +17,7 @@ import { Button } from '@/shared/components/ui/button';
 import { Input } from '@/shared/components/ui/input';
 import { commonClassName } from '@/shared/constants';
 import { ICourseUpdateParams, IUpdateCourseLecture } from '@/shared/types';
+import { ILesson } from '@/shared/types/models/lesson.model';
 
 import {
   IconCancel,

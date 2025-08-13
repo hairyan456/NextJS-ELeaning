@@ -1,9 +1,9 @@
 import CourseUpdateContent from '@/components/course/course-update-content';
-import { getCourseBySlug } from '@/lib/actions/course.action';
+import { fetchCourseBySlug } from '@/modules/course/actions';
 import { Heading } from '@/shared/components';
 
 const page = async ({ searchParams }: { searchParams: { slug: string } }) => {
-  const findCourse = await getCourseBySlug({ slug: searchParams.slug });
+  const findCourse = await fetchCourseBySlug({ slug: searchParams.slug });
 
   if (!findCourse) return <>Không tìm thấy khóa học.</>;
 

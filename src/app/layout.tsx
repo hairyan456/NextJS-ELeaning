@@ -4,8 +4,9 @@ import { ClerkProvider } from '@clerk/nextjs';
 import type { Metadata } from 'next';
 import { Bounce, ToastContainer } from 'react-toastify';
 
-import { manrope } from '@/fonts/font';
 import { ThemeProvider } from '@/shared/components';
+import { UserProvider } from '@/shared/contexts';
+import { manrope } from '@/utils';
 
 export const metadata: Metadata = {
   title: 'EAcademy',
@@ -27,7 +28,7 @@ export default function RootLayout({
             attribute="class"
             defaultTheme="system"
           >
-            {children}
+            <UserProvider>{children}</UserProvider>
             <ToastContainer
               draggable
               pauseOnFocusLoss

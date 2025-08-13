@@ -3,35 +3,40 @@ import Link from 'next/link';
 
 import { createNewHistory } from '@/lib/actions/history.action';
 import { cn } from '@/lib/utils';
+import { IconPlay } from '@/shared/components/icons';
 import { Checkbox } from '@/shared/components/ui/checkbox';
+import { IHistoryItemData, ILessonItemData } from '@/shared/types';
 
-import { IconPlay } from '../../shared/components/icons';
-
-interface ILessonItem {
-  lesson: {
-    title: string;
-    duration: number;
-    course: string;
-    _id: string;
-  };
-  url?: string;
-  isActive?: boolean;
-  isChecked?: boolean;
+interface ICourseLessonItem {
+  lesson: ILessonItemData;
+  histories?: IHistoryItemData[];
+  course: string;
+  slug: string;
 }
 
-const LessonItem = ({
-  isActive = false,
-  isChecked = false,
+const CourseLessonItem = ({
+  course = '',
+  histories = [],
   lesson,
-  url,
-}: ILessonItem) => {
+  slug,
+}: ICourseLessonItem) => {
+  if (!lesson?._id) return null;
+
+  const isActive = lesson.slug === slug;
+  const lessonItem = JSON.parse(JSON.stringify(lesson));
+  const url = course ? `/${course}/lesson?slug=${lesson.slug}` : '';
+  const isChecked =
+    histories.some(
+      (element) => element.lesson.toString() === lesson._id.toString(),
+    ) || false;
+
   const handleCompleteLesson = async (checked: boolean | string) => {
     try {
       await createNewHistory({
-        course: lesson.course,
-        lesson: lesson._id,
+        course: lessonItem.course,
+        lesson: lessonItem._id,
         checked,
-        path: url,
+        path: url || '/',
       });
     } catch (error) {
       console.error('Error when checking lesson:', error);
@@ -58,16 +63,16 @@ const LessonItem = ({
           className={cn('line-clamp-1', isActive && 'pointer-events-none')}
           href={url}
         >
-          {lesson.title}
+          {lessonItem.title}
         </Link>
       ) : (
-        <h4 className="line-clamp-1">{lesson.title || ''}</h4>
+        <h4 className="line-clamp-1">{lessonItem.title || ''}</h4>
       )}
       <span className="ml-auto shrink-0 text-xs font-semibold">
-        {lesson.duration} phút
+        {lessonItem.duration} phút
       </span>
     </div>
   );
 };
 
-export default LessonItem;
+export default CourseLessonItem;

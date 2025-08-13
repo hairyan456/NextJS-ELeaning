@@ -1,10 +1,10 @@
+import { CourseDetailPage } from '@/modules/course/pages';
 
-const page = () => {
-  return (
-    <div>
-      
-    </div>
-  );
+interface ICourseDetailPageRootProps {
+  params: { slug: string };
+}
+const CourseDetailPageRoot = ({ params }: ICourseDetailPageRootProps) => {
+  return <CourseDetailPage slug={params.slug} />;
 };
 
-export default page;
+export default CourseDetailPageRoot;

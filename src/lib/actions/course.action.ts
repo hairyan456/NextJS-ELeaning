@@ -3,19 +3,17 @@ import { FilterQuery } from 'mongoose';
 import { revalidatePath } from 'next/cache';
 
 import Course, { ICourse } from '@/database/course.model';
-import Lecture from '@/database/lecture.model';
-import Lesson from '@/database/lesson.model';
-import Rating from '@/database/rating.model';
+import { ICourseItemData } from '@/modules/course/types';
 import { connectToDatabase } from '@/shared/lib/mongoose';
 import {
-  ICourseUpdateParams,
   ICreateCourseParams,
   IFilterData,
   IGetAllCourseParams,
   IStudyCoursesProps,
   IUpdateCourseParams,
 } from '@/shared/types';
-import { ECourseStatus, ERatingStatus } from '@/shared/types/enums';
+import { ICourseLessonData } from '@/shared/types/course.type';
+import { ECourseStatus } from '@/shared/types/enums';
 
 export async function getAllCoursesPublic(
   params: IGetAllCourseParams,
@@ -58,39 +56,6 @@ export async function getAllCourses(
     return listCourses ? JSON.parse(JSON.stringify(listCourses)) : [];
   } catch (error) {
     console.error('Error connecting to database:', error);
-  }
-}
-
-export async function getCourseBySlug({
-  slug,
-}: {
-  slug: string;
-}): Promise<ICourseUpdateParams | undefined> {
-  try {
-    connectToDatabase();
-    const findCourse = await Course.findOne({ slug })
-      .populate({
-        path: 'lectures',
-        model: Lecture,
-        select: '_id title',
-        match: { _destroy: false },
-        populate: {
-          path: 'lessons',
-          model: Lesson,
-          match: { _destroy: false },
-        },
-      })
-      .populate({
-        path: 'rating',
-        model: Rating,
-        match: {
-          status: ERatingStatus.ACTIVE,
-        },
-      });
-
-    return findCourse ? JSON.parse(JSON.stringify(findCourse)) : undefined;
-  } catch (error) {
-    console.error('Error fetching course by slug:', error);
   }
 }
 
@@ -160,16 +125,14 @@ export async function updateCourseView({ slug }: { slug: string }) {
 }
 
 // hàm trả về Tổng thời lượng và Số bài học của Khóa học
-export async function getCourseLessonsInfo({ slug }: { slug: string }): Promise<
-  | {
-      duration: number;
-      lessons: number;
-    }
-  | undefined
-> {
+export async function getCourseLessonsInfo({
+  slug,
+}: {
+  slug: string;
+}): Promise<ICourseLessonData | undefined> {
   try {
     connectToDatabase();
-    const course = await Course.findOne({ slug })
+    const course: ICourseItemData = await Course.findOne({ slug })
       .select('lectures')
       .populate({
         path: 'lectures',
@@ -179,9 +142,9 @@ export async function getCourseLessonsInfo({ slug }: { slug: string }): Promise<
           select: 'duration',
         },
       });
-    const lessons = course?.lectures.flatMap((l: any) => l.lessons);
+    const lessons = course?.lectures.flatMap((l) => l.lessons);
     const duration = lessons.reduce(
-      (accumulator: number, current: any) => accumulator + current.duration,
+      (accumulator: number, current) => accumulator + current.duration,
       0,
     );
 

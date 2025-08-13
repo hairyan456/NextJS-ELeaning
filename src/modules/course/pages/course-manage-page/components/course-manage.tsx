@@ -5,7 +5,6 @@ import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 
 import { ICourse } from '@/database/course.model';
-import useQueryString from '@/hooks/use-query-string';
 import { updateCourse } from '@/lib/actions/course.action';
 import { cn } from '@/lib/utils';
 import { BouncedLink, Heading } from '@/shared/components';
@@ -27,6 +26,7 @@ import {
   TableRow,
 } from '@/shared/components/ui/table';
 import { allValue, commonClassName, courseStatus } from '@/shared/constants';
+import useQueryString from '@/shared/hooks/use-query-string';
 import { ECourseStatus } from '@/shared/types/enums';
 
 import {

@@ -1,16 +1,7 @@
-import { Document, model, models, Schema } from 'mongoose';
+import { model, models, Schema } from 'mongoose';
 
-import { ERatingStatus } from '@/shared/types/enums';
-
-export interface IRating extends Document {
-  _id: string;
-  rate: number;
-  content: string;
-  user: Schema.Types.ObjectId;
-  course: Schema.Types.ObjectId;
-  status: ERatingStatus;
-  created_at: Date;
-}
+import { ERatingStatus } from '../types/enums';
+import { IRating } from '../types/models/rating.model';
 
 const ratingSchema = new Schema<IRating>({
   rate: {
@@ -41,6 +32,5 @@ const ratingSchema = new Schema<IRating>({
   },
 });
 
-const Rating = models?.Rating || model<IRating>('Rating', ratingSchema);
-
-export default Rating;
+export const RatingModel =
+  models?.Rating || model<IRating>('Rating', ratingSchema);

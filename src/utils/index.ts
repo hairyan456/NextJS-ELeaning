@@ -1,6 +1,13 @@
 import { ObjectId } from 'mongoose';
+import { Manrope } from 'next/font/google';
 
 import { ICommentItem } from '@/shared/types';
+
+// font
+export const manrope = Manrope({
+  subsets: ['latin'],
+  variable: '--font-manrope',
+});
 
 export const createOrderCode = () => {
   return `DH-${Date.now().toString().slice(-6)}`;

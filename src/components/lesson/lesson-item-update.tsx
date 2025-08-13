@@ -9,7 +9,6 @@ import { toast } from 'react-toastify';
 import { Editor as TinyMCEEditor } from 'tinymce';
 import { z } from 'zod';
 
-import { ILesson } from '@/database/lesson.model';
 import { updateLesson } from '@/lib/actions/lesson.action';
 import { Button } from '@/shared/components/ui/button';
 import {
@@ -22,6 +21,7 @@ import {
 } from '@/shared/components/ui/form';
 import { Input } from '@/shared/components/ui/input';
 import { editorOptions } from '@/shared/constants';
+import { ILesson } from '@/shared/types/models/lesson.model';
 
 const formSchema = z.object({
   slug: z.string().optional(),

@@ -1,7 +1,6 @@
 'use client';
 import { debounce } from 'lodash';
 
-import useQueryString from '@/hooks/use-query-string';
 import {
   IconArrowLeft,
   IconArrowRight,
@@ -9,6 +8,7 @@ import {
   IconDoubleRightArrow,
 } from '@/shared/components/icons';
 import { ITEMS_PER_PAGE } from '@/shared/constants';
+import useQueryString from '@/shared/hooks/use-query-string';
 
 interface IPaginateProps {
   totalPages: number;
