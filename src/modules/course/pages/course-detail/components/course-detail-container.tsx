@@ -3,6 +3,7 @@ import Image from 'next/image';
 import PageNotFound from '@/app/not-found';
 import { getCourseLessonsInfo } from '@/lib/actions/course.action';
 import { ICourseItemData } from '@/modules/course/types';
+import { CourseOutline } from '@/shared/components';
 import {
   Accordion,
   AccordionContent,
@@ -14,7 +15,6 @@ import { ICourseLessonData } from '@/shared/types/course.type';
 import { ECourseStatus } from '@/shared/types/enums';
 import { formatMinutesToHour } from '@/utils';
 
-import CourseOutline from './course-outline';
 import CourseWidget from './course-widget';
 import RatingItem from './rating-item';
 import RequirementItem from './requirement-item';

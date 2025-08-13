@@ -16,10 +16,10 @@ interface ICourseOutlineProps {
 }
 
 const CourseOutline = ({
-  course,
+  course = '',
   histories = [],
-  lectures,
-  slug,
+  lectures = [],
+  slug = '',
 }: ICourseOutlineProps) => {
   return (
     <div className="flex flex-col gap-5">

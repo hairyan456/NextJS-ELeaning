@@ -6,8 +6,8 @@ import { getUserInfo } from '@/lib/actions/user.actions';
 import { fetchCourseBySlug } from '@/modules/course/actions';
 import { Heading } from '@/shared/components';
 
-import LessonSaveUrl from '../lesson-save-url';
-import VideoPlay from './video-play';
+import LessonSaveUrl from '../../../../../modules/course/pages/course-lesson/components/course-lesson-player/lesson-save-url';
+import VideoPlay from '../../../../../modules/course/pages/course-lesson/components/course-lesson-player/video-play';
 
 const page = async ({
   params,

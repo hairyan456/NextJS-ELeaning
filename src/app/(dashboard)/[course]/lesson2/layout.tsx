@@ -4,9 +4,9 @@ import { Suspense } from 'react';
 import PageNotFound from '@/app/not-found';
 import { getUserInfo } from '@/lib/actions/user.actions';
 
+import LoadingPlayer from '../../../../modules/course/pages/course-lesson/components/course-lesson-player/loading-player';
+import LessonWrapper from '../../../../modules/course/pages/course-lesson/components/lesson-wrapper';
 import LoadingOutline from './@outline/loading-outline';
-import LoadingPlayer from './@player/loading-player';
-import LessonWrapper from './lesson-wrapper';
 
 interface ILayoutProps {
   player: React.ReactNode;

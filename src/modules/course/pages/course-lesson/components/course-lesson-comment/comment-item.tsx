@@ -13,14 +13,13 @@ const CommentItem = ({
   comment,
   comments = [],
   lessonId,
-  userId,
 }: {
   comment: ICommentItem;
   lessonId: string;
-  userId: string;
   comments: ICommentItem[];
 }) => {
   if (!comment?._id) return null;
+
   const replies = getRepliesComment(comments, comment?._id);
   const level = comment.level || 0;
   const isPending = comment.status === ECommentStatus.PENDING;
@@ -63,7 +62,6 @@ const CommentItem = ({
             <CommentReply
               comment={comment}
               lessonId={lessonId}
-              userId={userId}
             />
           )}
         </div>
@@ -76,7 +74,6 @@ const CommentItem = ({
             comment={item}
             comments={comments}
             lessonId={lessonId}
-            userId={userId}
           />
         ))}
     </>

@@ -2,7 +2,7 @@ import PageNotFound from '@/app/not-found';
 import { getHistory } from '@/lib/actions/history.action';
 import { countLessonsByCourseId } from '@/lib/actions/lesson.action';
 import { fetchCourseBySlug } from '@/modules/course/actions';
-import LessonContent from '@/modules/course/pages/course-detail/components/course-outline';
+import { CourseOutline } from '@/shared/components';
 
 const page = async ({
   params,
@@ -34,7 +34,7 @@ const page = async ({
           }}
         />
       </div>
-      <LessonContent
+      <CourseOutline
         course={course}
         histories={histories ? JSON.parse(JSON.stringify(histories)) : []}
         lectures={lectures}

@@ -7,15 +7,15 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/shared/components/ui/button';
 import useGlobalStore from '@/store';
 
-import LessonNavigation from '../lesson-navigation';
+import LessonNavigation from './lesson-navigation';
 import RatingButton from './rating-button';
 
 interface IVideoPlayProps {
   nextLesson: string;
   prevLesson: string;
-  data: { userId: string; courseId: string };
+  courseId: string;
 }
-const VideoPlay = ({ data, nextLesson, prevLesson }: IVideoPlayProps) => {
+const VideoPlay = ({ courseId, nextLesson, prevLesson }: IVideoPlayProps) => {
   const duration = 3000;
   const [isEnded, setIsEnded] = useState(false);
   const router = useRouter();
@@ -58,10 +58,7 @@ const VideoPlay = ({ data, nextLesson, prevLesson }: IVideoPlayProps) => {
           prevLesson={prevLesson}
         />
         <div className="flex gap-5">
-          <RatingButton
-            courseId={data.courseId}
-            userId={data.userId}
-          />
+          <RatingButton courseId={courseId} />
           <Button
             className="text-white"
             onClick={() => setIsExpandedPlayer(!isExpandedPlayer)}

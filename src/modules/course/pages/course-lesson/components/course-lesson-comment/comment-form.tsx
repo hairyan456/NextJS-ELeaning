@@ -4,9 +4,10 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { z } from 'zod';
 
 import { createNewComment } from '@/modules/comment/services/comment.action';
+import { CourseCommentFormSchema } from '@/modules/course/schemas';
+import { TCourseCommentFormValue } from '@/modules/course/types';
 import { Button } from '@/shared/components/ui/button';
 import {
   Form,
@@ -16,17 +17,11 @@ import {
   FormMessage,
 } from '@/shared/components/ui/form';
 import { Textarea } from '@/shared/components/ui/textarea';
+import { useUserContext } from '@/shared/contexts';
 import { ICommentItem } from '@/shared/types';
-
-const formSchema = z.object({
-  content: z
-    .string({ message: 'Vui lòng nhập bình luận' })
-    .min(10, { message: 'Comment must be at least 10 characters long.' }),
-});
 
 interface CommentFormProps {
   lessonId: string;
-  userId: string;
   comment?: ICommentItem;
   isReply?: boolean;
   closeReply?: () => void;
@@ -37,31 +32,33 @@ const CommentForm = ({
   comment,
   isReply,
   lessonId,
-  userId,
 }: CommentFormProps) => {
+  const { userInfo } = useUserContext();
+  const userId = userInfo?._id.toString() || '';
+
   const [isPending, startTransition] = useTransition();
   const pathName = usePathname();
   const slug = useSearchParams().get('slug');
   const path = `${pathName}?slug=${slug}`;
 
   // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<TCourseCommentFormValue>({
+    resolver: zodResolver(CourseCommentFormSchema),
     defaultValues: {},
   });
 
   // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    startTransition(async () => {
-      const hasComment = await createNewComment({
-        content: values.content,
-        lesson: lessonId,
-        user: userId,
-        level: comment && comment?.level >= 0 ? comment?.level + 1 : 0,
-        parentId: comment?._id,
-        path,
-      });
+  async function onSubmit(values: TCourseCommentFormValue) {
+    const hasComment = await createNewComment({
+      content: values.content,
+      lesson: lessonId,
+      user: userId,
+      level: comment && comment?.level >= 0 ? comment?.level + 1 : 0,
+      parentId: comment?._id,
+      path,
+    });
 
+    startTransition(() => {
       if (hasComment) {
         toast.success('Đăng bình luận thành công');
         form.setValue('content', '');

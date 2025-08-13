@@ -43,3 +43,8 @@ export interface IStudyCoursesProps extends Omit<ICourse, 'lectures'> {
     }[];
   }[];
 }
+
+export interface ICourseLessonPageRootProps {
+  params: { course: string };
+  searchParams: { slug: string; sort: 'recent' | 'oldest' };
+}

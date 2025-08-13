@@ -34,7 +34,7 @@ const CourseItem = ({
   ];
 
   return (
-    <div className="dark:border-opacity/10 flex flex-col rounded-2xl border border-gray-200 bg-white p-4 dark:bg-grayDarker">
+    <div className="flex flex-col rounded-2xl border border-gray-200 bg-white p-4 dark:border-white/10 dark:bg-grayDarker">
       <Link
         className="relative block h-[180px]"
         href={courseUrl}
